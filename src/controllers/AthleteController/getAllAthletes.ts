@@ -1,4 +1,4 @@
-import catchAsync from "../../utils/catchAsync.js";
+import catchAsync from "../../middleware/catchAsync.js";
 import prisma from "../../prismaClient.js";
 
 

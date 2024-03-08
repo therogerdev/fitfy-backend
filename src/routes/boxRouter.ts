@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllBoxes, getBoxById } from "../controller/box.js";
+import { getAllBoxes, getBoxById } from "../controllers/box.js";
 
 const boxRouter = Router();
 

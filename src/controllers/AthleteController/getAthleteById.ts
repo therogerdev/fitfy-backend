@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import prisma from "../../prismaClient.js";
 import ApiError from "../../utils/ApiError.js";
-import catchAsync from "../../utils/catchAsync.js";
+import catchAsync from "../../middleware/catchAsync.js";
 
 export const getAthleteById = catchAsync(async (req, res) => {
     const { id } = req.params;
