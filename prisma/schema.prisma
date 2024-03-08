@@ -19,7 +19,7 @@ model Athlete {
   firstName       String
   lastName        String
   profileImageUrl String
-  email           String
+  email           String   @unique
   gender          String
   isCoach         Boolean
   isOwner         Boolean
