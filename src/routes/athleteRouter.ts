@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createAthlete, getAllAthletes, getAthleteByEmail, getAthleteById } from '../controller/athlete.js';
+import { getAllAthletes, getAthleteById, createAthlete } from '../controller/AthleteController/index.js';
 
 const athleteRouter = Router();
 
