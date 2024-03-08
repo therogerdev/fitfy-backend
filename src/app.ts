@@ -10,6 +10,7 @@ import config from './config/config.js';
 import ApiError from './utils/ApiError.js';
 import httpStatus from 'http-status';
 import { errorConverter, errorHandler } from "./middleware/error.js"
+import boxRouter from './routes/boxRouter.js';
 
 
 const app: Express = express();
@@ -33,7 +34,10 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Hello World!!' });
 });
 
-app.use('/api/athletes', athleteRouter);
+
+// routes
+app.use('/api/athlete', athleteRouter);
+app.use('/api/box', boxRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

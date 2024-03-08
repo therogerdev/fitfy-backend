@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Athlete {
-  id              Int      @id @default(autoincrement())
+  id              String   @id @default(uuid())
   createdAt       DateTime @default(now())
   firstName       String
   lastName        String
@@ -45,6 +45,12 @@ model Box {
 
 model Workout {
   id          Int      @id @default(autoincrement())
+  userId      Int
+  date        DateTime
+  type        String
+  duration    Int // Duration in minutes
+  intensity   String
+  feedback    String?
   createdAt   DateTime @default(now())
   title       String
   description String
