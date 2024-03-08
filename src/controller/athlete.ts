@@ -15,7 +15,7 @@ export const getAthleteById = catchAsync(async (req, res) => {
   const { id } = req.params;
   const athlete = await prisma.athlete.findUnique({
     where: {
-      id: parseInt(id)
+      id: id
     }
   });
 
