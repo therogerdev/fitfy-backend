@@ -9,8 +9,8 @@ import morgan from "./config/morgan.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
 import { limiter } from "./middleware/rateLimiter.js";
 import { athleteRouter, athletesRouter } from "./routes/athleteRouter.js";
-import boxRouter from "./routes/boxRouter.js";
 import ApiError from "./utils/ApiError.js";
+import { allBoxesRouter, boxRouter } from "./routes/boxRouter.js";
 
 const app: Express = express();
 
@@ -36,6 +36,7 @@ app.get("/", (req: Request, res: Response) => {
 // routes
 app.use("/api/athletes", athletesRouter);
 app.use("/api/athlete", athleteRouter);
+app.use("/api/boxes", allBoxesRouter);
 app.use("/api/box", boxRouter);
 
 // send back a 404 error for any unknown api request
