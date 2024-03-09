@@ -1,31 +1,14 @@
-import httpStatus from "http-status";
-import prisma from "../../prismaClient.js";
-import ApiError from "../../utils/ApiError.js";
+import { Request, Response } from "express";
 import catchAsync from "../../middleware/catchAsync.js";
+import * as athleteService from "../../services/athleteService.js";
+import { createAthleteSchema } from "../../validation/athleteValidation.js";
 
-export const createAthlete = catchAsync(async (req, res) => {
-    const { firstName, lastName, email, isCoach, isOwner, } = req.body;
+export const createAthlete = catchAsync(async (req:Request, res:Response) => {
+  const athleteData = req.body;
 
-    const existingAthlete = await prisma.athlete.findUnique({
-      where: {
-        email
-      }
-    });
+  const validatedAthlete = createAthleteSchema.parse(athleteData);
 
-    if (existingAthlete) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Athlete with this email already exists");
-    }
+  const athlete = await athleteService.createAthlete(validatedAthlete);
 
-    const athlete = await prisma.athlete.create({
-      data: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        isCoach: isCoach,
-        isOwner: isOwner,
-        gender: "male",
-        profileImageUrl: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
-      }
-    });
-    res.json(athlete);
-  });
+  res.json(athlete);
+});
