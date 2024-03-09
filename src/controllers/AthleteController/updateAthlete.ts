@@ -4,13 +4,13 @@ import { idSchema, updateAthleteSchema } from "../../validation/athleteValidatio
 
 export const updateAthlete = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const userData = req.body;
+  const athleteData = req.body;
 
-  console.log("id......", id);
+
 
   // validate id and user Data
   const validatedId = idSchema.parse(id);
-  const userQuery = updateAthleteSchema.parse(userData);
+  const userQuery = updateAthleteSchema.parse(athleteData);
 
   const updatedAthlete = await athleteService.updateAthlete(validatedId, userQuery);
 

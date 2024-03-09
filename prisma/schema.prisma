@@ -24,22 +24,22 @@ model Athlete {
   isCoach         Boolean
   isOwner         Boolean
   Box             Box?     @relation(fields: [boxId], references: [id])
-  boxId           Int?
+  boxId           String?
 }
 
 model Box {
-  id         Int       @id @default(autoincrement())
+  id         String    @id @default(uuid())
   createdAt  DateTime  @default(now())
-  name       String
-  nickname   String
-  street     String
-  city       String
-  state      String
-  postalCode String
-  country    String
-  phone      String
-  email      String
-  website    String
+  name       String?
+  nickname   String?
+  street     String?
+  city       String?
+  state      String?
+  postalCode String?
+  country    String?
+  phone      String?
+  email      String?
+  website    String?
   athletes   Athlete[]
 }
 

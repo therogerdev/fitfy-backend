@@ -7,7 +7,7 @@ export const getBoxById = catchAsync(async (req, res) => {
   const { id } = req.params;
   const box = await prisma.box.findUnique({
     where: {
-      id: Number(id)
+      id: id
     }
   });
 
