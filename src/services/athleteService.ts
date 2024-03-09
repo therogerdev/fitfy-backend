@@ -1,12 +1,13 @@
 import prisma from "../prismaClient.js";
 import { z } from "zod";
-import { createAthleteSchema, idSchema } from "../validation/athleteValidation.js";
+import { createAthleteSchema, emailSchema, idSchema } from "../validation/athleteValidation.js";
 import ApiError from "../utils/ApiError.js";
 import httpStatus from "http-status";
 
 // Infer the TypeScript type from the schema
 type CreateAthleteData = z.infer<typeof createAthleteSchema>;
 type AthleteId = z.infer<typeof idSchema>;
+type AthleteEmail = z.infer<typeof emailSchema>;
 
 export const getAllAthletes = async (filter = {}) => {
   return await prisma.athlete.findMany({
@@ -18,6 +19,14 @@ export const getAthleteById = async (id: AthleteId) => {
   return await prisma.athlete.findUnique({
     where: {
       id
+    }
+  });
+};
+
+export const getAthleteByEmail = async (email: AthleteEmail) => {
+  return await prisma.athlete.findUnique({
+    where: {
+      email
     }
   });
 };
@@ -55,9 +64,7 @@ export const updateAthlete = async (id: AthleteId, updateBody: CreateAthleteData
   }
 };
 
-
 export const deleteAthlete = async (id: AthleteId) => {
-
   const athlete = await getAthleteById(id);
 
   if (!athlete) {
@@ -71,5 +78,4 @@ export const deleteAthlete = async (id: AthleteId) => {
       }
     });
   }
-
-}
+};

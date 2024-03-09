@@ -1,16 +1,16 @@
-import express, { Express, Request, Response } from "express";
-import cors from "cors";
-import helmet from "helmet";
-import morgan from "./config/morgan.js";
 import compression from "compression";
+import cors from "cors";
 import "dotenv/config";
-import { limiter } from "./middleware/rateLimiter.js";
-import athleteRouter from "./routes/athleteRouter.js";
-import config from "./config/config.js";
-import ApiError from "./utils/ApiError.js";
+import express, { Express, Request, Response } from "express";
+import helmet from "helmet";
 import httpStatus from "http-status";
+import config from "./config/config.js";
+import morgan from "./config/morgan.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
+import { limiter } from "./middleware/rateLimiter.js";
+import { athleteRouter, athletesRouter } from "./routes/athleteRouter.js";
 import boxRouter from "./routes/boxRouter.js";
+import ApiError from "./utils/ApiError.js";
 
 const app: Express = express();
 
@@ -34,6 +34,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // routes
+app.use("/api/athletes", athletesRouter);
 app.use("/api/athlete", athleteRouter);
 app.use("/api/box", boxRouter);
 

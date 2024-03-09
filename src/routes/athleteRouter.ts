@@ -1,18 +1,21 @@
 import { Router } from "express";
 import {
-  getAllAthletes,
-  getAthleteById,
   createAthlete,
+  deleteAthlete,
+  getAthleteById,
   updateAthlete,
-  deleteAthlete
+  getAthleteByEmail,
+  getAllAthletes
 } from "../controllers/AthleteController/index.js";
 
-const athleteRouter = Router();
+const athletesRouter = Router();
+athletesRouter.get("/", getAllAthletes)
 
-athleteRouter.get("/", getAllAthletes);
+const athleteRouter = Router();
+athleteRouter.get("/", getAthleteByEmail);
 athleteRouter.get("/:id", getAthleteById);
 athleteRouter.post("/create", createAthlete);
 athleteRouter.patch("/:id", updateAthlete);
 athleteRouter.delete("/:id", deleteAthlete);
 
-export default athleteRouter;
+export { athleteRouter, athletesRouter };
