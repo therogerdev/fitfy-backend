@@ -13,18 +13,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Athlete {
+model Session {
   id              String   @id @default(uuid())
+  title           String
+  duration        Int // Duration in minutes
   createdAt       DateTime @default(now())
-  firstName       String
-  lastName        String
-  profileImageUrl String?
-  email           String   @unique
-  gender          String
-  isCoach         Boolean
-  isOwner         Boolean
-  Box             Box?     @relation(fields: [boxId], references: [id])
+  description     String?
+  recurrence      String? // Could be "none", "daily", "weekly", etc.
+  maxAthletes     Int
+  currentAthletes Int      @default(0)
+  dayOfWeek       Int // Representing days as numbers (e.g., 1 for Monday)
+  startTime       DateTime
+  endTime         DateTime
+  workoutId       String?
   boxId           String?
+
+  // Relations
+  Workout      Workout?  @relation(fields: [workoutId], references: [id])
+  Box          Box?      @relation(fields: [boxId], references: [id])
+  Coaches      Athlete[] @relation("CoachSession")
+  Participants Athlete[] @relation("SessionParticipants")
+}
+
+model Athlete {
+  id                    String    @id @default(uuid())
+  createdAt             DateTime  @default(now())
+  firstName             String
+  lastName              String
+  profileImageUrl       String?
+  email                 String    @unique
+  gender                String
+  isCoach               Boolean
+  isOwner               Boolean
+  boxId                 String?
+  Box                   Box?      @relation(fields: [boxId], references: [id])
+  CoachedSessions       Session[] @relation("CoachSession")
+  ParticipatingSessions Session[] @relation("SessionParticipants")
 }
 
 model Box {
@@ -40,7 +64,8 @@ model Box {
   phone      String?
   email      String?
   website    String?
-  athletes   Athlete[]
+  Athletes   Athlete[]
+  Sessions   Session[]
 }
 
 model Workout {
@@ -53,6 +78,7 @@ model Workout {
   description String
   publishAt   DateTime?
   isPublished Boolean
+  Sessions    Session[]
 }
 
 enum Intensity {
