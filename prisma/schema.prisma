@@ -44,16 +44,19 @@ model Box {
 }
 
 model Workout {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  date        DateTime
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
   type        String
   duration    Int // Duration in minutes
-  intensity   String
-  feedback    String?
-  createdAt   DateTime @default(now())
+  intensity   Intensity // Low, Medium, High
   title       String
   description String
-  publishAt   DateTime
+  publishAt   DateTime?
   isPublished Boolean
+}
+
+enum Intensity {
+  Low
+  Medium
+  High
 }
