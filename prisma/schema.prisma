@@ -13,42 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Session {
-  id              String   @id @default(uuid())
-  title           String
-  duration        Int // Duration in minutes
-  createdAt       DateTime @default(now())
-  description     String?
-  recurrence      String? // Could be "none", "daily", "weekly", etc.
-  maxAthletes     Int
-  currentAthletes Int      @default(0)
-  dayOfWeek       Int // Representing days as numbers (e.g., 1 for Monday)
-  startTime       DateTime
-  endTime         DateTime
-  workoutId       String?
-  boxId           String?
-
-  // Relations
-  Workout      Workout?  @relation(fields: [workoutId], references: [id])
-  Box          Box?      @relation(fields: [boxId], references: [id])
-  Coaches      Athlete[] @relation("CoachSession")
-  Participants Athlete[] @relation("SessionParticipants")
-}
-
 model Athlete {
-  id                    String    @id @default(uuid())
-  createdAt             DateTime  @default(now())
-  firstName             String
-  lastName              String
-  profileImageUrl       String?
-  email                 String    @unique
-  gender                String
-  isCoach               Boolean
-  isOwner               Boolean
-  boxId                 String?
-  Box                   Box?      @relation(fields: [boxId], references: [id])
-  CoachedSessions       Session[] @relation("CoachSession")
-  ParticipatingSessions Session[] @relation("SessionParticipants")
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  firstName       String
+  lastName        String
+  profileImageUrl String?
+  email           String   @unique
+  gender          String
+  isCoach         Boolean
+  isOwner         Boolean
+  boxId           String?
+  Box             Box?     @relation(fields: [boxId], references: [id])
 }
 
 model Box {
@@ -64,25 +40,72 @@ model Box {
   phone      String?
   email      String?
   website    String?
-  Athletes   Athlete[]
-  Sessions   Session[]
-}
-
-model Workout {
-  id          String    @id @default(uuid())
-  createdAt   DateTime  @default(now())
-  type        String
-  duration    Int // Duration in minutes
-  intensity   Intensity // Low, Medium, High
-  title       String
-  description String
-  publishAt   DateTime?
-  isPublished Boolean
-  Sessions    Session[]
+  athletes   Athlete[]
 }
 
 enum Intensity {
   Low
   Medium
   High
+}
+
+model Program {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  name        String // Name of the program, e.g., "Compete", "Ignite Total"
+  description String? // Optional description of the program
+
+  // Relations
+  Workout Workout[]
+  Session Session[]
+}
+
+model Workout {
+  id          String      @id @default(uuid())
+  createdAt   DateTime    @default(now())
+  title       String
+  type        WorkoutType
+  description String
+  duration    Int // Duration in minutes
+  Session     Session[]
+  Movement    Movement[]
+  Program     Program?    @relation(fields: [programId], references: [id])
+  programId   String?
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  dayOfWeek Int // Representing days as numbers (e.g., 1 for Monday)
+  startTime DateTime // Use DateTime to capture both date and time
+  endTime   DateTime
+  programId String
+  workoutId String?
+
+  // Relations
+  Program Program  @relation(fields: [programId], references: [id])
+  Workout Workout? @relation(fields: [workoutId], references: [id])
+}
+
+model Movement {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  name      String
+  weight    String?
+  reps      String[]
+  category  String
+  Workout   Workout? @relation(fields: [workoutId], references: [id])
+  workoutId String?
+}
+
+enum WorkoutType {
+  ForTime
+  AMRAP
+  EMOM // Every Minute on the Minute
+  RFT // Rounds For Time
+  Tabata
+  Chipper
+  Ladder
+  Strength
+  Skill
 }

@@ -9,10 +9,11 @@ import morgan from "./config/morgan.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
 import { limiter } from "./middleware/rateLimiter.js";
 import { athleteRouter, athletesRouter } from "./routes/athleteRouter.js";
-import ApiError from "./utils/ApiError.js";
 import { allBoxesRouter, boxRouter } from "./routes/boxRouter.js";
+import { classesRouter } from "./routes/classesRouter.js";
+import { programRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
-import { classRouter, classesRouter } from "./routes/classesRouter.js";
+import ApiError from "./utils/ApiError.js";
 
 const app: Express = express();
 
@@ -43,7 +44,8 @@ app.use("/api/box", boxRouter);
 app.use("/api/workouts", workoutsRouter);
 app.use("/api/workout", workoutRouter);
 app.use("/api/classes", classesRouter);
-app.use("/api/class", classRouter);
+// app.use("/api/class", classRouter);
+app.use("/api/programs", programRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

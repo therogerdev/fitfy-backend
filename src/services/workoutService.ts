@@ -1,19 +1,12 @@
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import prisma from "../prismaClient.js";
-import { workoutFilterSchema, workoutIdSchema } from "../validation/workoutValidation.js";
+import { workoutIdSchema } from "../validation/workoutValidation.js";
 
-type GetAllWorkouts = z.infer<typeof workoutFilterSchema>;
 type WorkoutId = z.infer<typeof workoutIdSchema>;
 
-export const getAllWorkouts = async ({ intensity, isPublished, type }: GetAllWorkouts) => {
-  return await prisma.workout.findMany({
-    where: {
-      intensity: intensity,
-      isPublished: isPublished,
-      type: type
-    }
-  });
+export const getAllWorkouts = async () => {
+  return await prisma.workout.findMany();
 };
 
 export const createWorkout = async (workoutData: Prisma.WorkoutCreateInput) => {
@@ -22,7 +15,7 @@ export const createWorkout = async (workoutData: Prisma.WorkoutCreateInput) => {
   return await prisma.workout.create({
     data: {
       ...workoutData,
-      publishAt: timestamp
+      createdAt: timestamp
     }
   });
 };

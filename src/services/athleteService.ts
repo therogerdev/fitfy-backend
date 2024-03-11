@@ -1,11 +1,11 @@
-import prisma from "../prismaClient.js";
-import { z } from "zod";
-import { createAthleteSchema, emailSchema, idSchema } from "../validation/athleteValidation.js";
-import ApiError from "../utils/ApiError.js";
 import httpStatus from "http-status";
+import { z } from "zod";
+import prisma from "../prismaClient.js";
+import ApiError from "../utils/ApiError.js";
+import { emailSchema, idSchema, updateAthleteSchema } from "../validation/athleteValidation.js";
 
 // Infer the TypeScript type from the schema
-type CreateAthleteData = z.infer<typeof createAthleteSchema>;
+type CreateAthleteData = z.infer<typeof updateAthleteSchema>;
 type AthleteId = z.infer<typeof idSchema>;
 type AthleteEmail = z.infer<typeof emailSchema>;
 
@@ -49,7 +49,6 @@ export const createAthlete = async (data: CreateAthleteData) => {
 
 export const updateAthlete = async (id: AthleteId, updateBody: CreateAthleteData) => {
   const athlete = await getAthleteById(id);
-
   if (!athlete) {
     throw new ApiError(httpStatus.NOT_FOUND, "Athlete not found, please provide a valid id");
   }

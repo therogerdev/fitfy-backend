@@ -17,6 +17,9 @@
     "db:push": "npx prisma db push",
     "db:studio": "npx prisma studio",
     "db:generate": "npx prisma generate",
+    "db-seed": "tsc prisma/seed.ts && cat prisma/seed.js | node --input-type=\"commonjs\" && rm prisma/seed.js",
+    "seed": "npm run db-seed",
+
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
