@@ -14,6 +14,7 @@ import { classesRouter } from "./routes/classesRouter.js";
 import { programRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
+import { movementRouter, movementsRouter } from "./routes/movement.js";
 
 const app: Express = express();
 
@@ -46,6 +47,8 @@ app.use("/api/workout", workoutRouter);
 app.use("/api/classes", classesRouter);
 // app.use("/api/class", classRouter);
 app.use("/api/programs", programRouter);
+app.use("/api/movements", movementsRouter);
+app.use("/api/movement", movementRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
