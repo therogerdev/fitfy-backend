@@ -7,7 +7,6 @@ export const updateAthlete = catchAsync(async (req, res) => {
   const athleteData = req.body;
 
 
-
   // validate id and user Data
   const validatedId = idSchema.parse(id);
   const userQuery = updateAthleteSchema.parse(athleteData);

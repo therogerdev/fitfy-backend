@@ -3,13 +3,11 @@ import { z } from "zod";
 export const workoutIdSchema = z.string();
 
 export const workoutSchema = z.object({
-  type: z.string(),
-  duration: z.number().int(),
-  intensity: z.enum(["Low", "Medium", "High"]),
+
   title: z.string(),
   description: z.string(),
+  duration: z.number().int(),
   publishAt: z.string().optional(),
-  isPublished: z.boolean()
 });
 
 // If you need to validate the creation of a Workout, where not all fields are required initially,
