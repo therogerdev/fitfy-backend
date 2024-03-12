@@ -11,10 +11,10 @@ import { limiter } from "./middleware/rateLimiter.js";
 import { classesRouter } from "./routes/classesRouter.js";
 import { programRouter } from "./routes/programRouter.js";
 import ApiError from "./utils/ApiError.js";
-import { movementRouter, movementsRouter } from "./routes/movement.js";
 import { athleteRouter, athletesRouter } from "./endpoints/Athlete/athlete.router.js";
 import { allBoxesRouter, boxRouter } from "./endpoints/Box/box.router.js";
 import { workoutRouter, workoutsRouter } from "./endpoints/Workout/workout.route.js";
+import { movementRouter, movementsRouter } from "./endpoints/Movement/movement.route.js";
 
 const app: Express = express();
 
