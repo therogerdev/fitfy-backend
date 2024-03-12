@@ -1,7 +1,7 @@
-import { Prisma } from "@prisma/client";
 import { z } from "zod";
-import prisma from "../prismaClient.js";
-import { workoutIdSchema } from "../validation/workoutValidation.js";
+import { workoutIdSchema } from "./workout.schema.js";
+import prisma from "../../prismaClient.js";
+import { Prisma } from "@prisma/client";
 
 type WorkoutId = z.infer<typeof workoutIdSchema>;
 

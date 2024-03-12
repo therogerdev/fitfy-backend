@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { getAllWorkouts } from "../controllers/workoutController/getAllWorkouts.js";
-import { createWorkout } from "../controllers/workoutController/createWorkout.js";
-import { deleteWorkout } from "../controllers/workoutController/deleteWorkout.js";
-import { updateWorkout } from "../controllers/workoutController/updateWorkout.js";
+import {
+  createWorkout,
+  deleteWorkout,
+  getAllWorkouts,
+  updateWorkout
+} from "./workout.controller.js";
 
 const workoutsRouter = Router();
 workoutsRouter.get("/", getAllWorkouts);
