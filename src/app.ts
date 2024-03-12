@@ -9,12 +9,12 @@ import morgan from "./config/morgan.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
 import { limiter } from "./middleware/rateLimiter.js";
 import { classesRouter } from "./routes/classesRouter.js";
-import { programRouter } from "./routes/programRouter.js";
 import ApiError from "./utils/ApiError.js";
 import { athleteRouter, athletesRouter } from "./endpoints/Athlete/athlete.router.js";
 import { allBoxesRouter, boxRouter } from "./endpoints/Box/box.router.js";
 import { workoutRouter, workoutsRouter } from "./endpoints/Workout/workout.route.js";
 import { movementRouter, movementsRouter } from "./endpoints/Movement/movement.route.js";
+import { programRouter } from "./endpoints/Program/program.route.js";
 
 const app: Express = express();
 

@@ -1,8 +1,10 @@
 import catchAsync from "../../middleware/catchAsync.js";
-import * as programService from "../../services/programService.js";
 import { Request, Response } from "express";
 import ApiError from "../../utils/ApiError.js";
 import httpStatus from "http-status";
+import * as programService from "./program.service.js";
+
+
 export const getAllPrograms = catchAsync(async (req: Request, res: Response) => {
   const programs = await programService.getAllPrograms();
 

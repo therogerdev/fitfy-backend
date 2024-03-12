@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProgram, getAllPrograms } from "../controllers/ProgramController/ProgramController.js";
+import { createProgram, getAllPrograms } from "./program.controller.js";
 
 const programRouter = Router();
 
