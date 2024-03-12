@@ -14,7 +14,7 @@ import ApiError from "../../utils/ApiError.js";
 
 export const getAllAthletes = catchAsync(async (req: Request, res: Response) => {
   const athlete = await athleteService.getAllAthletes();
-  res.json(athlete);
+  res.json({ total: athlete.length, athletes: athlete});
 });
 
 export const getAthleteById = catchAsync(async (req: Request, res: Response) => {

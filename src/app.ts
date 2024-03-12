@@ -6,15 +6,14 @@ import helmet from "helmet";
 import httpStatus from "http-status";
 import config from "./config/config.js";
 import morgan from "./config/morgan.js";
-import { errorConverter, errorHandler } from "./middleware/error.js";
-import { limiter } from "./middleware/rateLimiter.js";
-import { classesRouter } from "./routes/classesRouter.js";
-import ApiError from "./utils/ApiError.js";
 import { athleteRouter, athletesRouter } from "./endpoints/Athlete/athlete.router.js";
 import { allBoxesRouter, boxRouter } from "./endpoints/Box/box.router.js";
-import { workoutRouter, workoutsRouter } from "./endpoints/Workout/workout.route.js";
 import { movementRouter, movementsRouter } from "./endpoints/Movement/movement.route.js";
 import { programRouter } from "./endpoints/Program/program.route.js";
+import { workoutRouter, workoutsRouter } from "./endpoints/Workout/workout.route.js";
+import { errorConverter, errorHandler } from "./middleware/error.js";
+import { limiter } from "./middleware/rateLimiter.js";
+import ApiError from "./utils/ApiError.js";
 
 const app: Express = express();
 
@@ -44,8 +43,6 @@ app.use("/api/boxes", allBoxesRouter);
 app.use("/api/box", boxRouter);
 app.use("/api/workouts", workoutsRouter);
 app.use("/api/workout", workoutRouter);
-app.use("/api/classes", classesRouter);
-// app.use("/api/class", classRouter);
 app.use("/api/programs", programRouter);
 app.use("/api/movements", movementsRouter);
 app.use("/api/movement", movementRouter);
