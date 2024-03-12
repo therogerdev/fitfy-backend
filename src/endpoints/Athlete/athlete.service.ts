@@ -1,8 +1,9 @@
 import httpStatus from "http-status";
 import { z } from "zod";
-import prisma from "../prismaClient.js";
-import ApiError from "../utils/ApiError.js";
-import { emailSchema, idSchema, updateAthleteSchema } from "../validation/athleteValidation.js";
+
+import prisma from "../../prismaClient.js";
+import ApiError from "../../utils/ApiError.js";
+import { emailSchema, idSchema, updateAthleteSchema } from "./athlete.schema.js";
 
 // Infer the TypeScript type from the schema
 type CreateAthleteData = z.infer<typeof updateAthleteSchema>;

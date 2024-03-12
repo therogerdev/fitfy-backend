@@ -1,8 +1,8 @@
 import { z } from "zod";
-import prisma from "../prismaClient.js";
-import { boxIdSchema, createBoxSchema } from "../validation/boxValidation.js";
-import ApiError from "../utils/ApiError.js";
 import httpStatus from "http-status";
+import { boxIdSchema, createBoxSchema } from "./box.schema.js";
+import prisma from "../../prismaClient.js";
+import ApiError from "../../utils/ApiError.js";
 
 type CreateBoxData = z.infer<typeof createBoxSchema>;
 type BoxIdSchema = z.infer<typeof boxIdSchema>;
