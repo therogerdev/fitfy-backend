@@ -8,13 +8,13 @@ import config from "./config/config.js";
 import morgan from "./config/morgan.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
 import { limiter } from "./middleware/rateLimiter.js";
-import { athleteRouter, athletesRouter } from "./routes/athleteRouter.js";
 import { allBoxesRouter, boxRouter } from "./routes/boxRouter.js";
 import { classesRouter } from "./routes/classesRouter.js";
 import { programRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
 import { movementRouter, movementsRouter } from "./routes/movement.js";
+import { athleteRouter, athletesRouter } from "./endpoints/Athlete/athlete.router.js";
 
 const app: Express = express();
 

@@ -2,14 +2,14 @@ import { Router } from "express";
 import {
   createAthlete,
   deleteAthlete,
-  getAthleteById,
-  updateAthlete,
+  getAllAthletes,
   getAthleteByEmail,
-  getAllAthletes
-} from "../controllers/AthleteController/index.js";
+  getAthleteById,
+  updateAthlete
+} from "./athlete.controller.js";
 
 const athletesRouter = Router();
-athletesRouter.get("/", getAllAthletes)
+athletesRouter.get("/", getAllAthletes);
 
 const athleteRouter = Router();
 athleteRouter.get("/", getAthleteByEmail);
