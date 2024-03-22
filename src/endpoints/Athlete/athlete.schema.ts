@@ -9,10 +9,7 @@ const createAthleteSchema = z.object({
   lastName: z.string(),
   profileImageUrl: z.string().url().optional(),
   email: emailSchema,
-  gender: z.enum(["Male", "Female", "Non-Binary", "Prefer Not to Say"]),
-  isCoach: z.boolean(),
-  isOwner: z.boolean(),
-  boxId: z.string()
+  gender: z.enum(["Male", "Female", "Non-Binary", "Prefer Not to Say"])
 });
 
 const getAthleteByIdSchema = z.object({
