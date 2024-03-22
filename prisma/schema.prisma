@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,78 +7,93 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Athlete {
-  id              String   @id @default(uuid())
-  createdAt       DateTime @default(now())
-  firstName       String
-  lastName        String
-  profileImageUrl String?
-  email           String   @unique
-  gender          String
-  isCoach         Boolean
-  isOwner         Boolean
-  boxId           String?
-  Box             Box?     @relation(fields: [boxId], references: [id])
-}
-
 model Box {
   id         String    @id @default(uuid())
-  createdAt  DateTime  @default(now())
-  name       String?
+  name       String
   nickname   String?
-  street     String?
-  city       String?
-  state      String?
-  postalCode String?
-  country    String?
-  phone      String?
-  email      String?
+  street     String
+  city       String
+  state      String
+  postalCode String
+  country    String
+  email      String
   website    String?
-  athletes   Athlete[]
+  Program    Program[]
 }
 
-enum Intensity {
-  Low
-  Medium
-  High
+model User {
+  id       String   @id @default(uuid())
+  username String
+  password String
+  email    String   @unique
+  isActive Boolean
+  coach    Coach?
+  Athlete  Athlete?
+}
+
+model Coach {
+  id                  String     @id @default(uuid())
+  firstName           String
+  lastName            String
+  slug                String
+  avatarImage         String
+  sex                 String
+  description         String
+  descriptionMarkdown String
+  website             String
+  headerImage         String
+  bioVideo            String
+  role                String
+  published           Boolean
+  classCount          Int
+  Workouts            Workouts[]
+  user                User       @relation(fields: [userId], references: [id])
+  userId              String     @unique
+  Classes             Classes?   @relation(fields: [classesId], references: [id])
+  classesId           Int?
+}
+
+model Athlete {
+  id        String   @id @default(uuid())
+  firstname Int
+  lastName  Int
+  email     Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  Classes   Classes? @relation(fields: [classesId], references: [id])
+  classesId Int?
+}
+
+model Classes {
+  id           Int       @id @default(autoincrement())
+  startTime    DateTime
+  date         DateTime
+  workout      Int       @unique
+  participants Athlete[]
+  coach        Coach[]
 }
 
 model Program {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  name        String // Name of the program, e.g., "Compete", "Ignite Total"
-  description String? // Optional description of the program
-
-  // Relations
-  Workout Workout[]
-  Session Session[]
-}
-
-model Workout {
-  id          String      @id @default(uuid())
-  createdAt   DateTime    @default(now())
-  title       String
-  type        WorkoutType
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime
+  name        String
   description String
-  duration    Int // Duration in minutes
-  Session     Session[]
-  Movement    Movement[]
-  Program     Program?    @relation(fields: [programId], references: [id])
-  programId   String?
+  box         Box      @relation(fields: [boxId], references: [id])
+  boxId       String
 }
 
-model Session {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  dayOfWeek Int // Representing days as numbers (e.g., 1 for Monday)
-  startTime DateTime // Use DateTime to capture both date and time
-  endTime   DateTime
-  programId String
-  workoutId String?
+model Workouts {
+  id          String       @id @default(uuid())
+  type        WorkoutType?
+  title       String
+  description String?
+  createdAt   DateTime
+  duration    Int
+  intensity   String
+  movements   String
 
-  // Relations
-  Program Program  @relation(fields: [programId], references: [id])
-  Workout Workout? @relation(fields: [workoutId], references: [id])
+  Coach   Coach?  @relation(fields: [coachId], references: [id])
+  coachId String?
 }
 
 model Movement {
@@ -94,7 +103,6 @@ model Movement {
   weight    String?
   reps      String[]
   category  String
-  Workout   Workout? @relation(fields: [workoutId], references: [id])
   workoutId String?
 }
 
