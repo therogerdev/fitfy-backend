@@ -11,12 +11,12 @@ model Box {
   id         String    @id @default(uuid())
   name       String
   nickname   String?
-  street     String
-  city       String
-  state      String
-  postalCode String
-  country    String
-  email      String    @unique
+  street     String?
+  city       String?
+  state      String?
+  postalCode String?
+  country    String?
+  email      String?    @unique
   phone      String?
   website    String?
   Program    Program[]
