@@ -16,7 +16,7 @@ model Box {
   state      String?
   postalCode String?
   country    String?
-  email      String?    @unique
+  email      String?   @unique
   phone      String?
   website    String?
   Program    Program[]
@@ -47,7 +47,7 @@ model Coach {
   role                String
   published           Boolean
   classCount          Int
-  Workouts            Workouts[]
+  Workouts            Workout[]
   user                User       @relation(fields: [userId], references: [id])
   userId              String     @unique
   Classes             Classes?   @relation(fields: [classesId], references: [id])
@@ -68,7 +68,7 @@ model Athlete {
 }
 
 model Classes {
-  id           String       @id @default(uuid())
+  id           String    @id @default(uuid())
   startTime    DateTime
   date         DateTime
   workout      Int       @unique
@@ -77,23 +77,24 @@ model Classes {
 }
 
 model Program {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   createdAt   DateTime
   name        String
-  description String
-  box         Box      @relation(fields: [boxId], references: [id])
-  boxId       String
+  description String?
+
+  Box   Box?    @relation(fields: [boxId], references: [id])
+  boxId String?
 }
 
-model Workouts {
+model Workout {
   id          String       @id @default(uuid())
   type        WorkoutType?
   title       String
   description String?
   createdAt   DateTime
   duration    Int
-  intensity   String
-  movements   String
+  intensity   String?
+  movements   String?
 
   Coach   Coach?  @relation(fields: [coachId], references: [id])
   coachId String?

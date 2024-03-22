@@ -34,7 +34,7 @@ export const deleteWorkout = catchAsync(async (req: Request, res: Response) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "Something went wrong, please try again later");
   }
 
-  res.json({ message: "Athlete deleted successfully", data: { ...deleteWorkout } });
+  res.json({ message: "Workout deleted successfully", data: { title: deleteWorkout.title } });
 });
 
 export const updateWorkout = catchAsync(async (req: Request, res: Response) => {
