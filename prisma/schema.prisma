@@ -16,7 +16,8 @@ model Box {
   state      String
   postalCode String
   country    String
-  email      String
+  email      String @unique
+  phone      String?
   website    String?
   Program    Program[]
 }
