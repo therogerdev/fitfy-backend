@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBox, deleteBox, getAllBoxes, getBoxById, updateBox } from "./box.controler.js";
+import { createBox, deleteBox, getAllBoxes, getBoxById, updateBox } from "../endpoints/Box/box.controler.js";
 
 const allBoxesRouter = Router();
 allBoxesRouter.get("/", getAllBoxes);

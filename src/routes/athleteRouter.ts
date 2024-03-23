@@ -6,7 +6,7 @@ import {
   getAthleteByEmail,
   getAthleteById,
   updateAthlete
-} from "./athlete.controller.js";
+} from "../endpoints/Athlete/athlete.controller.js";
 
 const athletesRouter = Router();
 athletesRouter.get("/", getAllAthletes);

@@ -4,7 +4,7 @@ import {
   deleteWorkout,
   getAllWorkouts,
   updateWorkout
-} from "./workout.controller.js";
+} from "../endpoints/Workout/workout.controller.js";
 
 const workoutsRouter = Router();
 workoutsRouter.get("/", getAllWorkouts);

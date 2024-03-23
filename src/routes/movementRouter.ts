@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllMovements, getMovementById } from "./movement.controller.js";
+import { getAllMovements, getMovementById } from "../endpoints/Movement/movement.controller.js";
 
 const movementsRouter = Router();
 movementsRouter.get("/", getAllMovements);
