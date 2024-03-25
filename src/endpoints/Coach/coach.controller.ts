@@ -9,14 +9,14 @@ export const getAllCoaches = catchAsync(async (req: Request, res: Response) => {
   const { speciality } = req.query;
 
   const coaches = await coachService.getAllCoaches(
-    speciality as Prisma.CoachWhereInput["speciality"]
+    speciality as Prisma.EnumCoachSpecialityNullableFilter
   );
 
   if (!coaches) {
     throw new ApiError(httpStatus.NOT_FOUND, "No coaches found");
   }
 
-  res.json(coaches);
+  res.status(httpStatus.OK).json({total : coaches.length, data: coaches});
 });
 
 export const getCoachById = catchAsync(async (req: Request, res: Response) => {
