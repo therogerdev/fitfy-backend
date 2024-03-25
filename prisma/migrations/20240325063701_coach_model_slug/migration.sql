@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Coach" ALTER COLUMN "slug" DROP NOT NULL;

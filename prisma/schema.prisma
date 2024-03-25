@@ -33,24 +33,25 @@ model User {
 }
 
 model Coach {
-  id                  String     @id @default(uuid())
+  id                  String           @id @default(uuid())
   firstName           String
   lastName            String
-  slug                String
-  avatarImage         String
-  sex                 String
-  description         String
-  descriptionMarkdown String
-  website             String
-  headerImage         String
-  bioVideo            String
-  role                String
-  published           Boolean
-  classCount          Int
+  speciality          CoachSpeciality?
+  profileImageUrl     String?
+  slug                String?
+  gender              String
+  description         String?
+  descriptionMarkdown String?
+  website             String?
+  headerImage         String?
+  bioVideo            String?
+  role                String?
+  published           Boolean?
+  classCount          Int?
   Workouts            Workout[]
-  user                User       @relation(fields: [userId], references: [id])
-  userId              String     @unique
-  Classes             Classes?   @relation(fields: [classesId], references: [id])
+  user                User?            @relation(fields: [userId], references: [id])
+  userId              String?          @unique
+  Classes             Classes?         @relation(fields: [classesId], references: [id])
   classesId           String?
 }
 
@@ -120,4 +121,12 @@ enum WorkoutType {
   Ladder
   Strength
   Skill
+}
+
+enum CoachSpeciality {
+  CrossFit
+  Strength
+  Endurance
+  Gymnastics
+  Weightlifting
 }

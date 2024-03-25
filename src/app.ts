@@ -14,6 +14,7 @@ import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
 import { limiter } from "./middleware/rateLimiter.js";
 import ApiError from "./utils/ApiError.js";
+import { coachRouter, coachesRouter } from "./routes/coachRouter.js";
 
 const app: Express = express();
 
@@ -46,6 +47,8 @@ app.use("/api/workout", workoutRouter);
 app.use("/api/programs", programRouter);
 app.use("/api/movements", movementsRouter);
 app.use("/api/movement", movementRouter);
+app.use("/api/coaches", coachesRouter);
+app.use("/api/coach", coachRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
