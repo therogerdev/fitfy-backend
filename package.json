@@ -19,7 +19,6 @@
     "db:generate": "npx prisma generate",
     "db-seed": "tsc prisma/seed.ts && cat prisma/seed.js | node --input-type=\"commonjs\" && rm prisma/seed.js",
     "seed": "npm run db-seed",
-
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
@@ -46,7 +45,7 @@
     "typescript": "^5.4.2"
   },
   "dependencies": {
-    "@prisma/client": "^5.10.2",
+    "@prisma/client": "5.13.0",
     "@types/express": "^4.17.21",
     "compression": "^1.7.4",
     "concurrently": "^8.2.2",

@@ -39,6 +39,81 @@ async function main() {
     ]
   });
 
+  await prisma.workout.createMany({
+    data: [
+      {
+        title: "Fran",
+        description: "21-15-9 reps, for time of: Thrusters (95 lbs), Pull-ups",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Grace",
+        description: "For time: 30 Clean & Jerks (135 lbs)",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Cindy",
+        description: "20 minute AMRAP of: 5 Pull-ups, 10 Push-ups, 15 Air Squats",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "AMRAP"
+      },
+      {
+        title: "Murph",
+        description: "For time: 1 mile Run, 100 Pull-ups, 200 Push-ups, 300 Air Squats, 1 mile Run",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10
+      },
+      {
+        title: "Helen",
+        description:
+          "3 rounds for time of: Run 400 meters, 21 Kettlebell Swings (53 lbs), 12 Pull-ups",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Annie",
+        description: "50-40-30-20-10 reps, for time of: Double Unders, Sit-ups",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Diane",
+        description: "21-15-9 reps, for time of: Deadlifts (225 lbs), Handstand Push-ups",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Nancy",
+        description: "5 rounds for time of: Run 400 meters, 15 Overhead Squats (95 lbs)",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Karen",
+        description: "For time: 150 Wall Balls (20 lbs)",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Isabel",
+        description: "For time: 30 Snatches (135 lbs)",
+        createdAt: new Date("2021-01-01T00:00:00Z"),
+        duration: 10,
+        type: "ForTime"
+      }
+    ]
+  });
+
   await prisma.athlete.createMany({
     data: [
       {

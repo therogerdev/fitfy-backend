@@ -69,12 +69,26 @@ model Athlete {
 }
 
 model Classes {
-  id           String    @id @default(uuid())
+  id           String       @id @default(uuid())
   startTime    DateTime
   date         DateTime
-  workout      Int       @unique
+  workout      Int          @unique
   participants Athlete[]
   coach        Coach[]
+  components    Components[]
+}
+
+model Components {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  category    String
+  image       String?
+  video       String?
+  createdAt   DateTime
+
+  Classes   Classes? @relation(fields: [classesId], references: [id])
+  classesId String?
 }
 
 model Program {
@@ -95,7 +109,7 @@ model Workout {
   createdAt   DateTime
   duration    Int
   intensity   String?
-  movements   String?
+  movements   Movement[]
 
   Coach   Coach?  @relation(fields: [coachId], references: [id])
   coachId String?
@@ -109,6 +123,7 @@ model Movement {
   reps      String[]
   category  String
   workoutId String?
+  Workout   Workout? @relation(fields: [workoutId], references: [id])
 }
 
 enum WorkoutType {
