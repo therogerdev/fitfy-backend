@@ -51,6 +51,7 @@ app.use("/api/movement", movementRouter);
 app.use("/api/coaches", coachesRouter);
 app.use("/api/coach", coachRouter);
 app.use("/api/classes", classesRouter);
+app.use("/api/class/create", classesRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

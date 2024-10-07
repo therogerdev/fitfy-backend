@@ -1,5 +1,23 @@
 // prisma/seed.ts
+import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
+
+// TODO: create file for each helper function
+
+// Helper function to generate random gym-like names
+const generateGymName = () => {
+  const gymTypes = ["Hybrid", "CrossFit", "Gym", "Fit", "Strength", "Power", "Fitness", "Box"];
+  const randomGymType = gymTypes[Math.floor(Math.random() * gymTypes.length)];
+
+  const randomNamePrefix = faker.word.adjective(); // Generates a random company-like name
+  return `${randomNamePrefix} ${randomGymType}`;
+};
+// Helper function to generate a Gravatar-like profile image URL based on an email hash
+const generateGravatarUrl = (email) => {
+  if (!email) return;
+  const hash = faker.string.hexadecimal({ length: 32, casing: "lower" });
+  return `https://www.gravatar.com/avatar/${hash}`;
+};
 
 const prisma = new PrismaClient();
 
@@ -114,142 +132,55 @@ async function main() {
     ]
   });
 
-  await prisma.athlete.createMany({
+  await prisma.box.createMany({
     data: [
       {
-        firstName: "Alex",
-        lastName: "Smith",
-        profileImageUrl: "https://www.gravatar.com/avatar/00000000000000000000000000000000",
-        email: "alex.smith@example.com",
-        gender: "Male"
+        name: generateGymName(),
+        nickname: faker.company.catchPhrase(),
+        street: faker.location.secondaryAddress(),
+        city: faker.location.city(),
+        state: faker.location.state(),
+        postalCode: faker.location.zipCode(),
+        country: faker.location.country(),
+        email: faker.internet.email(),
+        website: faker.internet.url(),
+        phone: faker.phone.number()
       },
       {
-        firstName: "Jessica",
-        lastName: "Johnson",
-        profileImageUrl: "https://www.gravatar.com/avatar/11111111111111111111111111111111",
-        email: "jessica.johnson@example.com",
-        gender: "Female"
+        name: generateGymName(),
+        nickname: faker.company.catchPhrase(),
+        street: faker.location.secondaryAddress(),
+        city: faker.location.city(),
+        state: faker.location.state(),
+        postalCode: faker.location.zipCode(),
+        country: faker.location.country(),
+        email: faker.internet.email(),
+        website: faker.internet.url(),
+        phone: faker.phone.number()
       },
       {
-        firstName: "Michael",
-        lastName: "Williams",
-        profileImageUrl: "https://www.gravatar.com/avatar/22222222222222222222222222222222",
-        email: "michael.williams@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Emily",
-        lastName: "Brown",
-        profileImageUrl: "https://www.gravatar.com/avatar/33333333333333333333333333333333",
-        email: "emily.brown@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "David",
-        lastName: "Jones",
-        profileImageUrl: "https://www.gravatar.com/avatar/44444444444444444444444444444444",
-        email: "david.jones@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Sarah",
-        lastName: "Miller",
-        profileImageUrl: "https://www.gravatar.com/avatar/55555555555555555555555555555555",
-        email: "sarah.miller@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "Daniel",
-        lastName: "Taylor",
-        profileImageUrl: "https://www.gravatar.com/avatar/66666666666666666666666666666666",
-        email: "daniel.taylor@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Laura",
-        lastName: "Anderson",
-        profileImageUrl: "https://www.gravatar.com/avatar/77777777777777777777777777777777",
-        email: "laura.anderson@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "Chris",
-        lastName: "Thomas",
-        profileImageUrl: "https://www.gravatar.com/avatar/88888888888888888888888888888888",
-        email: "chris.thomas@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Nicole",
-        lastName: "Jackson",
-        profileImageUrl: "https://www.gravatar.com/avatar/99999999999999999999999999999999",
-        email: "nicole.jackson@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "Ethan",
-        lastName: "White",
-        profileImageUrl: "https://www.gravatar.com/avatar/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        email: "ethan.white@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Zoe",
-        lastName: "Harris",
-        profileImageUrl: "https://www.gravatar.com/avatar/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-        email: "zoe.harris@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "Oliver",
-        lastName: "Martin",
-        profileImageUrl: "https://www.gravatar.com/avatar/cccccccccccccccccccccccccccccccc",
-        email: "oliver.martin@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Sophia",
-        lastName: "Thompson",
-        profileImageUrl: "https://www.gravatar.com/avatar/dddddddddddddddddddddddddddddddd",
-        email: "sophia.thompson@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "Liam",
-        lastName: "Garcia",
-        profileImageUrl: "https://www.gravatar.com/avatar/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-        email: "liam.garcia@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Mia",
-        lastName: "Martinez",
-        profileImageUrl: "https://www.gravatar.com/avatar/ffffffffffffffffffffffffffffffff",
-        email: "mia.martinez@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "Noah",
-        lastName: "Robinson",
-        profileImageUrl: "https://www.gravatar.com/avatar/00000000000000000000000000000001",
-        email: "noah.robinson@example.com",
-        gender: "Male"
-      },
-      {
-        firstName: "Ava",
-        lastName: "Clark",
-        profileImageUrl: "https://www.gravatar.com/avatar/00000000000000000000000000000002",
-        email: "ava.clark@example.com",
-        gender: "Female"
-      },
-      {
-        firstName: "Matthew",
-        lastName: "Rodriguez",
-        profileImageUrl: "https://www.gravatar.com/avatar/00000000000000000000000000000003",
-        email: "matthew.rodriguez@example.com",
-        gender: "Male"
+        name: generateGymName(),
+        nickname: faker.company.catchPhrase(),
+        street: faker.location.secondaryAddress(),
+        city: faker.location.city(),
+        state: faker.location.state(),
+        postalCode: faker.location.zipCode(),
+        country: faker.location.country(),
+        email: faker.internet.email(),
+        website: faker.internet.url(),
+        phone: faker.phone.number()
       }
     ]
+  });
+
+  await prisma.athlete.createMany({
+    data: Array.from({ length: 20 }, () => ({
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      profileImageUrl: generateGravatarUrl(faker.internet.email()),
+      email: faker.internet.email(),
+      gender: faker.person.sex() // Returns 'Male' or 'Female'
+    }))
   });
 }
 

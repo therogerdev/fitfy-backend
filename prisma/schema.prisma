@@ -17,8 +17,8 @@ model Box {
   postalCode String?
   country    String?
   email      String?   @unique
-  phone      String?
   website    String?
+  phone      String?
   Program    Program[]
 }
 
@@ -28,18 +28,15 @@ model User {
   password String
   email    String   @unique
   isActive Boolean
-  coach    Coach?
   Athlete  Athlete?
+  coach    Coach?
 }
 
 model Coach {
   id                  String           @id @default(uuid())
   firstName           String
   lastName            String
-  speciality          CoachSpeciality?
-  profileImageUrl     String?
   slug                String?
-  gender              String
   description         String?
   descriptionMarkdown String?
   website             String?
@@ -48,34 +45,36 @@ model Coach {
   role                String?
   published           Boolean?
   classCount          Int?
-  Workouts            Workout[]
-  user                User?            @relation(fields: [userId], references: [id])
   userId              String?          @unique
-  Classes             Classes?         @relation(fields: [classesId], references: [id])
   classesId           String?
+  speciality          CoachSpeciality?
+  gender              String
+  profileImageUrl     String?
+  Classes             Classes?         @relation(fields: [classesId], references: [id])
+  user                User?            @relation(fields: [userId], references: [id])
+  Workouts            Workout[]
 }
 
 model Athlete {
   id              String   @id @default(uuid())
-  firstName       String
+  classesId       String?
+  userId          String?  @unique
   lastName        String
   email           String   @unique
   gender          String
   profileImageUrl String?
-  user            User?    @relation(fields: [userId], references: [id])
-  userId          String?  @unique
+  firstName       String
   Classes         Classes? @relation(fields: [classesId], references: [id])
-  classesId       String?
+  user            User?    @relation(fields: [userId], references: [id])
 }
 
 model Classes {
   id           String       @id @default(uuid())
   startTime    DateTime
   date         DateTime
-  workout      Int          @unique
   participants Athlete[]
   coach        Coach[]
-  components    Components[]
+  components   Components[]
 }
 
 model Components {
@@ -86,19 +85,17 @@ model Components {
   image       String?
   video       String?
   createdAt   DateTime
-
-  Classes   Classes? @relation(fields: [classesId], references: [id])
-  classesId String?
+  classesId   String?
+  Classes     Classes? @relation(fields: [classesId], references: [id])
 }
 
 model Program {
-  id          String   @id @default(uuid())
   createdAt   DateTime
   name        String
   description String?
-
-  Box   Box?    @relation(fields: [boxId], references: [id])
-  boxId String?
+  boxId       String?
+  id          String   @id @default(uuid())
+  Box         Box?     @relation(fields: [boxId], references: [id])
 }
 
 model Workout {
@@ -109,10 +106,9 @@ model Workout {
   createdAt   DateTime
   duration    Int
   intensity   String?
+  coachId     String?
   movements   Movement[]
-
-  Coach   Coach?  @relation(fields: [coachId], references: [id])
-  coachId String?
+  Coach       Coach?       @relation(fields: [coachId], references: [id])
 }
 
 model Movement {
@@ -129,8 +125,8 @@ model Movement {
 enum WorkoutType {
   ForTime
   AMRAP
-  EMOM // Every Minute on the Minute
-  RFT // Rounds For Time
+  EMOM
+  RFT
   Tabata
   Chipper
   Ladder
