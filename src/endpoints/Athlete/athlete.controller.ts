@@ -13,9 +13,11 @@ import { Request, Response } from "express";
 import ApiError from "../../utils/ApiError.js";
 
 export const getAllAthletes = catchAsync(async (req: Request, res: Response) => {
-  const athlete = await athleteService.getAllAthletes();
-  res.json({ total: athlete.length, athletes: athlete});
+  const { page = 1, limit = 10 } = req.query as any;
+  const athletes = await athleteService.getAllAthletes({}, parseInt(page), parseInt(limit));
+  res.json({ total: athletes.length, athletes });
 });
+
 
 export const getAthleteById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;

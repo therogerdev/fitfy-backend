@@ -19,7 +19,7 @@ import { classesRouter } from "./routes/classesRouter.js";
 
 const app: Express = express();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 
 if (config.env !== "test") {
   app.use(morgan.successHandler);

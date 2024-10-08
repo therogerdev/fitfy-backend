@@ -10,9 +10,11 @@ type CreateAthleteData = z.infer<typeof updateAthleteSchema>;
 type AthleteId = z.infer<typeof idSchema>;
 type AthleteEmail = z.infer<typeof emailSchema>;
 
-export const getAllAthletes = async (filter = {}) => {
+export const getAllAthletes = async (filter = {}, page = 1, limit = 5) => {
   return await prisma.athlete.findMany({
-    where: filter
+    where: filter,
+    take: limit,
+    skip: (page - 1) * limit
   });
 };
 
