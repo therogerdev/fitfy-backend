@@ -8,18 +8,22 @@ datasource db {
 }
 
 model Box {
-  id         String    @id @default(uuid())
-  name       String
-  nickname   String?
-  street     String?
-  city       String?
-  state      String?
-  postalCode String?
-  country    String?
-  email      String?   @unique
-  website    String?
-  phone      String?
-  Program    Program[]
+  id              String     @id @default(uuid())
+  name            String
+  nickname        String?
+  street          String?
+  city            String?
+  state           String?
+  postalCode      String?
+  country         String?
+  email           String?    @unique
+  website         String?
+  phone           String?
+  headquarter     Boolean    @default(false)
+  headquarterBoxId String?   // For non-headquarter boxes to reference a headquarter
+  branches        Box[]      @relation("HeadquarterBranches")  // For headquarter referencing its branches
+  headquarterBox  Box?       @relation("HeadquarterBranches", fields: [headquarterBoxId], references: [id])
+  Program         Program[]
 }
 
 model User {

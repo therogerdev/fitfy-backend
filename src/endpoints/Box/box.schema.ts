@@ -1,8 +1,9 @@
 import { z } from "zod";
 
-export const boxIdSchema = z.string();
+// Schema for validating Box ID
+export const boxIdSchema = z.string().uuid();
 
-
+// Base schema for Box
 export const boxSchema = z.object({
   name: z.string(),
   nickname: z.string().optional(),
@@ -13,14 +14,29 @@ export const boxSchema = z.object({
   country: z.string().optional(),
   phone: z.string().optional(),
   email: z.string().email().optional(),
-  website: z.string().url().optional(), // Assuming the website is optional and must be a valid URL if provided
+  website: z.string().url().optional(), // Website must be a valid URL if provided
+  headquarter: z.boolean(),
+  headquarterBoxId: z.string().uuid().optional(), // Optional, but validated if provided
 });
 
-// If you need to validate the creation of a Box, where not all fields are required initially,
-// you can create a separate schema using .partial() or define specific optional fields.
-export const createBoxSchema = boxSchema.pick({name: true});
-// OR, for more control, define optional fields manually:
+// Schema for creating a Box with conditional validation on `headquarterBoxId`
+export const createBoxSchema = boxSchema.refine(
+  (data) => data.headquarter || data.headquarterBoxId,
+  {
+    message: "Non-headquarter boxes must reference a headquarterBoxId",
+    path: ["headquarterBoxId"], // Error will appear at this field
+  }
+);
+
+// Alternatively, you can make certain fields optional for creation and retain the same logic:
 export const createBoxSchemaAlternative = z.object({
-  name: z.string().optional(),
-  // Include other fields as necessary, marking some as optional if they're not required for creation
-});
+  name: z.string(),
+  headquarter: z.boolean(),
+  headquarterBoxId: z.string().uuid().optional(),
+}).refine(
+  (data) => data.headquarter || data.headquarterBoxId,
+  {
+    message: "Non-headquarter boxes must reference a headquarterBoxId",
+    path: ["headquarterBoxId"],
+  }
+);
