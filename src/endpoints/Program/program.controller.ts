@@ -22,3 +22,26 @@ export const createProgram = catchAsync(async (req: Request, res: Response) => {
   }
   res.json(newProgram);
 });
+
+export const updateProgram = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedProgram = await programService.updateProgram(id, req.body);
+
+  if (!updatedProgram) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Program not found or update failed");
+  }
+
+  res.json(updatedProgram);
+});
+
+export const deleteProgram = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params; // Get the program ID from the request parameters
+
+  const deletedProgram = await programService.deleteProgram(id);
+
+  if (!deletedProgram) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Program not found or already deleted");
+  }
+
+  res.json({ message: "Program deleted successfully" });
+});

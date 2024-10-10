@@ -47,3 +47,35 @@ export const createProgram = async (data: ProgramType) => {
     }
   });
 };
+
+
+export const updateProgram = async (id: string, data: ProgramType) => {
+  return await prisma.programs.update({
+    where: { id },
+    data: {
+      slug: data.slug || "",
+      name: data.name,
+      description: data.description || "",
+      numWeeks: data.numWeeks || 0,
+      numClassesPerWeek: data.numClassesPerWeek || 0,
+      durationMin: data.durationMin || 0,
+      durationMax: data.durationMax || 0,
+      isDraft: data.isDraft ?? false,
+      active: data.active ?? true,
+      published: data.published ?? true,
+      hasSchedule: data.hasSchedule ?? false,
+      totalClasses: data.totalClasses || 0,
+      boxId: data.boxId || null, // Ensure nullable if not provided
+      classesId: data.classesId || null, // Same here
+      createdAt: data.createdAt || new Date() // Default to current date if not provided
+    }
+  });
+};
+
+
+
+export const deleteProgram = async (id: string) => {
+  return await prisma.programs.delete({
+    where: { id },
+  });
+};

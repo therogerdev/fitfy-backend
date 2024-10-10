@@ -18,7 +18,6 @@ export const getAllAthletes = catchAsync(async (req: Request, res: Response) => 
   res.json({ total: athletes.length, athletes });
 });
 
-
 export const getAthleteById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
