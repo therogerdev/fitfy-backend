@@ -8,22 +8,22 @@ datasource db {
 }
 
 model Box {
-  id              String     @id @default(uuid())
-  name            String
-  nickname        String?
-  street          String?
-  city            String?
-  state           String?
-  postalCode      String?
-  country         String?
-  email           String?    @unique
-  website         String?
-  phone           String?
-  headquarter     Boolean    @default(false)
-  headquarterBoxId String?   // For non-headquarter boxes to reference a headquarter
-  branches        Box[]      @relation("HeadquarterBranches")  // For headquarter referencing its branches
-  headquarterBox  Box?       @relation("HeadquarterBranches", fields: [headquarterBoxId], references: [id])
-  Program         Program[]
+  id               String     @id @default(uuid())
+  name             String
+  nickname         String?
+  street           String?
+  city             String?
+  state            String?
+  postalCode       String?
+  country          String?
+  email            String?    @unique
+  website          String?
+  phone            String?
+  headquarter      Boolean    @default(false)
+  headquarterBoxId String? // For non-headquarter boxes to reference a headquarter
+  branches         Box[]      @relation("HeadquarterBranches") // For headquarter referencing its branches
+  headquarterBox   Box?       @relation("HeadquarterBranches", fields: [headquarterBoxId], references: [id])
+  Program          Programs[]
 }
 
 model User {
@@ -72,15 +72,6 @@ model Athlete {
   user            User?    @relation(fields: [userId], references: [id])
 }
 
-model Classes {
-  id           String       @id @default(uuid())
-  startTime    DateTime
-  date         DateTime
-  participants Athlete[]
-  coach        Coach[]
-  components   Components[]
-}
-
 model Components {
   id          String   @id @default(uuid())
   name        String
@@ -93,13 +84,35 @@ model Components {
   Classes     Classes? @relation(fields: [classesId], references: [id])
 }
 
-model Program {
-  createdAt   DateTime
-  name        String
-  description String?
-  boxId       String?
-  id          String   @id @default(uuid())
-  Box         Box?     @relation(fields: [boxId], references: [id])
+model Classes {
+  id           String       @id @default(uuid())
+  startTime    DateTime
+  date         DateTime
+  participants Athlete[]
+  programs     Programs[]
+  coach        Coach[]
+  components   Components[]
+}
+
+model Programs {
+  id                String   @id @default(uuid())
+  slug              String?  @unique
+  name              String?
+  description       String?
+  numWeeks          Int?
+  numClassesPerWeek Int?
+  durationMin       Int?
+  isDraft           Boolean?
+  durationMax       Int?
+  active            Boolean? @default(true)
+  published         Boolean? @default(true)
+  hasSchedule       Boolean? @default(false)
+  totalClasses      Int?
+  Classes           Classes? @relation(fields: [classesId], references: [id])
+  classesId         String?
+  Box               Box?     @relation(fields: [boxId], references: [id])
+  boxId             String?
+  createdAt         DateTime
 }
 
 model Workout {
