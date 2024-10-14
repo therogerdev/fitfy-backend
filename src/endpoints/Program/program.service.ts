@@ -79,3 +79,9 @@ export const deleteProgram = async (id: string) => {
     where: { id },
   });
 };
+
+export const getProgramById = async (id: string) => {
+  return await prisma.programs.findUnique({
+    where: {id}
+  })
+}
