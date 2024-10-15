@@ -32,18 +32,19 @@ export const createProgram = async (data: ProgramType) => {
       slug: data.slug || "",
       name: data.name,
       description: data.description || "",
-      numWeeks: data.numWeeks || 0,
-      numClassesPerWeek: data.numClassesPerWeek || 0,
-      durationMin: data.durationMin || 0,
-      durationMax: data.durationMax || 0,
+
+      numClassesPerWeek: Number(data.numClassesPerWeek),
+      numWeeks: Number(data.numWeeks),
+      durationMin: Number(data.durationMin),
+      durationMax: Number(data.durationMax),
+      totalClasses: Number(data.totalClasses),
       isDraft: data.isDraft ?? false,
       active: data.active ?? true,
       published: data.published ?? true,
       hasSchedule: data.hasSchedule ?? false,
-      totalClasses: data.totalClasses || 0,
-      boxId: data.boxId || null, // Ensure nullable if not provided
-      classesId: data.classesId || null, // Same here
-      createdAt: data.createdAt || new Date() // Default to current date if not provided
+      boxId: data.boxId || null,
+      classesId: data.classesId || null,
+      createdAt: data.createdAt || new Date()
     }
   });
 };
@@ -55,15 +56,15 @@ export const updateProgram = async (id: string, data: ProgramType) => {
       slug: data.slug || "",
       name: data.name,
       description: data.description || "",
-      numWeeks: data.numWeeks || 0,
-      numClassesPerWeek: data.numClassesPerWeek || 0,
-      durationMin: data.durationMin || 0,
-      durationMax: data.durationMax || 0,
+      numClassesPerWeek: Number(data.numClassesPerWeek),
+      numWeeks: Number(data.numWeeks),
+      durationMin: Number(data.durationMin),
+      durationMax: Number(data.durationMax),
+      totalClasses: Number(data.totalClasses),
       isDraft: data.isDraft ?? false,
       active: data.active ?? true,
       published: data.published ?? true,
       hasSchedule: data.hasSchedule ?? false,
-      totalClasses: data.totalClasses || 0,
       boxId: data.boxId || null, // Ensure nullable if not provided
       classesId: data.classesId || null, // Same here
       createdAt: data.createdAt || new Date() // Default to current date if not provided

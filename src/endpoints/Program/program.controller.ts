@@ -28,7 +28,6 @@ export const getProgramBySlug = catchAsync(async (req: Request, res: Response) =
 
 export const createProgram = catchAsync(async (req: Request, res: Response) => {
   const newProgram = await programService.createProgram(req.body);
-
   if (!newProgram) {
     throw new ApiError(httpStatus.BAD_REQUEST, "Program not created");
   }
