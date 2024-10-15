@@ -14,12 +14,10 @@ export const getAllPrograms = catchAsync(async (req: Request, res: Response) => 
   res.json({ total: programs.length, programs });
 });
 
-export const getProgramById = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
+export const getProgramBySlug = catchAsync(async (req: Request, res: Response) => {
+  const { slug } = req.params;
 
-  console.log("getProgramById", req.body)
-
-  const program = await programService.getProgramById(id);
+  const program = await programService.getProgramBySlug(slug);
 
   if (!program) {
     throw new ApiError(httpStatus.NOT_FOUND, `No program found with id: ${req.body.id}`);

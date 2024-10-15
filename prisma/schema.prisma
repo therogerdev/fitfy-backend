@@ -96,7 +96,7 @@ model Classes {
 
 model Programs {
   id                String   @id @default(uuid())
-  slug              String?  @unique
+  slug              String   @unique
   name              String?
   description       String?
   numWeeks          Int?

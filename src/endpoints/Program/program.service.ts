@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const programSchema = z.object({
   id: z.string().optional(), // Optional as it's generated automatically
-  slug: z.string().optional().nullable(),
+  slug: z.string(),
   name: z.string(),
   description: z.string().optional().nullable(),
   numWeeks: z.number().optional().nullable(),
@@ -48,7 +48,6 @@ export const createProgram = async (data: ProgramType) => {
   });
 };
 
-
 export const updateProgram = async (id: string, data: ProgramType) => {
   return await prisma.programs.update({
     where: { id },
@@ -72,16 +71,16 @@ export const updateProgram = async (id: string, data: ProgramType) => {
   });
 };
 
-
-
 export const deleteProgram = async (id: string) => {
   return await prisma.programs.delete({
-    where: { id },
+    where: { id }
   });
 };
 
-export const getProgramById = async (id: string) => {
+export const getProgramBySlug = async (slug: string) => {
   return await prisma.programs.findUnique({
-    where: {id}
-  })
-}
+    where: {
+      slug
+    }
+  });
+};

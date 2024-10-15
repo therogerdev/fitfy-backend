@@ -4,7 +4,7 @@ import {
   deleteProgram,
   getAllPrograms,
   updateProgram,
-  getProgramById
+  getProgramBySlug
 } from "../endpoints/Program/program.controller.js";
 
 const programsRouter = Router();
@@ -12,7 +12,7 @@ programsRouter.get("/", getAllPrograms);
 
 const programRouter = Router();
 
-programRouter.get("/:id", getProgramById);
+programRouter.get("/:slug", getProgramBySlug);
 programRouter.post("/create", createProgram);
 programRouter.patch("/:id", updateProgram);
 programRouter.delete("/:id", deleteProgram);
