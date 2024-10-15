@@ -20,7 +20,7 @@ export const getProgramBySlug = catchAsync(async (req: Request, res: Response) =
   const program = await programService.getProgramBySlug(slug);
 
   if (!program) {
-    throw new ApiError(httpStatus.NOT_FOUND, `No program found with id: ${req.body.id}`);
+    throw new ApiError(httpStatus.NOT_FOUND, `No program found with slug: ${req.body.slug}`);
   }
 
   res.json(program);
