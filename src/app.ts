@@ -16,6 +16,7 @@ import { limiter } from "./middleware/rateLimiter.js";
 import ApiError from "./utils/ApiError.js";
 import { coachRouter, coachesRouter } from "./routes/coachRouter.js";
 import { classesRouter } from "./routes/classesRouter.js";
+import { authRouter } from "./routes/authRouter.js";
 
 const app: Express = express();
 
@@ -53,6 +54,8 @@ app.use("/api/coaches", coachesRouter);
 app.use("/api/coach", coachRouter);
 app.use("/api/classes", classesRouter);
 app.use("/api/class/create", classesRouter);
+
+app.use("/api/auth", authRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
