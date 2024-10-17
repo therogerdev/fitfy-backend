@@ -1,12 +1,18 @@
 import { Router } from "express";
-import { loginUser, registerUser } from "../endpoints/auth/auth.controller.js";
+import {
+  getProfile,
+  loginUser,
+  logoutUser,
+  registerUser
+} from "../endpoints/auth/auth.controller.js";
+import { authenticateJWT } from "../endpoints/auth/authMiddleware.js";
 
 const authRouter = Router();
 
-// Login Route
-authRouter.post("/login", loginUser);
-
-// Signup/Register Route
+// Other routes like signup and login
 authRouter.post("/signup", registerUser);
+authRouter.post("/login", loginUser);
+authRouter.post("/logout", logoutUser);
+authRouter.get("/me", authenticateJWT, getProfile);
 
-export { authRouter };
+export default authRouter;

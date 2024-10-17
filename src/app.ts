@@ -16,7 +16,7 @@ import { limiter } from "./middleware/rateLimiter.js";
 import ApiError from "./utils/ApiError.js";
 import { coachRouter, coachesRouter } from "./routes/coachRouter.js";
 import { classesRouter } from "./routes/classesRouter.js";
-import { authRouter } from "./routes/authRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 const app: Express = express();
 
