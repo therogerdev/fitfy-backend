@@ -55,7 +55,7 @@ app.use("/api/coach", coachRouter);
 app.use("/api/classes", classesRouter);
 app.use("/api/class/create", classesRouter);
 
-app.use("/api/auth", authRouter);
+app.use("/api", authRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
