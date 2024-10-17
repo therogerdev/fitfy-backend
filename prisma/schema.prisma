@@ -27,13 +27,12 @@ model Box {
 }
 
 model User {
-  id       String   @id @default(uuid())
+  id       String  @id @default(uuid())
   username String
   password String
-  email    String   @unique
+  email    String  @unique
   isActive Boolean
-  Athlete  Athlete?
-  coach    Coach?
+  role     Role
 }
 
 model Coach {
@@ -55,7 +54,6 @@ model Coach {
   gender              String
   profileImageUrl     String?
   Classes             Classes?         @relation(fields: [classesId], references: [id])
-  user                User?            @relation(fields: [userId], references: [id])
   Workouts            Workout[]
 }
 
@@ -69,7 +67,6 @@ model Athlete {
   profileImageUrl String?
   firstName       String
   Classes         Classes? @relation(fields: [classesId], references: [id])
-  user            User?    @relation(fields: [userId], references: [id])
 }
 
 model Components {
@@ -157,4 +154,11 @@ enum CoachSpeciality {
   Endurance
   Gymnastics
   Weightlifting
+}
+
+// New enum to handle roles for users
+enum Role {
+  ADMIN
+  MEMBER
+  COACH
 }
