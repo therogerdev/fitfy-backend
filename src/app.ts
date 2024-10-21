@@ -6,17 +6,18 @@ import helmet from "helmet";
 import httpStatus from "http-status";
 import config from "./config/config.js";
 import morgan from "./config/morgan.js";
+import { errorConverter, errorHandler } from "./middleware/error.js";
+import { limiter } from "./middleware/rateLimiter.js";
 import { athleteRouter, athletesRouter } from "./routes/athleteRouter.js";
+import authRouter from "./routes/authRouter.js";
 import { allBoxesRouter, boxRouter } from "./routes/boxRouter.js";
+import { classesRouter } from "./routes/classesRouter.js";
+import { coachRouter, coachesRouter } from "./routes/coachRouter.js";
+import { membershipRouter } from "./routes/membershipRouter.js";
 import { movementRouter, movementsRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
-import { errorConverter, errorHandler } from "./middleware/error.js";
-import { limiter } from "./middleware/rateLimiter.js";
 import ApiError from "./utils/ApiError.js";
-import { coachRouter, coachesRouter } from "./routes/coachRouter.js";
-import { classesRouter } from "./routes/classesRouter.js";
-import authRouter from "./routes/authRouter.js";
 
 const app: Express = express();
 
@@ -54,7 +55,7 @@ app.use("/api/coaches", coachesRouter);
 app.use("/api/coach", coachRouter);
 app.use("/api/classes", classesRouter);
 app.use("/api/class/create", classesRouter);
-
+app.use("/api/stripe", membershipRouter);
 app.use("/api", authRouter);
 
 // send back a 404 error for any unknown api request
