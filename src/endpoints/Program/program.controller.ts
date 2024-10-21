@@ -6,7 +6,11 @@ import * as programService from "./program.service.js";
 import { formatProgramToJSONAPI } from "./formatProgramToJSONAPI.js";
 
 export const getAllPrograms = catchAsync(async (req: Request, res: Response) => {
-  const programs = await programService.getAllPrograms();
+  const programs = await programService.getAllPrograms({
+    skip: 0,
+    take: 10,
+    orderBy: { createdAt: "desc" }
+  });
 
   if (!programs) {
     throw new ApiError(httpStatus.NOT_FOUND, "No programs found");
@@ -63,7 +67,6 @@ export const updateProgram = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const updatedProgram = await programService.updateProgram(id, req.body);
-
 
   if (!updatedProgram) {
     throw new ApiError(httpStatus.NOT_FOUND, "Program not found or update failed");
