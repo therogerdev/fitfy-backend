@@ -57,9 +57,9 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error logging in", error });
   }
 };
-
+// logout
 export const logoutUser = (req: Request, res: Response) => {
-  return res.status(200).json({ message: "Logout successful" });
+  return res.status(200).json({ logout: true, message: "Logout successful" });
 };
 
 export const getProfile = async (req: Request, res: Response) => {
@@ -73,7 +73,9 @@ export const getProfile = async (req: Request, res: Response) => {
         email: true,
         isActive: true,
         role: true,
-        username: true
+        username: true,
+        athlete: true,
+        athleteId: true
       }
     });
 

@@ -1,3 +1,4 @@
+import { Prisma, Programs } from "@prisma/client";
 import prisma from "../../prismaClient.js";
 import { z } from "zod";
 
@@ -22,8 +23,34 @@ const programSchema = z.object({
 
 type ProgramType = z.infer<typeof programSchema>;
 
-export const getAllPrograms = async () => {
-  return await prisma.programs.findMany();
+export const getAllPrograms = async (params: {
+  skip?: number;
+  take?: number;
+  cursor?: Prisma.ProgramsWhereUniqueInput;
+  where?: Prisma.ProgramsWhereInput;
+  orderBy?: Prisma.ProgramsOrderByWithRelationInput;
+}): Promise<Programs[]> => {
+  // }): Promise<Prisma.Programs[]> => {
+  const { skip, take, cursor, where, orderBy } = params;
+
+  try {
+    console.log("GET /programs requested");
+
+    // Fetch the programs based on provided parameters
+    const programs = await prisma.programs.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy
+    });
+
+    console.log("Fetched all programs");
+    return programs;
+  } catch (error) {
+    console.error("Error fetching programs:", error);
+    throw new Error("Failed to fetch programs");
+  }
 };
 
 export const createProgram = async (data: ProgramType) => {

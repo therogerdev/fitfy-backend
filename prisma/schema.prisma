@@ -27,12 +27,20 @@ model Box {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  username String
-  password String
-  email    String  @unique
-  isActive Boolean
-  role     Role
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String
+  isActive  Boolean
+  role      Role
+  athlete   Athlete? @relation(fields: [athleteId], references: [id])
+  athleteId String?
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+  COACH
 }
 
 model Coach {
@@ -58,15 +66,23 @@ model Coach {
 }
 
 model Athlete {
-  id              String   @id @default(uuid())
-  classesId       String?
-  userId          String?  @unique
+  id              String        @id @default(uuid())
+  userId          String?       @unique // Foreign key reference to User
+  classesId       String? // Foreign key reference to Classes
   lastName        String
-  email           String   @unique
+  email           String        @unique
   gender          String
   profileImageUrl String?
   firstName       String
-  Classes         Classes? @relation(fields: [classesId], references: [id])
+  height          Float?
+  weight          Float?
+  classes         Classes?      @relation(fields: [classesId], references: [id])
+  memberships     Membership[] // Relation to Membership model
+  Performance     Performance[] // Relation to performance data
+
+  User User[]
+
+  Classes Classes[] @relation("AthleteClasses")
 }
 
 model Components {
@@ -82,13 +98,35 @@ model Components {
 }
 
 model Classes {
-  id           String       @id @default(uuid())
-  startTime    DateTime
-  date         DateTime
-  participants Athlete[]
-  programs     Programs[]
-  coach        Coach[]
-  components   Components[]
+  id       String    @id @default(uuid())
+  name     String
+  schedule DateTime
+  athletes Athlete[] @relation("AthleteClasses")
+
+  Coach Coach[]
+
+  Athlete Athlete[]
+
+  Components Components[]
+
+  Programs Programs[]
+}
+
+model Membership {
+  id        String   @id @default(uuid())
+  type      String
+  startDate DateTime
+  endDate   DateTime
+  athlete   Athlete  @relation(fields: [athleteId], references: [id])
+  athleteId String
+}
+
+model Performance {
+  id        String   @id @default(uuid())
+  athlete   Athlete  @relation(fields: [athleteId], references: [id])
+  athleteId String
+  date      DateTime
+  analysis  Json // Store analysis data in JSON format
 }
 
 model Programs {
@@ -154,11 +192,4 @@ enum CoachSpeciality {
   Endurance
   Gymnastics
   Weightlifting
-}
-
-// New enum to handle roles for users
-enum Role {
-  ADMIN
-  MEMBER
-  COACH
 }
