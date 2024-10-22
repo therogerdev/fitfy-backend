@@ -20,13 +20,13 @@ export const createCheckoutSession = async (
       mode: "subscription", // Subscription-based payment
       line_items: [
         {
-          price: params.priceId, // Stripe Price ID for the membership
-          quantity: 1 // Quantity of membership
+          price: params.priceId,
+          quantity: 1
         }
       ],
       customer_email: params.customerEmail  , // User's email
-      success_url: "https://6d42-202-44-210-14.ngrok-free.app/api/stripe/checkout/success", // Redirect on success
-      cancel_url: params.cancelUrl // Redirect on cancel
+      success_url: params.successUrl, // Redirect on success
+      cancel_url: params.cancelUrl
     });
 
     return session; // Return the session object

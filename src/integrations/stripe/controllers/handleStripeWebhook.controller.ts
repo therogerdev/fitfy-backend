@@ -6,13 +6,13 @@ import { stripe } from "../stripe.js";
 
 export const handleStripeWebhook = catchAsync(async (req: Request, res: Response) => {
     const signature = req.headers['stripe-signature'] || '';
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || 'fallbackSecret'; // Use environment variable
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
     let event: Stripe.Event;
 
     try {
       // Verify the webhook signature using the raw body
       event = stripe.webhooks.constructEvent(
-        req.body,  // raw body from express.raw() middleware
+        req.body,
         signature,
         webhookSecret
       );
