@@ -12,7 +12,7 @@ export const stripeService = {
         }
       ],
       mode: "payment",
-      success_url: `http://localhost:3000/success`, // Redirect user after success
+      success_url: `http://localhost:3000/checkout/success`, // Redirect user after success
       cancel_url: `http://localhost:3000/cancel` // Redirect user after cancel
     });
 

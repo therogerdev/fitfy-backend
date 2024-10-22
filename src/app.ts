@@ -13,7 +13,7 @@ import authRouter from "./routes/authRouter.js";
 import { allBoxesRouter, boxRouter } from "./routes/boxRouter.js";
 import { classesRouter } from "./routes/classesRouter.js";
 import { coachRouter, coachesRouter } from "./routes/coachRouter.js";
-import { membershipRouter } from "./routes/membershipRouter.js";
+import { membershipRouter, webhookRouter } from "./routes/membershipRouter.js";
 import { movementRouter, movementsRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
@@ -29,6 +29,7 @@ if (config.env !== "test") {
 }
 
 // middleware
+app.use('/api/stripe', webhookRouter);
 app.use(express.json());
 app.use(cors());
 app.options("*", cors());

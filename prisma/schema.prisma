@@ -89,14 +89,14 @@ model Athlete {
 }
 
 model Membership {
-  id                 String         @id @default(uuid())
-  type               MembershipType
-  priceId            String         // Stripe Price ID for subscription plans
-  stripeSubscriptionId String?      // Stripe Subscription ID
-  startDate          DateTime
-  endDate            DateTime
-  athleteId          String
-  athlete            Athlete        @relation(fields: [athleteId], references: [id])
+  id                   String         @id @default(uuid())
+  type                 MembershipType
+  priceId              String?         // Stripe Price ID for subscription plans
+  stripeSubscriptionId String?        // Stripe Subscription ID
+  startDate            DateTime
+  endDate              DateTime
+  athleteId            String
+  athlete              Athlete        @relation(fields: [athleteId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -216,4 +216,5 @@ enum MembershipType {
   UNIT_PACKAGE
   TRIMESTER
   SEMESTER
+  SUBSCRIPTION
 }
