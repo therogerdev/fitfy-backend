@@ -26,17 +26,6 @@ model Box {
   Program          Programs[]
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  username  String
-  isActive  Boolean
-  role      Role
-  athlete   Athlete? @relation(fields: [athleteId], references: [id])
-  athleteId String?
-}
-
 enum Role {
   ADMIN
   MEMBER
@@ -61,28 +50,56 @@ model Coach {
   speciality          CoachSpeciality?
   gender              String
   profileImageUrl     String?
-  Classes             Classes?         @relation(fields: [classesId], references: [id])
   Workouts            Workout[]
 }
 
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String   @unique
+  isActive  Boolean  @default(true)
+  role      Role
+  athlete   Athlete? @relation(fields: [athleteId], references: [id])
+  athleteId String?  @unique
+
+  stripeCustomerId String? // Linked to Stripe Customer for membership payment
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
 model Athlete {
-  id              String        @id @default(uuid())
-  userId          String?       @unique // Foreign key reference to User
-  classesId       String? // Foreign key reference to Classes
-  lastName        String
-  email           String        @unique
-  gender          String
-  profileImageUrl String?
-  firstName       String
-  height          Float?
-  weight          Float?
-  classes         Classes?      @relation(fields: [classesId], references: [id])
-  memberships     Membership[] // Relation to Membership model
-  Performance     Performance[] // Relation to performance data
+  id               String           @id @default(uuid())
+  userId           String?          @unique
+  firstName        String
+  lastName         String
+  email            String           @unique
+  gender           String
+  profileImageUrl  String?
+  height           Float?
+  weight           Float?
+  stripeCustomerId String? // Stripe Customer ID linked to user payments
+  memberships      Membership[] // Relation to membership model
+  performance      Performance[] // Relation to athlete performance
+  classes          AthleteClasses[] // Athlete's class check-ins
 
-  User User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User? // Relation to the User model
+}
 
-  Classes Classes[] @relation("AthleteClasses")
+model Membership {
+  id                 String         @id @default(uuid())
+  type               MembershipType
+  priceId            String         // Stripe Price ID for subscription plans
+  stripeSubscriptionId String?      // Stripe Subscription ID
+  startDate          DateTime
+  endDate            DateTime
+  athleteId          String
+  athlete            Athlete        @relation(fields: [athleteId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Components {
@@ -94,39 +111,39 @@ model Components {
   video       String?
   createdAt   DateTime
   classesId   String?
-  Classes     Classes? @relation(fields: [classesId], references: [id])
 }
 
-model Classes {
-  id       String    @id @default(uuid())
-  name     String
-  schedule DateTime
-  athletes Athlete[] @relation("AthleteClasses")
+model Class {
+  id          String           @id @default(uuid())
+  name        String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  capacity    Int              // Max number of athletes in a class
+  athletes    AthleteClasses[]  // Many-to-many relation with athletes (check-ins)
 
-  Coach Coach[]
-
-  Athlete Athlete[]
-
-  Components Components[]
-
-  Programs Programs[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Membership {
-  id        String   @id @default(uuid())
-  type      String
-  startDate DateTime
-  endDate   DateTime
-  athlete   Athlete  @relation(fields: [athleteId], references: [id])
+model AthleteClasses {
+  id        String    @id @default(uuid())
   athleteId String
+  classId   String
+  checkInAt DateTime? // When the athlete checked into the class
+
+  athlete   Athlete   @relation(fields: [athleteId], references: [id])
+  class     Class     @relation(fields: [classId], references: [id])
 }
 
 model Performance {
   id        String   @id @default(uuid())
-  athlete   Athlete  @relation(fields: [athleteId], references: [id])
   athleteId String
+  workout   String // The name of the workout or activity
+  result    String // Results or stats for the workout (time, weight lifted, etc.)
   date      DateTime
-  analysis  Json // Store analysis data in JSON format
+
+  athlete Athlete @relation(fields: [athleteId], references: [id])
 }
 
 model Programs {
@@ -143,7 +160,6 @@ model Programs {
   published         Boolean? @default(true)
   hasSchedule       Boolean? @default(false)
   totalClasses      Int?
-  Classes           Classes? @relation(fields: [classesId], references: [id])
   classesId         String?
   Box               Box?     @relation(fields: [boxId], references: [id])
   boxId             String?
@@ -192,4 +208,12 @@ enum CoachSpeciality {
   Endurance
   Gymnastics
   Weightlifting
+}
+
+enum MembershipType {
+  DAY
+  MONTH
+  UNIT_PACKAGE
+  TRIMESTER
+  SEMESTER
 }

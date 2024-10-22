@@ -1,30 +1,31 @@
-import { Request, Response } from "express";
 import bcrypt from "bcrypt";
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../../prismaClient.js";
 
 // Register User (Signup)
+import httpStatus from "http-status";
+import ApiError from "../../utils/ApiError.js";
+import * as userService from "./auth.service.js"; // Adjust path as per your folder structure
+
 export const registerUser = async (req: Request, res: Response) => {
   const { username, email, password, role } = req.body;
 
   try {
-    // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create a new user in the database
-    const user = await prisma.user.create({
-      data: {
-        username,
-        email,
-        password: hashedPassword,
-        isActive: true, // TODO: You can set this based on your business logic
-        role // Make sure to validate allowed roles (admin, member, coach)
-      }
+    const newUser = await userService.registerUser({
+      username, email, password, role,
+      stripeCustomerId: ""
     });
 
-    res.status(201).json({ message: "User registered successfully", user });
-  } catch (error) {
-    res.status(400).json({ message: "Error registering user", error });
+    if (!email || !password) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Something went wrong!");
+    }
+
+
+
+    res.status(201).json({ message: "User registered successfully", user: newUser });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
 };
 
