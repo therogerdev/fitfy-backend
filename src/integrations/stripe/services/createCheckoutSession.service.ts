@@ -24,8 +24,8 @@ export const createCheckoutSession = async (
           quantity: 1 // Quantity of membership
         }
       ],
-      customer_email: params.customerEmail, // User's email
-      success_url: params.successUrl, // Redirect on success
+      customer_email: params.customerEmail  , // User's email
+      success_url: "https://6d42-202-44-210-14.ngrok-free.app/api/stripe/checkout/success", // Redirect on success
       cancel_url: params.cancelUrl // Redirect on cancel
     });
 

@@ -14,7 +14,7 @@ export const registerUser = async (req: Request, res: Response) => {
   try {
     const newUser = await userService.registerUser({
       username, email, password, role,
-      stripeCustomerId: ""
+
     });
 
     if (!email || !password) {
