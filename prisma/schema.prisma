@@ -32,27 +32,6 @@ enum Role {
   COACH
 }
 
-model Coach {
-  id                  String           @id @default(uuid())
-  firstName           String
-  lastName            String
-  slug                String?
-  description         String?
-  descriptionMarkdown String?
-  website             String?
-  headerImage         String?
-  bioVideo            String?
-  role                String?
-  published           Boolean?
-  classCount          Int?
-  userId              String?          @unique
-  classesId           String?
-  speciality          CoachSpeciality?
-  gender              String
-  profileImageUrl     String?
-  Workouts            Workout[]
-}
-
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -78,6 +57,7 @@ model Athlete {
   profileImageUrl  String?
   height           Float?
   weight           Float?
+  isCoach          Boolean          @default(false)
   stripeCustomerId String? // Stripe Customer ID linked to user payments
   memberships      Membership[] // Relation to membership model
   performance      Performance[] // Relation to athlete performance
@@ -91,8 +71,8 @@ model Athlete {
 model Membership {
   id                   String         @id @default(uuid())
   type                 MembershipType
-  priceId              String?         // Stripe Price ID for subscription plans
-  stripeSubscriptionId String?        // Stripe Subscription ID
+  priceId              String? // Stripe Price ID for subscription plans
+  stripeSubscriptionId String? // Stripe Subscription ID
   startDate            DateTime
   endDate              DateTime
   athleteId            String
@@ -119,8 +99,8 @@ model Class {
   description String
   startTime   DateTime
   endTime     DateTime
-  capacity    Int              // Max number of athletes in a class
-  athletes    AthleteClasses[]  // Many-to-many relation with athletes (check-ins)
+  capacity    Int // Max number of athletes in a class
+  athletes    AthleteClasses[] // Many-to-many relation with athletes (check-ins)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -132,8 +112,8 @@ model AthleteClasses {
   classId   String
   checkInAt DateTime? // When the athlete checked into the class
 
-  athlete   Athlete   @relation(fields: [athleteId], references: [id])
-  class     Class     @relation(fields: [classId], references: [id])
+  athlete Athlete @relation(fields: [athleteId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
 }
 
 model Performance {
@@ -174,9 +154,7 @@ model Workout {
   createdAt   DateTime
   duration    Int
   intensity   String?
-  coachId     String?
   movements   Movement[]
-  Coach       Coach?       @relation(fields: [coachId], references: [id])
 }
 
 model Movement {
@@ -200,14 +178,6 @@ enum WorkoutType {
   Ladder
   Strength
   Skill
-}
-
-enum CoachSpeciality {
-  CrossFit
-  Strength
-  Endurance
-  Gymnastics
-  Weightlifting
 }
 
 enum MembershipType {
