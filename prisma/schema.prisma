@@ -107,12 +107,12 @@ enum ClassType {
 model Class {
   id             String           @id @default(uuid())
   name           String
-  description    String
-  classType      ClassType
-  startTime      DateTime
-  endTime        DateTime
-  capacity       Int
-  coachId        String
+  description    String?
+  classType      ClassType?
+  startTime      DateTime?
+  endTime        DateTime?
+  capacity       Int?
+  coachId        String?
   coach          Athlete?         @relation("CoachClasses", fields: [coachId], references: [id])
   participants   Athlete[]        @relation("AthleteClasses")
   createdAt      DateTime         @default(now())

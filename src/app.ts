@@ -11,13 +11,12 @@ import { limiter } from "./middleware/rateLimiter.js";
 import { athleteRouter, athletesRouter } from "./routes/athleteRouter.js";
 import authRouter from "./routes/authRouter.js";
 import { allBoxesRouter, boxRouter } from "./routes/boxRouter.js";
-import { classesRouter } from "./routes/classesRouter.js";
-import { coachRouter, coachesRouter } from "./routes/coachRouter.js";
 import { membershipRouter, webhookRouter } from "./routes/membershipRouter.js";
 import { movementRouter, movementsRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
+import { classesRouter, classRouter } from "./routes/classRouter.js";
 
 const app: Express = express();
 
@@ -29,7 +28,7 @@ if (config.env !== "test") {
 }
 
 // middleware
-app.use('/api/stripe', webhookRouter);
+app.use("/api/stripe", webhookRouter);
 app.use(express.json());
 app.use(cors());
 app.options("*", cors());
@@ -52,10 +51,8 @@ app.use("/api/programs", programsRouter);
 app.use("/api/program", programRouter);
 app.use("/api/movements", movementsRouter);
 app.use("/api/movement", movementRouter);
-app.use("/api/coaches", coachesRouter);
-app.use("/api/coach", coachRouter);
 app.use("/api/classes", classesRouter);
-app.use("/api/class/create", classesRouter);
+app.use("/api/class", classRouter);
 app.use("/api/stripe", membershipRouter);
 app.use("/api", authRouter);
 
