@@ -48,24 +48,27 @@ model User {
 }
 
 model Athlete {
-  id               String           @id @default(uuid())
-  userId           String?          @unique
+  id               String        @id @default(uuid())
+  userId           String?       @unique
   firstName        String
   lastName         String
-  email            String           @unique
+  email            String        @unique
   gender           String
   profileImageUrl  String?
   height           Float?
   weight           Float?
-  isCoach          Boolean          @default(false)
+  isCoach          Boolean       @default(false)
   stripeCustomerId String? // Stripe Customer ID linked to user payments
   memberships      Membership[] // Relation to membership model
   performance      Performance[] // Relation to athlete performance
-  classes          AthleteClasses[] // Athlete's class check-ins
+  classes          Class[]       @relation("AthleteClasses")
+  coachedClasses   Class[]       @relation("CoachClasses")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   User      User? // Relation to the User model
+
+  AthleteClasses AthleteClasses[]
 }
 
 model Membership {
@@ -93,17 +96,28 @@ model Components {
   classesId   String?
 }
 
-model Class {
-  id          String           @id @default(uuid())
-  name        String
-  description String
-  startTime   DateTime
-  endTime     DateTime
-  capacity    Int // Max number of athletes in a class
-  athletes    AthleteClasses[] // Many-to-many relation with athletes (check-ins)
+enum ClassType {
+  CROSSFIT
+  YOGA
+  HIIT
+  WEIGHTLIFTING
+  // Add more as needed
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Class {
+  id             String           @id @default(uuid())
+  name           String
+  description    String
+  classType      ClassType
+  startTime      DateTime
+  endTime        DateTime
+  capacity       Int
+  coachId        String
+  coach          Athlete?         @relation("CoachClasses", fields: [coachId], references: [id])
+  participants   Athlete[]        @relation("AthleteClasses")
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  AthleteClasses AthleteClasses[]
 }
 
 model AthleteClasses {
@@ -111,9 +125,8 @@ model AthleteClasses {
   athleteId String
   classId   String
   checkInAt DateTime? // When the athlete checked into the class
-
-  athlete Athlete @relation(fields: [athleteId], references: [id])
-  class   Class   @relation(fields: [classId], references: [id])
+  athlete   Athlete   @relation(fields: [athleteId], references: [id])
+  class     Class     @relation(fields: [classId], references: [id])
 }
 
 model Performance {
