@@ -115,9 +115,23 @@ model Class {
   coachId        String?
   coach          Athlete?         @relation("CoachClasses", fields: [coachId], references: [id])
   participants   Athlete[]        @relation("AthleteClasses")
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
   AthleteClasses AthleteClasses[]
+
+  // Recurrence Fields
+  isRecurring    Boolean         @default(false)
+  recurrenceType RecurrenceType?
+  recurrenceEnd  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum RecurrenceType {
+  DAILY
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  CUSTOM
 }
 
 model AthleteClasses {
