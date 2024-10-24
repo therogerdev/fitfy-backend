@@ -61,14 +61,14 @@ model Athlete {
   stripeCustomerId String? // Stripe Customer ID linked to user payments
   memberships      Membership[] // Relation to membership model
   performance      Performance[] // Relation to athlete performance
-  classes          Class[]       @relation("AthleteClasses")
+  classes          Class[]       @relation("ClassEnrollment")
   coachedClasses   Class[]       @relation("CoachClasses")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   User      User? // Relation to the User model
 
-  AthleteClasses AthleteClasses[]
+  ClassEnrollment ClassEnrollment[]
 }
 
 model Membership {
@@ -106,17 +106,17 @@ enum ClassType {
 }
 
 model Class {
-  id             String           @id @default(uuid())
-  name           String
-  description    String?
-  classType      ClassType?
-  startTime      DateTime?
-  endTime        DateTime?
-  capacity       Int?
-  coachId        String?
-  coach          Athlete?         @relation("CoachClasses", fields: [coachId], references: [id])
-  participants   Athlete[]        @relation("AthleteClasses")
-  AthleteClasses AthleteClasses[]
+  id              String            @id @default(uuid())
+  name            String
+  description     String?
+  classType       ClassType?
+  startTime       DateTime?
+  endTime         DateTime?
+  capacity        Int?
+  coachId         String?
+  coach           Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
+  participants    Athlete[]         @relation("ClassEnrollment")
+  ClassEnrollment ClassEnrollment[]
 
   // Recurrence Fields
   isRecurring    Boolean         @default(false)
@@ -127,21 +127,21 @@ model Class {
   updatedAt DateTime @updatedAt
 }
 
-enum RecurrenceType {
-  DAILY
-  WEEKLY
-  BIWEEKLY
-  MONTHLY
-  CUSTOM
-}
-
-model AthleteClasses {
+model ClassEnrollment {
   id        String    @id @default(uuid())
   athleteId String
   classId   String
   checkInAt DateTime? // When the athlete checked into the class
   athlete   Athlete   @relation(fields: [athleteId], references: [id])
   class     Class     @relation(fields: [classId], references: [id])
+}
+
+enum RecurrenceType {
+  DAILY
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  CUSTOM
 }
 
 model Performance {
