@@ -101,6 +101,7 @@ enum ClassType {
   YOGA
   HIIT
   WEIGHTLIFTING
+  MUAYTHAI
   // Add more as needed
 }
 
