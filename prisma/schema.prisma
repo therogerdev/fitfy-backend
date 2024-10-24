@@ -48,27 +48,27 @@ model User {
 }
 
 model Athlete {
-  id               String        @id @default(uuid())
-  userId           String?       @unique
+  id               String  @id @default(uuid())
+  userId           String? @unique
   firstName        String
   lastName         String
-  email            String        @unique
+  email            String  @unique
   gender           String
   profileImageUrl  String?
   height           Float?
   weight           Float?
-  isCoach          Boolean       @default(false)
+  isCoach          Boolean @default(false)
   stripeCustomerId String? // Stripe Customer ID linked to user payments
-  memberships      Membership[] // Relation to membership model
-  performance      Performance[] // Relation to athlete performance
-  classes          Class[]       @relation("ClassEnrollment")
-  coachedClasses   Class[]       @relation("CoachClasses")
+
+  // Relations
+  memberships    Membership[] // Relation to membership model
+  performance    Performance[] // Relation to athlete performance
+  enrollments    ClassEnrollment[] // Class enrollments
+  coachedClasses Class[]           @relation("CoachClasses") // Classes the athlete is coaching
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User? // Relation to the User model
-
-  ClassEnrollment ClassEnrollment[]
+  User      User?
 }
 
 model Membership {
@@ -106,17 +106,16 @@ enum ClassType {
 }
 
 model Class {
-  id              String            @id @default(uuid())
-  name            String
-  description     String?
-  classType       ClassType?
-  startTime       DateTime?
-  endTime         DateTime?
-  capacity        Int?
-  coachId         String?
-  coach           Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
-  participants    Athlete[]         @relation("ClassEnrollment")
-  ClassEnrollment ClassEnrollment[]
+  id          String            @id @default(uuid())
+  name        String
+  description String?
+  classType   ClassType?
+  startTime   DateTime?
+  endTime     DateTime?
+  capacity    Int?
+  coachId     String?
+  coach       Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
+  enrollments ClassEnrollment[] // List of enrollments for the class
 
   // Recurrence Fields
   isRecurring    Boolean         @default(false)
@@ -132,8 +131,9 @@ model ClassEnrollment {
   athleteId String
   classId   String
   checkInAt DateTime? // When the athlete checked into the class
-  athlete   Athlete   @relation(fields: [athleteId], references: [id])
-  class     Class     @relation(fields: [classId], references: [id])
+
+  athlete Athlete @relation(fields: [athleteId], references: [id])
+  class   Class   @relation(fields: [classId], references: [id])
 }
 
 enum RecurrenceType {
