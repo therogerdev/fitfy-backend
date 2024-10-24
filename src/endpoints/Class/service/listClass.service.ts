@@ -1,7 +1,7 @@
 import { Class, Prisma } from "@prisma/client";
 import prisma from "../../../prismaClient.js";
 
-export const listClasses = async (params: {
+export const listClass = async (params: {
   skip?: number;
   take?: number;
   cursor?: Prisma.ClassWhereUniqueInput;
@@ -10,15 +10,12 @@ export const listClasses = async (params: {
 }): Promise<Class[]> => {
   const { skip, take, cursor, where, orderBy } = params;
 
-  console.log("GET /classes requested");
-
-  // Fetch the classes based on provided parameters
   const classes = await prisma.class.findMany({
     skip,
     take,
     cursor,
     where,
-    orderBy,
+    orderBy
   });
 
   return classes;

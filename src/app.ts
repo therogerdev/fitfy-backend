@@ -16,7 +16,7 @@ import { movementRouter, movementsRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
-import { classesRouter, classRouter } from "./routes/classRouter.js";
+import { classRouter } from "./routes/classRouter.js";
 
 const app: Express = express();
 
@@ -51,7 +51,6 @@ app.use("/api/programs", programsRouter);
 app.use("/api/program", programRouter);
 app.use("/api/movements", movementsRouter);
 app.use("/api/movement", movementRouter);
-app.use("/api/classes", classesRouter);
 app.use("/api/class", classRouter);
 app.use("/api/stripe", membershipRouter);
 app.use("/api", authRouter);

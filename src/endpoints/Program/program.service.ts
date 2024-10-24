@@ -30,7 +30,6 @@ export const getAllPrograms = async (params: {
   where?: Prisma.ProgramsWhereInput;
   orderBy?: Prisma.ProgramsOrderByWithRelationInput;
 }): Promise<Programs[]> => {
-  // }): Promise<Prisma.Programs[]> => {
   const { skip, take, cursor, where, orderBy } = params;
 
   try {
