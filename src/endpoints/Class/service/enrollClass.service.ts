@@ -1,46 +1,62 @@
-import { ClassEnrollment } from "@prisma/client";
+import { ClassEnrollment, ClassEnrollmentStatus } from "@prisma/client";
+import httpStatus from "http-status";
 import prisma from "../../../prismaClient.js";
 import ApiError from "../../../utils/ApiError.js";
-import httpStatus from "http-status";
 
 export const enrollClass = async (data: ClassEnrollment) => {
-  // get input data from request
+  return await prisma.$transaction(async (prisma) => {
+    const classData = await prisma.class.findFirst({
+      where: { id: data.classId },
+      include: { enrollments: true }
+    });
 
-  // check if user is already enrolled in the class
-  const classData = await prisma.class.findFirst({
-    where: {
-      id: data.classId
-    },
-    include: {
-      enrollments: true
+    if (!classData) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Class not found");
     }
-  });
 
-  // if enrolled, return error
-  if (!classData) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Class not found");
-  }
-
-  const isAlreadyEnrolled = classData.enrollments.some(
-    (enrollment) => enrollment.athleteId === data.athleteId
-  );
-  if (isAlreadyEnrolled) {
-    throw new ApiError(httpStatus.CONFLICT, "Athlete is already enrolled in this class");
-  }
-
-  // check if class capacity is not full: current enrollments < capacity
-  if (classData.capacity !== null && classData.enrollments.length >= classData.capacity) {
-    throw new ApiError(httpStatus.FORBIDDEN, "Class is full");
-  }
-
-  // if not, enroll the user in the class
-  const enrollAthlete = await prisma.classEnrollment.create({
-    data: {
-      athleteId: data.athleteId,
-      classId: data.classId
+    const isAlreadyEnrolled = classData.enrollments.some(
+      (enrollment) =>
+        enrollment.athleteId === data.athleteId &&
+        enrollment.status === ClassEnrollmentStatus.ENROLLED
+    );
+    if (isAlreadyEnrolled) {
+      throw new ApiError(httpStatus.CONFLICT, "Athlete is already enrolled in this class");
     }
-  });
 
-  // return success message
-  return enrollAthlete;
+    // Check if the class has reached capacity
+    const classIsFull =
+      classData.capacity !== null && classData.activeEnrollments >= classData.capacity;
+
+    let enrollAthlete;
+
+    if (classIsFull) {
+      // If the class is full, add the athlete to the wait list
+      enrollAthlete = await prisma.classEnrollment.create({
+        data: {
+          athleteId: data.athleteId,
+          classId: data.classId,
+          status: ClassEnrollmentStatus.WAITLISTED
+        }
+      });
+    } else {
+      // If the class is not full, enroll the athlete and increment total enrollments
+      enrollAthlete = await prisma.classEnrollment.create({
+        data: {
+          athleteId: data.athleteId,
+          classId: data.classId,
+          status: ClassEnrollmentStatus.ENROLLED
+        }
+      });
+
+      await prisma.class.update({
+        where: { id: data.classId },
+        data: {
+          activeEnrollments: { increment: 1 }
+        }
+      });
+    }
+
+    // Return the created enrollment record
+    return enrollAthlete;
+  });
 };
