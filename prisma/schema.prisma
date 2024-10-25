@@ -106,28 +106,28 @@ enum ClassType {
 }
 
 model Class {
-  id          String            @id @default(uuid())
-  name        String
-  description String?
-  classType   ClassType?
-  startTime   DateTime?
-  endTime     DateTime?
-  capacity    Int?
-  coachId     String?
-  coach       Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
-  enrollments ClassEnrollment[] // List of enrollments for the class
-
+  id                String            @id @default(uuid())
+  name              String
+  description       String?
+  classType         ClassType?
+  startTime         DateTime?
+  endTime           DateTime?
+  capacity          Int?
+  coachId           String?
+  coach             Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
+  enrollments       ClassEnrollment[] // List of enrollments for the class
+  activeEnrollments Int               @default(0)
   // Recurrence Fields
-  isRecurring    Boolean         @default(false)
-  recurrenceType RecurrenceType?
-  recurrenceEnd  DateTime?
+  isRecurring       Boolean           @default(false)
+  recurrenceType    RecurrenceType?
+  recurrenceEnd     DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ClassEnrollment {
-  id        String                @id @default(uuid())
+  id        String                 @id @default(uuid())
   athleteId String
   classId   String
   checkInAt DateTime? // When the athlete checked into the class
