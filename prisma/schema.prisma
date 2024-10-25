@@ -127,13 +127,20 @@ model Class {
 }
 
 model ClassEnrollment {
-  id        String    @id @default(uuid())
+  id        String                @id @default(uuid())
   athleteId String
   classId   String
   checkInAt DateTime? // When the athlete checked into the class
+  status    ClassEnrollmentStatus? @default(ENROLLED)
 
   athlete Athlete @relation(fields: [athleteId], references: [id])
   class   Class   @relation(fields: [classId], references: [id])
+}
+
+enum ClassEnrollmentStatus {
+  ENROLLED
+  CANCELED
+  WAITLISTED
 }
 
 enum RecurrenceType {

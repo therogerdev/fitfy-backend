@@ -1,9 +1,10 @@
+import { ClassEnrollmentStatus } from "@prisma/client";
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import ApiError from "../../../utils/ApiError.js";
-import * as enrollClassService from "../service/enrollClass.service.js";
 import catchAsync from "../../../middleware/catchAsync.js";
+import ApiError from "../../../utils/ApiError.js";
 import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import * as enrollClassService from "../service/enrollClass.service.js";
 
 export const enrollClass = catchAsync(async (req: Request, res: Response) => {
   const { classId } = req.params;
@@ -12,8 +13,9 @@ export const enrollClass = catchAsync(async (req: Request, res: Response) => {
   const data = {
     classId,
     athleteId,
-    id: "",
-    checkInAt: null
+    id: "", //ID PLACEHOLDER
+    checkInAt: null,
+    status: ClassEnrollmentStatus.ENROLLED
   };
 
   if (!classId) {
