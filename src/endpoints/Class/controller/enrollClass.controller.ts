@@ -15,7 +15,9 @@ export const enrollClass = catchAsync(async (req: Request, res: Response) => {
     athleteId,
     id: "", //ID PLACEHOLDER
     checkInAt: null,
-    status: ClassEnrollmentStatus.ENROLLED
+    status: ClassEnrollmentStatus.ENROLLED,
+    createdAt: "" as unknown as Date,
+    updatedAt: "" as unknown as Date
   };
 
   if (!classId) {
