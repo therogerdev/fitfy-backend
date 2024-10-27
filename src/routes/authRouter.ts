@@ -4,8 +4,8 @@ import {
   loginUser,
   logoutUser,
   registerUser
-} from "../endpoints/auth/auth.controller.js";
-import { authenticateJWT } from "../endpoints/auth/authMiddleware.js";
+} from "../domains/auth/auth.controller.js";
+import { authenticateJWT } from "../domains/auth/authMiddleware.js";
 
 const authRouter = Router();
 

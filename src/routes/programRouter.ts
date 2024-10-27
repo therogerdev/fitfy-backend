@@ -5,8 +5,8 @@ import {
   getAllPrograms,
   updateProgram,
   getProgramBySlug
-} from "../endpoints/Program/program.controller.js";
-import { authenticateJWT } from "../endpoints/auth/authMiddleware.js";
+} from "../domains/Program/program.controller.js";
+import { authenticateJWT } from "../domains/auth/authMiddleware.js";
 
 const programsRouter = Router();
 programsRouter.get("/", authenticateJWT, getAllPrograms);

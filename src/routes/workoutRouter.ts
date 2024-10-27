@@ -1,16 +1,14 @@
 import { Router } from "express";
-import {
-  createWorkout,
-  deleteWorkout,
-  getAllWorkouts,
-  updateWorkout
-} from "../endpoints/Workout/workout.controller.js";
+import { listWorkout } from "../domains/Workout/controller/listWorkout.controller.js";
+import { createWorkout } from "../domains/Workout/controller/createWorkout.controller.js";
+import { updateWorkout } from "../domains/Workout/controller/updateWorkout.controller.js";
+import { deleteWorkout } from "../domains/Workout/controller/deleteWorkout.controller.js";
 
 const workoutsRouter = Router();
-workoutsRouter.get("/", getAllWorkouts);
+workoutsRouter.get("/", listWorkout);
 
 const workoutRouter = Router();
-// workoutRouter.get("/", getWorkout); //need req.query to filter
+
 workoutRouter.post("/create", createWorkout);
 workoutRouter.patch("/:id", updateWorkout);
 workoutRouter.delete("/:id", deleteWorkout);

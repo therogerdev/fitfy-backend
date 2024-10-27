@@ -8,15 +8,15 @@ import config from "./config/config.js";
 import morgan from "./config/morgan.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
 import { limiter } from "./middleware/rateLimiter.js";
-import { athleteRouter, athletesRouter } from "./routes/athleteRouter.js";
+import { athleteRouter } from "./routes/athleteRouter.js";
 import authRouter from "./routes/authRouter.js";
-import { allBoxesRouter, boxRouter } from "./routes/boxRouter.js";
+import { boxRouter } from "./routes/boxRouter.js";
+import { classRouter } from "./routes/classRouter.js";
 import { membershipRouter, webhookRouter } from "./routes/membershipRouter.js";
 import { movementRouter, movementsRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
-import { classRouter } from "./routes/classRouter.js";
 
 const app: Express = express();
 
@@ -41,9 +41,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // routes
-app.use("/api/athletes", athletesRouter);
+
 app.use("/api/athlete", athleteRouter);
-app.use("/api/boxes", allBoxesRouter);
 app.use("/api/box", boxRouter);
 app.use("/api/workouts", workoutsRouter);
 app.use("/api/workout", workoutRouter);
