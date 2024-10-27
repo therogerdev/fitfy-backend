@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
-import ApiError from "../../../utils/ApiError.js";
+import ApiError from "../../../../utils/ApiError.js";
 import * as workoutService from "../service/deleteWorkout.service.js";
 import { workoutIdSchema } from "..//validation/workout.schema.js";
 

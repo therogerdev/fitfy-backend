@@ -1,10 +1,10 @@
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
-import ApiError from "../../../utils/ApiError.js";
-import prisma from "../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
 import { ClassEnrollmentStatus } from "@prisma/client";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 
 export const classAttendance = catchAsync((req: Request, res: Response) => {
   const { athleteId } = req.body;

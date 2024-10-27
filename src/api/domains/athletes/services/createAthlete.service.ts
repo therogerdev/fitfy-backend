@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import { z } from "zod";
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
 import { updateAthleteSchema } from "../validation/athlete.schema.js";
 
 

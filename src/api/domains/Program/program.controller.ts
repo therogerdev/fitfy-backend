@@ -1,6 +1,6 @@
-import catchAsync from "../../middleware/catchAsync.js";
+import catchAsync from "../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
-import ApiError from "../../utils/ApiError.js";
+import ApiError from "../../../utils/ApiError.js";
 import httpStatus from "http-status";
 import * as programService from "./program.service.js";
 import { formatProgramToJSONAPI } from "./formatProgramToJSONAPI.js";

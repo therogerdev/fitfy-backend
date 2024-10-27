@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 import { ClassEnrollmentStatus } from "@prisma/client";
 
 export const cancelClassAttendance = catchAsync((req: Request, res: Response) => {

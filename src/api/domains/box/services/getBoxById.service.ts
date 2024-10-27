@@ -1,5 +1,5 @@
 
-import prisma from "../../../prismaClient.js";
+import prisma from "../../../../prismaClient.js";
 import { BoxIdSchema } from "./createBox.service.js";
 
 

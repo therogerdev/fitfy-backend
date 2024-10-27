@@ -1,4 +1,4 @@
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
 import * as athleteService from "../services/deleteAthlete.service.js";
 import { deleteAthleteSchema } from "../validation/athlete.schema.js";

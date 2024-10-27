@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
 import { getBoxById } from "./getBoxById.service.js";
 import { BoxIdSchema } from "./createBox.service.js";
 export const deleteBox = async (id: BoxIdSchema) => {

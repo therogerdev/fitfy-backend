@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import { z } from "zod";
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
 import { boxIdSchema, createBoxSchema } from "../validation/box.schema.js";
 
 export type CreateBoxData = z.infer<typeof createBoxSchema>;

@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
 import { getAthleteById } from "./getAthleteById.service.js";
 
 import { z } from "zod";

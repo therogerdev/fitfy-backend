@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
-import ApiError from "../../../utils/ApiError.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
+import ApiError from "../../../../utils/ApiError.js";
 import * as classesService from "../service/createClass.service.js";
 import { createClassSchema } from "../validation/classSchema.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 
 export const createClass = catchAsync(async (req: Request, res: Response) => {
   // Get request body

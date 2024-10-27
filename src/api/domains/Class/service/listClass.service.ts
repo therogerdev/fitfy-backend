@@ -1,5 +1,5 @@
 import { Class, Prisma } from "@prisma/client";
-import prisma from "../../../prismaClient.js";
+import prisma from "../../../../prismaClient.js";
 
 // Helper function to generate recurring class instances
 const generateRecurringInstances = (classItem: Class, dateRange: { startTime: Date, endTime: Date }): Class[] => {

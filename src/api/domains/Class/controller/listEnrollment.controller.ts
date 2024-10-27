@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import { ClassEnrollmentStatus } from "@prisma/client";
-import prisma from "../../../prismaClient.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import prisma from "../../../../prismaClient.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 
 export const listEnrollment = catchAsync(async (req: Request, res: Response) => {
   const { status } = req.query;

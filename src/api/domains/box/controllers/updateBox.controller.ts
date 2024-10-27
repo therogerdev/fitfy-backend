@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
-import ApiError from "../../../utils/ApiError.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
+import ApiError from "../../../../utils/ApiError.js";
 import * as boxService from "../services/updateBox.service.js";
 
 export const updateBox = catchAsync(async (req: Request, res: Response) => {

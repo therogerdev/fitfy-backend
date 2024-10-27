@@ -1,10 +1,10 @@
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
 import * as athleteService from "../services/createAthlete.service.js";
 import { createAthleteSchema } from "../validation/athlete.schema.js";
-import { stripe } from "../../../integrations/stripe/stripe.js";
-import prisma from "../../../prismaClient.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import { stripe } from "../../../../integrations/stripe/stripe.js";
+import prisma from "../../../../prismaClient.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 
 export const createAthlete = catchAsync(async (req: Request, res: Response) => {
   const athleteData = req.body;

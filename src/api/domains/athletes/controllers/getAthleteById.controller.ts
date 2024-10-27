@@ -1,7 +1,7 @@
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
 import * as athleteService from "../services/getAthleteById.service.js";
-import ApiError from "../../../utils/ApiError.js";
+import ApiError from "../../../../utils/ApiError.js";
 import httpStatus from "http-status";
 import { getAthleteByIdSchema } from "../validation/athlete.schema.js";
 

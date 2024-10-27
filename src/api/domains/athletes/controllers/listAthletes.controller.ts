@@ -1,7 +1,7 @@
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
 import * as athleteService from "../services/listAthletes.service.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 import httpStatus from "http-status";
 
 export const listAthletes = catchAsync(async (req: Request, res: Response) => {

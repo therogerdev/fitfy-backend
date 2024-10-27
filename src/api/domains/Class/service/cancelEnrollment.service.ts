@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
 import { ClassEnrollmentStatus } from "@prisma/client";
 
 export const cancelEnrollment = async (id: string, classId: string) => {

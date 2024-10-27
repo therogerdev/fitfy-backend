@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import * as workoutService from "../service/createWorkout.service.js";
 
 export const createWorkout = catchAsync(async (req: Request, res: Response) => {

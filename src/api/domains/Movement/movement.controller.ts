@@ -1,7 +1,7 @@
-import catchAsync from "../../middleware/catchAsync.js";
+import catchAsync from "../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
 import * as movementService from "./movement.service.js";
-import ApiError from "../../utils/ApiError.js";
+import ApiError from "../../../utils/ApiError.js";
 import httpStatus from "http-status";
 import { movementIdSchema } from "./movement.schema.js";
 

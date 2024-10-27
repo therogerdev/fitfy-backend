@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
 import * as classesService from "../service/listClass.service.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 import { Prisma } from "@prisma/client";
 import { ClassType } from "@prisma/client";
 

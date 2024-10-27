@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
-import ApiError from "../../../utils/ApiError.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
+import ApiError from "../../../../utils/ApiError.js";
 import * as athleteService from "../services/getAthleteByEmail.service.js";
 import { emailSchema } from "../validation/athlete.schema.js";
 

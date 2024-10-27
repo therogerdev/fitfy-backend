@@ -1,4 +1,4 @@
-import prisma from "../../../prismaClient.js";
+import prisma from "../../../../prismaClient.js";
 import { emailSchema } from "../validation/athlete.schema.js";
 import { z } from "zod";
 

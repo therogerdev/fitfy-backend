@@ -2,8 +2,8 @@
 import { Prisma } from "@prisma/client";
 import { addDays, addWeeks } from "date-fns";
 import httpStatus from "http-status";
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
 
 
 type ClassCreationResult = {

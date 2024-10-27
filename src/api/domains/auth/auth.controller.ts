@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import prisma from "../../prismaClient.js";
+import prisma from "../../../prismaClient.js";
 
 // Register User (Signup)
 import httpStatus from "http-status";
-import ApiError from "../../utils/ApiError.js";
+import ApiError from "../../../utils/ApiError.js";
 import * as userService from "./auth.service.js"; // Adjust path as per your folder structure
 
 export const registerUser = async (req: Request, res: Response) => {

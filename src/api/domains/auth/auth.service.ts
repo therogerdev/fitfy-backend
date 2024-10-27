@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import bcrypt from "bcrypt";
-import prisma from "../../prismaClient.js";
-import ApiError from "../../utils/ApiError.js";
+import prisma from "../../../prismaClient.js";
+import ApiError from "../../../utils/ApiError.js";
 import httpStatus from "http-status";
 
 interface RegisterUserData {

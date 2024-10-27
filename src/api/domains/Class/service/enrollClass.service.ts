@@ -1,7 +1,7 @@
 import { ClassEnrollment, ClassEnrollmentStatus } from "@prisma/client";
 import httpStatus from "http-status";
-import prisma from "../../../prismaClient.js";
-import ApiError from "../../../utils/ApiError.js";
+import prisma from "../../../../prismaClient.js";
+import ApiError from "../../../../utils/ApiError.js";
 
 export const enrollClass = async (data: ClassEnrollment) => {
   return await prisma.$transaction(async (prisma) => {

@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
-import catchAsync from "../../../middleware/catchAsync.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 import * as athleteService from "../services/updateAthlete.service.js";
 import { idSchema, updateAthleteSchema } from "../validation/athlete.schema.js";
 
