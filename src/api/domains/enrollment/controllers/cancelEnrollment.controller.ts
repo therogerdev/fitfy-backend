@@ -1,7 +1,7 @@
 import catchAsync from "../../../../middleware/catchAsync.js";
 import { Request, Response } from "express";
 import ApiError from "../../../../utils/ApiError.js";
-import * as enrollClassService from "../service/cancelEnrollment.service.js";
+import * as enrollClassService from "../services/cancelEnrollment.service.js";
 import httpStatus from "http-status";
 
 export const cancelEnrollment = catchAsync(async (req: Request, res: Response) => {

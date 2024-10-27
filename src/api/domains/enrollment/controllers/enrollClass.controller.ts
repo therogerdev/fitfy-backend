@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../../../middleware/catchAsync.js";
 import ApiError from "../../../../utils/ApiError.js";
 import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
-import * as enrollClassService from "../service/enrollClass.service.js";
+import * as enrollClassService from "../services/enrollClass.service.js";
 
 export const enrollClass = catchAsync(async (req: Request, res: Response) => {
   const { classId } = req.params;
