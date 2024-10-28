@@ -35,7 +35,8 @@ export const enrollClass = async (data: ClassEnrollment) => {
         data: {
           athleteId: data.athleteId,
           classId: data.classId,
-          status: ClassEnrollmentStatus.WAITLISTED
+          status: ClassEnrollmentStatus.WAITLISTED,
+          isCheckedIn: false
         }
       });
     } else {

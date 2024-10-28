@@ -131,6 +131,7 @@ model ClassEnrollment {
   athleteId        String
   classId          String
   checkInAt        DateTime? // When the athlete checked into the class
+  isCheckedIn      Boolean?
   status           ClassEnrollmentStatus? @default(ENROLLED)
   attendanceStatus AttendanceStatus?
 

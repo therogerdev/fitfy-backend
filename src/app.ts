@@ -9,15 +9,16 @@ import morgan from "./config/morgan.js";
 import { errorConverter, errorHandler } from "./middleware/error.js";
 import { limiter } from "./middleware/rateLimiter.js";
 import { athleteRouter } from "./routes/athleteRouter.js";
+import { attendanceRouter } from "./routes/attendanceRouter.js";
 import authRouter from "./routes/authRouter.js";
 import { boxRouter } from "./routes/boxRouter.js";
 import { classRouter } from "./routes/classRouter.js";
+import { enrollmentRouter } from "./routes/enrollmentRouter.js";
 import { membershipRouter, webhookRouter } from "./routes/membershipRouter.js";
 import { movementRouter, movementsRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
 import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
-import { enrollmentRouter } from "./routes/enrollmentRouter.js";
 
 const app: Express = express();
 
@@ -53,6 +54,7 @@ app.use("/api/movements", movementsRouter);
 app.use("/api/movement", movementRouter);
 app.use("/api/class", classRouter);
 app.use("/api/enroll", enrollmentRouter);
+app.use("/api/attendance", attendanceRouter);
 app.use("/api/stripe", membershipRouter);
 app.use("/api", authRouter);
 
