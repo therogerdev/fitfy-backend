@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { listWorkout } from "../domains/Workout/controller/listWorkout.controller.js";
-import { createWorkout } from "../domains/Workout/controller/createWorkout.controller.js";
-import { updateWorkout } from "../domains/Workout/controller/updateWorkout.controller.js";
-import { deleteWorkout } from "../domains/Workout/controller/deleteWorkout.controller.js";
+import { listWorkout } from "../api/domains/Workout/controller/listWorkout.controller.js";
+import { createWorkout } from "../api/domains/Workout/controller/createWorkout.controller.js";
+import { updateWorkout } from "../api/domains/Workout/controller/updateWorkout.controller.js";
+import { deleteWorkout } from "../api/domains/Workout/controller/deleteWorkout.controller.js";
 
 const workoutsRouter = Router();
 workoutsRouter.get("/", listWorkout);

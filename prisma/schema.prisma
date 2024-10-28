@@ -127,17 +127,24 @@ model Class {
 }
 
 model ClassEnrollment {
-  id        String                 @id @default(uuid())
-  athleteId String
-  classId   String
-  checkInAt DateTime? // When the athlete checked into the class
-  status    ClassEnrollmentStatus? @default(ENROLLED)
+  id               String                 @id @default(uuid())
+  athleteId        String
+  classId          String
+  checkInAt        DateTime? // When the athlete checked into the class
+  isCheckedIn      Boolean?
+  status           ClassEnrollmentStatus? @default(ENROLLED)
+  attendanceStatus AttendanceStatus?
 
   athlete Athlete @relation(fields: [athleteId], references: [id])
   class   Class   @relation(fields: [classId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum AttendanceStatus {
+  ATTENDED
+  MISSED
 }
 
 enum ClassEnrollmentStatus {

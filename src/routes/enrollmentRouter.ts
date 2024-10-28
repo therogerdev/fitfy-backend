@@ -3,11 +3,14 @@ import { listEnrollment } from "../api/domains/enrollment/controllers/listEnroll
 import { enrollClass } from "../api/domains/enrollment/controllers/enrollClass.controller.js";
 import { cancelEnrollment } from "../api/domains/enrollment/controllers/cancelEnrollment.controller.js";
 import { cancelClassAttendance } from "../api/domains/Class/controller/cancelClassAttendance.controller.js";
+import { getEnrollmentById } from "../api/domains/enrollment/controllers/getEnrollmentById.controller.js";
 
-const enrollmentRouter = Router()
+const enrollmentRouter = Router();
 
-
-enrollmentRouter.get("/:classId/enrollment", listEnrollment);
+enrollmentRouter.get("/:classId/list", listEnrollment);
+enrollmentRouter.get("/:id", getEnrollmentById);
 enrollmentRouter.post("/:classId/enroll", enrollClass);
 enrollmentRouter.patch("/:enrollmentId/cancel", cancelEnrollment);
 enrollmentRouter.patch("/:enrollmentId/attendance", cancelClassAttendance);
+
+export { enrollmentRouter };
