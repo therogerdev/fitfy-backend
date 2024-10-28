@@ -17,7 +17,7 @@ export const enrollClass = async (data: ClassEnrollment) => {
     const isAlreadyEnrolled = classData.enrollments.some(
       (enrollment) =>
         enrollment.athleteId === data.athleteId &&
-        enrollment.status === ClassEnrollmentStatus.ENROLLED
+        enrollment.status === ClassEnrollmentStatus.ENROLLED || ClassEnrollmentStatus.WAITLISTED
     );
     if (isAlreadyEnrolled) {
       throw new ApiError(httpStatus.CONFLICT, "Athlete is already enrolled in this class");

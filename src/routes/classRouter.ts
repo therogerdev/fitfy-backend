@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { classAttendance } from "../domains/Class/controller/classAttendance.controller.js";
-import { createClass } from "../domains/Class/controller/createClass.controller.js";
-import { listClass } from "../domains/Class/controller/listClass.controller.js";
+import { classAttendance } from "../api/domains/Class/controller/classAttendance.controller.js";
+import { createClass } from "../api/domains/Class/controller/createClass.controller.js";
+import { listClass } from "../api/domains/Class/controller/listClass.controller.js";
 
 const classRouter = Router();
 classRouter.get("/list", listClass);

@@ -11,11 +11,11 @@ export const cancelEnrollment = async (id: string, classId: string) => {
       });
 
       if (!classEnrollment) {
-        throw new ApiError(httpStatus.NOT_FOUND, "Class enrollment not found");
+        throw new ApiError(httpStatus.NOT_FOUND, "Athlete is not enrolled for this class");
       }
 
       if (classEnrollment.status === ClassEnrollmentStatus.CANCELED) {
-        throw new ApiError(httpStatus.BAD_REQUEST, "Class enrollment already canceled");
+        throw new ApiError(httpStatus.BAD_REQUEST, "This enrollment has been cancelled already.");
       }
 
       // Cancel the enrollment

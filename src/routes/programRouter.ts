@@ -1,12 +1,12 @@
 import { Router } from "express";
+import { authenticateJWT } from "../api/domains/auth/authMiddleware.js";
 import {
   createProgram,
   deleteProgram,
   getAllPrograms,
-  updateProgram,
-  getProgramBySlug
-} from "../domains/Program/program.controller.js";
-import { authenticateJWT } from "../domains/auth/authMiddleware.js";
+  getProgramBySlug,
+  updateProgram
+} from "../api/domains/Program/program.controller.js";
 
 const programsRouter = Router();
 programsRouter.get("/", authenticateJWT, getAllPrograms);

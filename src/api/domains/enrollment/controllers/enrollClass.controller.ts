@@ -17,7 +17,8 @@ export const enrollClass = catchAsync(async (req: Request, res: Response) => {
     checkInAt: null,
     status: ClassEnrollmentStatus.ENROLLED,
     createdAt: "" as unknown as Date,
-    updatedAt: "" as unknown as Date
+    updatedAt: "" as unknown as Date,
+    attendanceStatus: null
   };
 
   if (!classId) {
