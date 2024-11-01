@@ -1,10 +1,10 @@
 export const formatSuccessResponse = (data: any, type: string) => {
   const formattedData = Array.isArray(data)
     ? data.map((item) => ({
-        attributes: { ...item }
+        ...item
       }))
     : {
-        attributes: { ...data }
+        ...data
       };
 
   return {

@@ -29,7 +29,6 @@ export const listClass = catchAsync(async (req: Request, res: Response) => {
     skip: skip ? parseInt(skip as string) : undefined,
     take: take ? parseInt(take as string) : undefined,
     cursor: cursorId ? { id: cursorId as string } : undefined,
-
     where: {
       name: contains ? { contains: contains as string } : undefined,
       capacity: capacityGte ? { gte: parseInt(capacityGte as string) } : undefined,
@@ -38,14 +37,15 @@ export const listClass = catchAsync(async (req: Request, res: Response) => {
       endTime: endTime ? { lte: new Date(endTime as string) } : undefined,
       coachId: coachId ? (coachId as string) : undefined
     },
-
-    dateRange: {
+    // Only include dateRange if both startTime and endTime are provided
+    dateRange: startTime && endTime ? {
       startTime: new Date(startTime as string),
       endTime: new Date(endTime as string)
-    },
-
+    } : undefined,
     orderBy: orderBy ? { [orderBy as string]: order as Prisma.SortOrder } : undefined
   };
+
+  console.log("listClass controller params:", params);
 
   const classes = await classesService.listClass(params);
 

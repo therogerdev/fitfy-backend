@@ -7,6 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Programs {
+  id                String   @id @default(uuid())
+  slug              String   @unique
+  name              String?
+  description       String?
+  numWeeks          Int?
+  numClassesPerWeek Int?
+  durationMin       Int?
+  isDraft           Boolean?
+  durationMax       Int?
+  active            Boolean? @default(true)
+  published         Boolean? @default(true)
+  hasSchedule       Boolean? @default(false)
+  totalClasses      Int?
+  classesId         String?
+  Box               Box?     @relation(fields: [boxId], references: [id])
+  boxId             String?
+  classes           Class[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
 model Box {
   id               String     @id @default(uuid())
   name             String
@@ -122,8 +144,10 @@ model Class {
   recurrenceType    RecurrenceType?
   recurrenceEnd     DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Programs   Programs? @relation(fields: [programsId], references: [id])
+  programsId String?
 }
 
 model ClassEnrollment {
@@ -169,26 +193,6 @@ model Performance {
   date      DateTime
 
   athlete Athlete @relation(fields: [athleteId], references: [id])
-}
-
-model Programs {
-  id                String   @id @default(uuid())
-  slug              String   @unique
-  name              String?
-  description       String?
-  numWeeks          Int?
-  numClassesPerWeek Int?
-  durationMin       Int?
-  isDraft           Boolean?
-  durationMax       Int?
-  active            Boolean? @default(true)
-  published         Boolean? @default(true)
-  hasSchedule       Boolean? @default(false)
-  totalClasses      Int?
-  classesId         String?
-  Box               Box?     @relation(fields: [boxId], references: [id])
-  boxId             String?
-  createdAt         DateTime
 }
 
 model Workout {
