@@ -7,6 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Programs {
+  id                String   @id @default(uuid())
+  slug              String   @unique
+  name              String?
+  description       String?
+  numWeeks          Int?
+  numClassesPerWeek Int?
+  durationMin       Int?
+  isDraft           Boolean?
+  durationMax       Int?
+  active            Boolean? @default(true)
+  published         Boolean? @default(true)
+  hasSchedule       Boolean? @default(false)
+  totalClasses      Int?
+  classesId         String?
+  Box               Box?     @relation(fields: [boxId], references: [id])
+  boxId             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  classes           Class[]
+}
+
 model Box {
   id               String     @id @default(uuid())
   name             String
@@ -115,6 +137,8 @@ model Class {
   capacity          Int?
   coachId           String?
   coach             Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
+  program           Programs?         @relation(fields: [programsId], references: [id])
+  programsId        String?
   enrollments       ClassEnrollment[] // List of enrollments for the class
   activeEnrollments Int               @default(0)
   // Recurrence Fields
@@ -169,26 +193,6 @@ model Performance {
   date      DateTime
 
   athlete Athlete @relation(fields: [athleteId], references: [id])
-}
-
-model Programs {
-  id                String   @id @default(uuid())
-  slug              String   @unique
-  name              String?
-  description       String?
-  numWeeks          Int?
-  numClassesPerWeek Int?
-  durationMin       Int?
-  isDraft           Boolean?
-  durationMax       Int?
-  active            Boolean? @default(true)
-  published         Boolean? @default(true)
-  hasSchedule       Boolean? @default(false)
-  totalClasses      Int?
-  classesId         String?
-  Box               Box?     @relation(fields: [boxId], references: [id])
-  boxId             String?
-  createdAt         DateTime
 }
 
 model Workout {

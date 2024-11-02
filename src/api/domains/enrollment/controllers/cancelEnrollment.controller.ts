@@ -13,6 +13,10 @@ export const cancelEnrollment = catchAsync(async (req: Request, res: Response) =
     throw new ApiError(400, "Enrollment Id not provided");
   }
 
+  if (!classId) {
+    throw new ApiError(400, "Class Id not provided");
+  }
+
   const cancelEnrollment = await enrollClassService.cancelEnrollment(enrollmentId, classId);
 
   const formattedResponse = formatSuccessResponse(cancelEnrollment, "enrollment")

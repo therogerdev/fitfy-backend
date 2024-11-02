@@ -11,16 +11,27 @@ export const enrollClass = async (data: ClassEnrollment) => {
     });
 
     if (!classData) {
-      throw new ApiError(httpStatus.NOT_FOUND, "Class not found");
+      throw new ApiError(httpStatus.NOT_FOUND, "Class Id not found");
     }
 
-    const isAlreadyEnrolled = classData.enrollments.some(
-      (enrollment) =>
-        enrollment.athleteId === data.athleteId &&
-        enrollment.status === ClassEnrollmentStatus.ENROLLED || ClassEnrollmentStatus.WAITLISTED
-    );
+    const isAlreadyEnrolled = await prisma.classEnrollment.findFirst({
+      where: {
+        athleteId: data.athleteId,
+        classId: data.classId,
+        status: {
+          not: ClassEnrollmentStatus.CANCELED
+        }
+      }
+    });
+
     if (isAlreadyEnrolled) {
       throw new ApiError(httpStatus.CONFLICT, "Athlete is already enrolled in this class");
+    }
+
+    // if coach is assigned to this class, he can't enroll to it
+    const isCoachAssigned = classData.coachId === data.athleteId;
+    if (isCoachAssigned) {
+      throw new ApiError(httpStatus.CONFLICT, "Assigned Coach can't enroll to this class");
     }
 
     // Check if the class has reached capacity
@@ -35,8 +46,7 @@ export const enrollClass = async (data: ClassEnrollment) => {
         data: {
           athleteId: data.athleteId,
           classId: data.classId,
-          status: ClassEnrollmentStatus.WAITLISTED,
-          isCheckedIn: false
+          status: ClassEnrollmentStatus.WAITLISTED
         }
       });
     } else {

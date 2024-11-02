@@ -12,7 +12,7 @@ export const getClassById = catchAsync(async (req: Request, res: Response) => {
   const classObject = await getClassByIdService(classId);
 
   if (!classObject) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Class not found");
+    throw new ApiError(httpStatus.NOT_FOUND, "Class with selected Id not found");
   }
 
   // Format the response and send it

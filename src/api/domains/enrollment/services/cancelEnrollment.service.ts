@@ -9,6 +9,7 @@ export const cancelEnrollment = async (id: string, classId: string) => {
   return await prisma.$transaction(async (prisma) => {
     // Verify class enrollment exists and is not already canceled
     const classEnrollment = await getEnrollmentByIdService(id);
+
     if (!classEnrollment) {
       throw new ApiError(httpStatus.NOT_FOUND, "Athlete is not enrolled for this class");
     }
@@ -29,7 +30,7 @@ export const cancelEnrollment = async (id: string, classId: string) => {
       select: { id: true, capacity: true, activeEnrollments: true }
     });
     if (!classData) {
-      throw new ApiError(httpStatus.NOT_FOUND, "Class not found");
+      throw new ApiError(httpStatus.NOT_FOUND, "Class Id not found");
     }
 
     // Update active enrollments count in the Class model
