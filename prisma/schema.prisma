@@ -24,9 +24,9 @@ model Programs {
   classesId         String?
   Box               Box?     @relation(fields: [boxId], references: [id])
   boxId             String?
-  classes           Class[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  classes           Class[]
 }
 
 model Box {
@@ -137,6 +137,8 @@ model Class {
   capacity          Int?
   coachId           String?
   coach             Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
+  program           Programs?         @relation(fields: [programsId], references: [id])
+  programsId        String?
   enrollments       ClassEnrollment[] // List of enrollments for the class
   activeEnrollments Int               @default(0)
   // Recurrence Fields
@@ -144,10 +146,8 @@ model Class {
   recurrenceType    RecurrenceType?
   recurrenceEnd     DateTime?
 
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  Programs   Programs? @relation(fields: [programsId], references: [id])
-  programsId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ClassEnrollment {

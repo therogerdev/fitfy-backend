@@ -1,10 +1,8 @@
-
 import { Prisma } from "@prisma/client";
 import { addDays, addWeeks } from "date-fns";
 import httpStatus from "http-status";
 import prisma from "../../../../prismaClient.js";
 import ApiError from "../../../../utils/ApiError.js";
-
 
 type ClassCreationResult = {
   createdClassRecord: Prisma.ClassGetPayload<{
@@ -17,6 +15,11 @@ type ClassCreationResult = {
           email: true;
           gender: true;
           isCoach: true;
+        };
+      };
+      program: {
+        select: {
+          name: true;
         };
       };
     };
@@ -40,19 +43,22 @@ type ClassCreationResult = {
 
 export const createClass = async (
   classInputData: Prisma.ClassUncheckedCreateInput
-): Promise<ClassCreationResult | Prisma.ClassGetPayload<{
-  include: {
-    coach: {
-      select: {
-        id: true;
-        firstName: true;
-        lastName: true;
-        email: true;
-        isCoach: true;
+): Promise<
+  | ClassCreationResult
+  | Prisma.ClassGetPayload<{
+      include: {
+        coach: {
+          select: {
+            id: true;
+            firstName: true;
+            lastName: true;
+            email: true;
+            isCoach: true;
+          };
+        };
       };
-    };
-  };
-}>> => {
+    }>
+> => {
   const classData = classInputData;
 
   // Verify if coach exists and is an actual coach
@@ -84,6 +90,7 @@ export const createClass = async (
       isRecurring: classData.isRecurring,
       recurrenceType: classData.recurrenceType,
       recurrenceEnd: classData.recurrenceEnd,
+      programsId: classData.programsId,
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -96,6 +103,11 @@ export const createClass = async (
           email: true,
           gender: true,
           isCoach: true
+        }
+      },
+      program: {
+        select: {
+          name: true
         }
       }
     }
@@ -133,6 +145,7 @@ export const createClass = async (
           endTime: nextEndTime,
           capacity: classData.capacity,
           coachId: classData.coachId,
+          programsId: classData.programsId,
           isRecurring: false, // Future instances are not recurring themselves
           createdAt: new Date(),
           updatedAt: new Date()
