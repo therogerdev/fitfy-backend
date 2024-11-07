@@ -27,7 +27,7 @@ export const enrollClass = catchAsync(async (req: Request, res: Response) => {
   }
 
   if (!athleteId) {
-    throw new ApiError(httpStatus.PARTIAL_CONTENT, "You need Athlete Id to enroll to this class");
+    throw new ApiError(httpStatus.BAD_REQUEST, "You need Athlete Id to enroll to this class");
   }
 
   const enroll = await enrollClassService.enrollClass(data);
