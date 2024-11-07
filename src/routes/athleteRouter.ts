@@ -5,9 +5,11 @@ import { getAthleteById } from "../api/domains/athletes/controllers/getAthleteBy
 import { createAthlete } from "../api/domains/athletes/controllers/createAthlete.controller.js";
 import { updateAthlete } from "../api/domains/athletes/controllers/updateAthlete.controller.js";
 import { deleteAthlete } from "../api/domains/athletes/controllers/deleteAthlete.controller.js";
+import { searchAthlete } from "../api/domains/athletes/controllers/searchAthletes.controller.js";
 
 const athleteRouter = Router();
 athleteRouter.get("/list", listAthletes);
+athleteRouter.get("/search", searchAthlete)
 athleteRouter.get("/", getAthleteByEmail);
 athleteRouter.get("/:id", getAthleteById);
 athleteRouter.post("/create", createAthlete);

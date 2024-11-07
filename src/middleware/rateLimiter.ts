@@ -1,6 +1,8 @@
 import rateLimit from 'express-rate-limit';
 
+const isDev = process.env.NODE_ENV === "development";
+
 export const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: isDev ? Infinity : 100, // Disable rate limiting in development
 });

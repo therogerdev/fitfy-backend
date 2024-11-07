@@ -7,29 +7,18 @@ export const createClassSchema = z.object({
   description: z.string().optional().nullable(),
   coachId: z.string().optional(),
   classType: z.nativeEnum(ClassType, { required_error: "Class type is required" }),
-  startTime: z
-    .union([z.date(), z.string()])
-    .refine((date) => !isNaN(new Date(date).getTime()), {
-      message: "Invalid start time"
-    })
-    .optional(),
-  isRecurring: z.boolean().default(false),
-  recurrenceType: z
-    .enum(["DAILY", "WEEKLY", "BIWEEKLY", "MONTHLY", "CUSTOM"], {
-      required_error: "Recurrence type is required"
-    }),
-    recurrenceEnd: z
-    .union([z.date(), z.string()])
-    .refine((date) => !isNaN(new Date(date).getTime()), {
-      message: "Invalid recurrence End time"
-    }),
-  endTime: z
-    .union([z.date(), z.string()])
-    .refine((date) => !isNaN(new Date(date).getTime()), {
-      message: "Invalid end time"
-    })
-    .optional(),
+  date: z.union([z.date(), z.string().datetime()]), // Allows either string or Date
+  startTime: z.union([z.date(), z.string().datetime()]).optional(), // Optional start time for search
+  endTime: z.union([z.date(), z.string().datetime()]).optional(), // Optional end time for search
+  isRecurring: z.boolean(),
+  recurrenceType: z.enum(["DAILY", "WEEKLY", "BIWEEKLY", "MONTHLY", "CUSTOM"], {
+    required_error: "Recurrence type is required",
+  }).optional(),
+  recurrenceEnd: z.union([z.date(), z.string().datetime()]).optional(),
   capacity: z.number().min(1, "Capacity must be at least 1").optional(),
+  programsId: z.string().optional(), // Adding programsId
+  isOnline: z.boolean().default(false), // Adding isOnline with default
+  location: z.string().optional(), // Adding location
   createdAt: z.union([z.date(), z.string()]).optional(),
-  updatedAt: z.union([z.date(), z.string()]).optional()
+  updatedAt: z.union([z.date(), z.string()]).optional(),
 });

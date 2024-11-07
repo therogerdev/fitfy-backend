@@ -17,3 +17,34 @@ export const formatSuccessResponse = (data: any, type: string) => {
     }
   };
 };
+
+
+export const formatSuccessResponseWithPagination = (
+  data: any,
+  type: string,
+  paginationInfo: { currentPage: number; totalPages: number; totalCount: number, rowsPerPage: number }
+) => {
+  const formattedData = Array.isArray(data)
+    ? data.map((item) => ({
+        ...item,
+      }))
+    : {
+        ...data,
+      };
+
+  return {
+    success: true,
+    type,
+    total: paginationInfo.totalCount,
+    data: formattedData,
+    pagination: {
+      currentPage: paginationInfo.currentPage,
+      totalPages: paginationInfo.totalPages,
+      rowsPerPage: paginationInfo.rowsPerPage,
+      totalCount: paginationInfo.totalCount,
+    },
+    meta: {
+      timestamp: new Date().toISOString(),
+    },
+  };
+};

@@ -10,6 +10,9 @@ export const createClass = catchAsync(async (req: Request, res: Response) => {
   // Get request body
   const classData = req.body;
 
+
+  console.log("ClassData", classData)
+
   // Validate the input data
   const parsedClassData = createClassSchema.parse(classData);
 

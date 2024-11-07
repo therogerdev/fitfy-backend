@@ -7,39 +7,15 @@ import ApiError from "../../../../utils/ApiError.js";
 type ClassCreationResult = {
   createdClassRecord: Prisma.ClassGetPayload<{
     include: {
-      coach: {
-        select: {
-          id: true;
-          firstName: true;
-          lastName: true;
-          email: true;
-          gender: true;
-          isCoach: true;
-        };
-      };
-      program: {
-        select: {
-          name: true;
-        };
-      };
+      coach: { select: { id: true; firstName: true; lastName: true; email: true; gender: true; isCoach: true; } };
+      program: { select: { name: true; } };
     };
   }>;
-  futureClasses: Array<
-    Prisma.ClassGetPayload<{
-      include: {
-        coach: {
-          select: {
-            id: true;
-            firstName: true;
-            lastName: true;
-            email: true;
-            isCoach: true;
-          };
-        };
-      };
-    }>
-  >;
+  futureClasses: Array<Prisma.ClassGetPayload<{
+    include: { coach: { select: { id: true; firstName: true; lastName: true; email: true; isCoach: true; } } }
+  }>>;
 };
+
 
 export const createClass = async (
   classInputData: Prisma.ClassUncheckedCreateInput
@@ -48,41 +24,30 @@ export const createClass = async (
   | Prisma.ClassGetPayload<{
       include: {
         coach: {
-          select: {
-            id: true;
-            firstName: true;
-            lastName: true;
-            email: true;
-            isCoach: true;
-          };
+          select: { id: true; firstName: true; lastName: true; email: true; isCoach: true };
         };
       };
     }>
 > => {
   const classData = classInputData;
 
-  // Verify if coach exists and is an actual coach
+  // Check if the coach exists and is a coach
   if (classData.coachId) {
     const coachRecord = await prisma.athlete.findUnique({
       where: { id: classData.coachId },
       select: { isCoach: true }
     });
-
-    if (!coachRecord) {
-      throw new ApiError(httpStatus.NOT_FOUND, "Coach not found");
-    }
-
-    if (!coachRecord.isCoach) {
-      throw new ApiError(httpStatus.FORBIDDEN, "Athlete is not a coach");
-    }
+    if (!coachRecord) throw new ApiError(httpStatus.NOT_FOUND, "Coach not found");
+    if (!coachRecord.isCoach) throw new ApiError(httpStatus.FORBIDDEN, "Athlete is not a coach");
   }
 
-  // Create the first class record
+  // Create the initial class record, ensuring the `date` field is populated
   const createdClassRecord = await prisma.class.create({
     data: {
       name: classData.name,
       description: classData.description,
       classType: classData.classType,
+      date: classData.date, // Set main class date
       startTime: classData.startTime,
       endTime: classData.endTime,
       capacity: classData.capacity,
@@ -105,69 +70,50 @@ export const createClass = async (
           isCoach: true
         }
       },
-      program: {
-        select: {
-          name: true
-        }
-      }
+      program: { select: { name: true } }
     }
   });
 
-  // Handle recurrence if the class is marked as recurring
+  // Generate future class instances if recurring
+  const futureClasses = [];
   if (classData.isRecurring && classData.recurrenceType && classData.recurrenceEnd) {
-    const recurrenceType = classData.recurrenceType;
-    const recurrenceEnd = new Date(classData.recurrenceEnd);
-    const futureClasses = [];
+    let nextDate = new Date(classData?.date);
 
-    let nextStartTime = new Date(classData.startTime as Date);
-    let nextEndTime = new Date(classData.endTime as Date);
-
-    // Create future instances of the class until the recurrenceEnd date is reached
-    while (nextStartTime < recurrenceEnd) {
-      // Increment the start and end times based on the recurrence type (e.g., daily or weekly)
-      if (recurrenceType === "DAILY") {
-        nextStartTime = addDays(nextStartTime, 1);
-        nextEndTime = addDays(nextEndTime, 1);
-      } else if (recurrenceType === "WEEKLY") {
-        nextStartTime = addWeeks(nextStartTime, 1);
-        nextEndTime = addWeeks(nextEndTime, 1);
+    while (nextDate < new Date(classData.recurrenceEnd)) {
+      // Increment date based on recurrence type
+      if (classData.recurrenceType === "DAILY") {
+        nextDate = addDays(nextDate, 1);
+      } else if (classData.recurrenceType === "WEEKLY") {
+        nextDate = addWeeks(nextDate, 1);
       }
+      if (nextDate > new Date(classData.recurrenceEnd)) break;
 
-      if (nextStartTime > recurrenceEnd) break;
-
-      // Create future class instances
+      // Create each future class instance with its specific date
       const futureClass = await prisma.class.create({
         data: {
           name: classData.name,
           description: classData.description,
           classType: classData.classType,
-          startTime: nextStartTime,
-          endTime: nextEndTime,
+          date: nextDate, // Set the specific date for each recurring instance
+          startTime: classData.startTime,
+          endTime: classData.endTime,
           capacity: classData.capacity,
           coachId: classData.coachId,
           programsId: classData.programsId,
-          isRecurring: false, // Future instances are not recurring themselves
+          isRecurring: false, // Future instances are not themselves recurring
           createdAt: new Date(),
           updatedAt: new Date()
         },
         include: {
           coach: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              email: true,
-              isCoach: true
-            }
+            select: { id: true, firstName: true, lastName: true, email: true, isCoach: true }
           }
         }
       });
 
       futureClasses.push(futureClass);
     }
-
-    return { createdClassRecord, futureClasses };
   }
 
-  return createdClassRecord;
+  return { createdClassRecord, futureClasses };
 };

@@ -1,45 +1,60 @@
 import { Class, Prisma } from "@prisma/client";
 import prisma from "../../../../prismaClient.js";
 
+// Helper function to generate recurring class instances based on date only
 const generateRecurringInstances = (
   classItem: Class,
   dateRange: { startTime: Date; endTime: Date }
 ): Class[] => {
-  const { recurrenceType, recurrenceEnd, isRecurring, startTime, endTime } = classItem;
+  const { recurrenceType, recurrenceEnd, isRecurring, date, startTime, endTime } = classItem;
   const instances: Class[] = [];
 
-  if (!isRecurring || !recurrenceType) {
-    return [classItem];
+  if (!isRecurring || !recurrenceType || !date) {
+    return [classItem]; // Return the original class if it's not recurring or has no date
   }
 
-  const nextStartTime = new Date(startTime as Date);
-  const nextEndTime = new Date(endTime as Date);
+  const nextDate = new Date(date);
+  const nextStartTime = startTime ? new Date(startTime) : null;
+  const nextEndTime = endTime ? new Date(endTime) : null;
 
-  while (nextStartTime < recurrenceEnd! && nextStartTime < dateRange.endTime) {
-    if (nextStartTime >= dateRange.startTime && nextStartTime <= dateRange.endTime) {
-      const newInstance = { ...classItem, startTime: nextStartTime, endTime: nextEndTime };
+  while (nextDate <= recurrenceEnd! && nextDate <= dateRange.endTime) {
+    if (nextDate >= dateRange.startTime && nextDate <= dateRange.endTime) {
+      const newInstance = {
+        ...classItem,
+        date: new Date(nextDate),
+        startTime: nextStartTime ? new Date(nextStartTime) : null,
+        endTime: nextEndTime ? new Date(nextEndTime) : null,
+      };
       instances.push(newInstance);
     }
 
+    // Increment date based on recurrence type, keeping startTime and endTime consistent
     switch (recurrenceType) {
+      case "DAILY":
+        nextDate.setDate(nextDate.getDate() + 1);
+        if (nextStartTime) nextStartTime.setDate(nextStartTime.getDate() + 1);
+        if (nextEndTime) nextEndTime.setDate(nextEndTime.getDate() + 1);
+        break;
       case "WEEKLY":
-        nextStartTime.setDate(nextStartTime.getDate() + 7);
-        nextEndTime.setDate(nextEndTime.getDate() + 7);
+        nextDate.setDate(nextDate.getDate() + 7);
+        if (nextStartTime) nextStartTime.setDate(nextStartTime.getDate() + 7);
+        if (nextEndTime) nextEndTime.setDate(nextEndTime.getDate() + 7);
         break;
       case "BIWEEKLY":
-        nextStartTime.setDate(nextStartTime.getDate() + 14);
-        nextEndTime.setDate(nextEndTime.getDate() + 14);
+        nextDate.setDate(nextDate.getDate() + 14);
+        if (nextStartTime) nextStartTime.setDate(nextStartTime.getDate() + 14);
+        if (nextEndTime) nextEndTime.setDate(nextEndTime.getDate() + 14);
         break;
       case "MONTHLY":
-        nextStartTime.setMonth(nextStartTime.getMonth() + 1);
-        nextEndTime.setMonth(nextEndTime.getMonth() + 1);
+        nextDate.setMonth(nextDate.getMonth() + 1);
+        if (nextStartTime) nextStartTime.setMonth(nextStartTime.getMonth() + 1);
+        if (nextEndTime) nextEndTime.setMonth(nextEndTime.getMonth() + 1);
         break;
     }
   }
 
   return instances;
 };
-
 export const listClass = async (params: {
   skip?: number;
   take?: number;
@@ -48,40 +63,57 @@ export const listClass = async (params: {
   orderBy?: Prisma.ClassOrderByWithRelationInput;
   dateRange?: { startTime: Date; endTime: Date };
 }): Promise<Class[]> => {
-  const { skip, take, cursor, where, orderBy, dateRange } = params;
+  const { skip, take, cursor, orderBy, dateRange } = params;
 
+  console.log("Date Range Provided:", dateRange);
+
+  // Define a simplified where clause, only filtering by date
+  const updatedWhere: Prisma.ClassWhereInput = dateRange
+    ? {
+        date: {
+          gte: dateRange.startTime,
+          lte: dateRange.endTime,
+        },
+      }
+    : {};
+
+  console.log("Constructed Where Clause:", JSON.stringify(updatedWhere, null, 2));
+
+  // Fetch classes based on the simplified where clause
   const classes = await prisma.class.findMany({
     skip,
     take,
     cursor,
-    where,
+    where: updatedWhere,
     orderBy,
     include: {
       coach: {
         select: {
           firstName: true,
           lastName: true,
-          profileImageUrl: true
-        }
+          profileImageUrl: true,
+        },
       },
       program: {
         select: {
-          name: true
-        }
-      }
-    }
+          name: true,
+        },
+      },
+      enrollments: {
+        select: {
+          athlete: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+      },
+    },
   });
 
-  let allClasses: Class[] = [];
+  console.log("Query Result:", classes);
 
-  classes.forEach((classItem) => {
-    if (dateRange) {
-      const recurringInstances = generateRecurringInstances(classItem, dateRange);
-      allClasses = allClasses.concat(recurringInstances);
-    } else {
-      allClasses.push(classItem);
-    }
-  });
-
-  return allClasses;
+  return classes;
 };
