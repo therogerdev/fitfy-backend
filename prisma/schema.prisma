@@ -99,6 +99,7 @@ model Membership {
   type                 MembershipType
   priceId              String? // Stripe Price ID for subscription plans
   stripeSubscriptionId String? // Stripe Subscription ID
+  name                 String? // Stripe Product name
   startDate            DateTime
   endDate              DateTime
   athleteId            String

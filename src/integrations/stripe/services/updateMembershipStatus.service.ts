@@ -1,6 +1,7 @@
 import prisma from "../../../prismaClient.js";
 
 export const activateMembership = async (
+  productName: string,
   customerEmail: string,
   priceId: string,
   stripeSubscriptionId: string,
@@ -24,6 +25,7 @@ export const activateMembership = async (
         data: {
             type: "SUBSCRIPTION", // Assuming it's a subscription membership
             priceId: priceId,
+            name: productName,
             stripeSubscriptionId: stripeSubscriptionId,
             startDate: startDate,
             endDate: endDate,
