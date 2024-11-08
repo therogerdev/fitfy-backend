@@ -1,4 +1,17 @@
 export const formatSuccessResponse = (data: any, type: string) => {
+  // Check if the data is null and return the desired format
+  if (data === null) {
+    return {
+      success: true,
+      type,
+      total: 0, 
+      data: null,
+      meta: {
+        timestamp: new Date().toISOString()
+      }
+    };
+  }
+
   const formattedData = Array.isArray(data)
     ? data.map((item) => ({
         ...item
@@ -10,7 +23,7 @@ export const formatSuccessResponse = (data: any, type: string) => {
   return {
     success: true,
     type,
-    total: (Array.isArray(formattedData) && data.length) || 1,
+    total: (Array.isArray(formattedData) && formattedData.length) || 1,
     data: formattedData,
     meta: {
       timestamp: new Date().toISOString()
