@@ -6,12 +6,14 @@ import { createAthlete } from "../api/domains/athletes/controllers/createAthlete
 import { updateAthlete } from "../api/domains/athletes/controllers/updateAthlete.controller.js";
 import { deleteAthlete } from "../api/domains/athletes/controllers/deleteAthlete.controller.js";
 import { searchAthlete } from "../api/domains/athletes/controllers/searchAthletes.controller.js";
+import { getAthleteMembership } from "../api/domains/athletes/controllers/getAthleteMembership.js";
 
 const athleteRouter = Router();
 athleteRouter.get("/list", listAthletes);
-athleteRouter.get("/search", searchAthlete)
+athleteRouter.get("/search", searchAthlete);
 athleteRouter.get("/", getAthleteByEmail);
 athleteRouter.get("/:id", getAthleteById);
+athleteRouter.get("/:athleteId/membership", getAthleteMembership);
 athleteRouter.post("/create", createAthlete);
 athleteRouter.patch("/:id", updateAthlete);
 athleteRouter.delete("/:id", deleteAthlete);
