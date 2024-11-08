@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import ApiError from "../../../utils/ApiError.js";
-import catchAsync from "../../../middleware/catchAsync.js";
-import { listMembershipService } from "../services/listMembership.service.js";
-import { formatSuccessResponse } from "../../../utils/formatSuccessResponse.js";
+import catchAsync from "../../../../middleware/catchAsync.js";
+import ApiError from "../../../../utils/ApiError.js";
+import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
+import { getAthleteMembershipService } from "../services/getAthleteMembershipService.js";
 
-export const listMembership = catchAsync(async (req: Request, res: Response) => {
+export const getAthleteMembership = catchAsync(async (req: Request, res: Response) => {
   const { athleteId } = req.params;
 
   if (!athleteId) {
     throw new ApiError(httpStatus.BAD_REQUEST, "athleteId is required");
   }
 
-  const membership = await listMembershipService(athleteId as string);
+  const membership = await getAthleteMembershipService(athleteId as string);
 
   // Check if the membership exists
   if (!membership) {
@@ -20,9 +20,7 @@ export const listMembership = catchAsync(async (req: Request, res: Response) => 
     return res.status(httpStatus.OK).json(formatSuccessResponse(null, ""));
   }
 
-
   const membershipResponse = formatSuccessResponse(membership, "membership");
-
 
   // If membership exists, return it
   res.status(httpStatus.OK).json(membershipResponse);
