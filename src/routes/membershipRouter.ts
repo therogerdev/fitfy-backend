@@ -9,7 +9,7 @@ const webhookRouter = Router();
 webhookRouter.post("/webhook", raw({ type: "application/json" }), handleStripeWebhook);
 
 const membershipRouter = Router();
-membershipRouter.get("/checkout", createCheckoutSession);
+membershipRouter.post("/checkout", createCheckoutSession);
 membershipRouter.get("/checkout/success", checkoutSuccess);
 
 membershipRouter.post("/membership/create", createMembership);

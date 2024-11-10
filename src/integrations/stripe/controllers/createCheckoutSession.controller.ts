@@ -7,8 +7,8 @@ export const createCheckoutSession = catchAsync(async (req: Request, res: Respon
   const { priceId, customerEmail } = req.body;
 
   // Define the success and cancel URLs
-  const successUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/checkout/success`;
-  const cancelUrl = `${process.env.FRONTEND_URL || "http://localhost:3000"}/checkout/cancel`;
+  const successUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/checkout/success`;
+  const cancelUrl = `${process.env.FRONTEND_URL || "http://localhost:5173/"}/checkout/cancel`;
 
   // Validate the input
   if (!priceId || !customerEmail) {

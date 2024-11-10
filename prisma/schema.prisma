@@ -135,8 +135,6 @@ model Class {
   description       String?
   classType         ClassType?
   date              DateTime?
-  startTime         DateTime? // only for search
-  endTime           DateTime? // only for search
   capacity          Int?
   coachId           String?
   coach             Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
