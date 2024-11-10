@@ -7,6 +7,7 @@ export const listClassService = async (params: {
   cursor?: Prisma.ClassWhereUniqueInput;
   where?: Prisma.ClassWhereInput;
   orderBy?: Prisma.ClassOrderByWithRelationInput;
+  select?: Prisma.SelectAndInclude;
   dateRange?: { startTime: Date; endTime: Date };
 }): Promise<{
   classes: Class[];
