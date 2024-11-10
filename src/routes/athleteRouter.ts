@@ -7,6 +7,7 @@ import { updateAthlete } from "../api/domains/athletes/controllers/updateAthlete
 import { deleteAthlete } from "../api/domains/athletes/controllers/deleteAthlete.controller.js";
 import { searchAthlete } from "../api/domains/athletes/controllers/searchAthletes.controller.js";
 import { getAthleteMembership } from "../api/domains/athletes/controllers/getAthleteMembership.js";
+import { getUpcomingClasses } from "../api/domains/athletes/controllers/getUpcomingClasses.js";
 
 const athleteRouter = Router();
 athleteRouter.get("/list", listAthletes);
@@ -17,5 +18,6 @@ athleteRouter.get("/:athleteId/membership", getAthleteMembership);
 athleteRouter.post("/create", createAthlete);
 athleteRouter.patch("/:id", updateAthlete);
 athleteRouter.delete("/:id", deleteAthlete);
+athleteRouter.get("/:athleteId/upcoming-classes", getUpcomingClasses);
 
 export { athleteRouter };
