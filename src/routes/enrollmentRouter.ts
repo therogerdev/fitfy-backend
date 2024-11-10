@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { listEnrollment, listEnrollmentByAthlete } from "../api/domains/enrollment/controllers/listEnrollment.controller.js";
+import { listEnrollment } from "../api/domains/enrollment/controllers/listEnrollment.controller.js";
 import { enrollClass } from "../api/domains/enrollment/controllers/enrollClass.controller.js";
 import { cancelEnrollment } from "../api/domains/enrollment/controllers/cancelEnrollment.controller.js";
 import { cancelClassAttendance } from "../api/domains/Class/controller/cancelClassAttendance.controller.js";
 import { getEnrollmentById } from "../api/domains/enrollment/controllers/getEnrollmentById.controller.js";
+import { listEnrollmentByAthlete } from "../api/domains/enrollment/controllers/listEnrollmentByAthlete.js";
 
 const enrollmentRouter = Router();
 

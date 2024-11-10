@@ -10,8 +10,6 @@ export const searchAthleteService = async (params: {
 }) => {
   const { name, skip, take, orderBy } = params;
 
-  console.log("Search params:", { name, skip, take, orderBy });
-
   const athletes = await prisma.athlete.findMany({
     where: {
       AND: [
@@ -30,8 +28,6 @@ export const searchAthleteService = async (params: {
     take: take || 10,
     orderBy: orderBy || { createdAt: "desc" }
   });
-
-  console.log("search result......", athletes);
 
   return athletes;
 };
