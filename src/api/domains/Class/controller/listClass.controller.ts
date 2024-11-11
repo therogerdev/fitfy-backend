@@ -3,9 +3,7 @@ import httpStatus from "http-status";
 import logger from "../../../../config/logger.js";
 import catchAsync from "../../../../middleware/catchAsync.js";
 import ApiError from "../../../../utils/ApiError.js";
-import {
-  formatSuccessResponseWithPagination
-} from "../../../../utils/formatSuccessResponse.js";
+import { formatSuccessResponseWithPagination } from "../../../../utils/formatSuccessResponse.js";
 import { listClassService } from "../service/listClass.service.js";
 
 export const listClass = catchAsync(async (req: Request, res: Response) => {
@@ -25,10 +23,10 @@ export const listClass = catchAsync(async (req: Request, res: Response) => {
   // Call the service to get classes based on the query parameters
   const classes = await listClassService({
     skip: Number(skip) || 0,
-    take: Number(take) || 10,
     cursor: cursor ? { id: String(cursor) } : undefined,
     orderBy: orderBy ? JSON.parse(orderBy as string) : undefined,
-    dateRange
+    dateRange,
+    take: Number(take) || 10000 //TODO: CHANGE DEFAULT TO 10,
   });
 
   if (!classes) {
@@ -38,16 +36,12 @@ export const listClass = catchAsync(async (req: Request, res: Response) => {
   // Return the fetched classes
   logger.info("Successfully fetched classes", { classesCount: classes.totalCount + "classes" });
 
-  const formattedResponse = formatSuccessResponseWithPagination(
-    classes.classes,
-    "class",
-    {
-      currentPage: classes.currentPage,
-      totalPages: classes.totalPages,
-      totalCount: classes.totalCount,
-      rowsPerPage: classes.rowsPerPage
-    }
-  );
+  const formattedResponse = formatSuccessResponseWithPagination(classes.classes, "class", {
+    currentPage: classes.currentPage,
+    totalPages: classes.totalPages,
+    totalCount: classes.totalCount,
+    rowsPerPage: classes.rowsPerPage
+  });
 
   res.status(httpStatus.OK).json(formattedResponse);
 });
