@@ -3,8 +3,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../../../middleware/catchAsync.js";
 import ApiError from "../../../../utils/ApiError.js";
 import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
-import { getAthleteMembershipService } from "../services/getAthleteMembershipService.js";
-
+import * as membershipService from "../services/index.js";
 export const getAthleteMembership = catchAsync(async (req: Request, res: Response) => {
   const { athleteId } = req.params;
 
@@ -12,7 +11,7 @@ export const getAthleteMembership = catchAsync(async (req: Request, res: Respons
     throw new ApiError(httpStatus.BAD_REQUEST, "athleteId is required");
   }
 
-  const membership = await getAthleteMembershipService(athleteId as string);
+  const membership = await membershipService.getAthleteMembership(athleteId as string);
 
   // Check if the membership exists
   if (!membership) {

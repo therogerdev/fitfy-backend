@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../../../middleware/catchAsync.js";
 import httpStatus from "http-status";
 import ApiError from "../../../../utils/ApiError.js";
-import { getUpcomingClassesService } from "../services/getUpcomingClassesService.js";
+import * as membershipService from "../services/index.js";
 import { formatSuccessResponse } from "../../../../utils/formatSuccessResponse.js";
 
 export const getUpcomingClasses = catchAsync(async (req: Request, res: Response) => {
@@ -12,14 +12,13 @@ export const getUpcomingClasses = catchAsync(async (req: Request, res: Response)
     throw new ApiError(httpStatus.BAD_REQUEST, "athleteId is required");
   }
 
-  const upcomingClasses = await getUpcomingClassesService(athleteId, { limit: 3 });
+  const upcomingClasses = (await membershipService.getUpcomingClasses(athleteId, { limit: 3 })) || [];
 
-
-  if (!upcomingClasses) {
-    throw new ApiError(httpStatus.NOT_FOUND, "No upcoming classes found");
-  }
-
-  const formattedUpcomingClasses = formatSuccessResponse(upcomingClasses, "athlete")
+  // If upcomingClasses is an empty array, set data to null
+  const formattedUpcomingClasses = formatSuccessResponse(
+    upcomingClasses.length > 0 ? upcomingClasses : null,
+    "athlete"
+  );
 
   res.status(httpStatus.OK).json(formattedUpcomingClasses);
 });
