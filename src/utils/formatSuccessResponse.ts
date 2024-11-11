@@ -4,7 +4,7 @@ export const formatSuccessResponse = (data: any, type: string) => {
     return {
       success: true,
       type,
-      total: 0, 
+      total: 0,
       data: null,
       meta: {
         timestamp: new Date().toISOString()
@@ -23,7 +23,7 @@ export const formatSuccessResponse = (data: any, type: string) => {
   return {
     success: true,
     type,
-    total: (Array.isArray(formattedData) && formattedData.length) || 1,
+    total: (Array.isArray(formattedData) && formattedData.length) || 0,
     data: formattedData,
     meta: {
       timestamp: new Date().toISOString()
@@ -31,18 +31,22 @@ export const formatSuccessResponse = (data: any, type: string) => {
   };
 };
 
-
 export const formatSuccessResponseWithPagination = (
   data: any,
   type: string,
-  paginationInfo: { currentPage: number; totalPages: number; totalCount: number, rowsPerPage: number }
+  paginationInfo: {
+    currentPage: number;
+    totalPages: number;
+    totalCount: number;
+    rowsPerPage: number;
+  }
 ) => {
   const formattedData = Array.isArray(data)
     ? data.map((item) => ({
-        ...item,
+        ...item
       }))
     : {
-        ...data,
+        ...data
       };
 
   return {
@@ -54,10 +58,10 @@ export const formatSuccessResponseWithPagination = (
       currentPage: paginationInfo.currentPage,
       totalPages: paginationInfo.totalPages,
       rowsPerPage: paginationInfo.rowsPerPage,
-      totalCount: paginationInfo.totalCount,
+      totalCount: paginationInfo.totalCount
     },
     meta: {
-      timestamp: new Date().toISOString(),
-    },
+      timestamp: new Date().toISOString()
+    }
   };
 };
