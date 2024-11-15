@@ -52,6 +52,7 @@ enum Role {
   ADMIN
   MEMBER
   COACH
+  ATHLETE
 }
 
 model User {
@@ -60,7 +61,7 @@ model User {
   password  String
   username  String   @unique
   isActive  Boolean  @default(true)
-  role      Role
+  role      Role     @default(ATHLETE)
   athlete   Athlete? @relation(fields: [athleteId], references: [id])
   athleteId String?  @unique
 
