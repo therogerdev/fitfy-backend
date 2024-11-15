@@ -39,9 +39,12 @@ app.use(compression());
 app.use(limiter);
 
 app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Hello World!!" });
+  res.json({
+    message: "Welcome to the Fitfy API!",
+    status: "API is running smoothly",
+    version: "1.0.0"
+  });
 });
-
 // routes
 
 app.use("/api/athlete", athleteRouter);
