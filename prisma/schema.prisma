@@ -50,7 +50,6 @@ model Box {
 
 enum Role {
   ADMIN
-  MEMBER
   COACH
   ATHLETE
 }
