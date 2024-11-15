@@ -50,17 +50,16 @@ model Box {
 
 enum Role {
   ADMIN
+  MEMBER
   COACH
-  ATHLETE
 }
-
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   username  String   @unique
   isActive  Boolean  @default(true)
-  role      Role     @default(ATHLETE)
+  role      Role     @default(MEMBER)
   athlete   Athlete? @relation(fields: [athleteId], references: [id])
   athleteId String?  @unique
 
