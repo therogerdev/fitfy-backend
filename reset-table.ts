@@ -7,8 +7,6 @@ const cleanTable = async () => {
     }
   });
 
-  // await prisma.class.deleteMany();
-
   console.log("Table cleaned successfully");
 };
 
