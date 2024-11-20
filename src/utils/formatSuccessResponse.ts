@@ -23,7 +23,7 @@ export const formatSuccessResponse = (data: any, type: string) => {
   return {
     success: true,
     type,
-    total: (Array.isArray(formattedData) && formattedData.length) || 0,
+    total: Array.isArray(formattedData) ? formattedData.length : 1, // Return 1 if it's an object
     data: formattedData,
     meta: {
       timestamp: new Date().toISOString()
@@ -52,7 +52,7 @@ export const formatSuccessResponseWithPagination = (
   return {
     success: true,
     type,
-    total: paginationInfo.totalCount,
+    total: Array.isArray(formattedData) ? paginationInfo.totalCount : 1, // Return 1 if it's an object
     data: formattedData,
     pagination: {
       currentPage: paginationInfo.currentPage,
