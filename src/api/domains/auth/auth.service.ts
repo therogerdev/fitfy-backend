@@ -9,6 +9,7 @@ interface RegisterUserData {
   email: string;
   password: string;
   role: Prisma.UserCreateInput["role"];
+  boxId: string;
 }
 
 export const registerUser = async (data: RegisterUserData) => {
@@ -18,14 +19,14 @@ export const registerUser = async (data: RegisterUserData) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-     // Look for existing athlete
-     const athlete = await prisma.athlete.findUnique({
-        where: { email } // or any other identifying field
-      });
+    // Look for existing athlete
+    const athlete = await prisma.athlete.findUnique({
+      where: { email } // or any other identifying field
+    });
 
-      if (!athlete) {
-        throw new ApiError(httpStatus.NOT_FOUND, "Athlete not found!");
-      }
+    if (!athlete) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Athlete not found!");
+    }
 
     // Create user in the database
     const user = await prisma.user.create({
@@ -35,7 +36,8 @@ export const registerUser = async (data: RegisterUserData) => {
         password: hashedPassword,
         isActive: true,
         role,
-        athleteId: athlete.id
+        athleteId: athlete.id,
+        boxId: data.boxId
       }
     });
 

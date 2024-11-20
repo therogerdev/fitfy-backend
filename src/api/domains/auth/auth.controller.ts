@@ -9,11 +9,11 @@ import ApiError from "../../../utils/ApiError.js";
 import * as userService from "./auth.service.js"; // Adjust path as per your folder structure
 
 export const registerUser = async (req: Request, res: Response) => {
-  const { username, email, password, role } = req.body;
+  const { username, email, password, role, boxId } = req.body;
 
   try {
     const newUser = await userService.registerUser({
-      username, email, password, role,
+      username, email, password, role, boxId
 
     });
 
