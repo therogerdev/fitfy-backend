@@ -7,11 +7,9 @@ import { boxIdSchema, createBoxSchema } from "../validation/box.schema.js";
 export type CreateBoxData = z.infer<typeof createBoxSchema>;
 export type BoxIdSchema = z.infer<typeof boxIdSchema>;
 
-
-
 export const createBox = async (data: CreateBoxData) => {
   // Check if the box is not a headquarter and requires a valid headquarter reference
-  if (!data.headquarter && !data.headquarterBoxId) {
+  if (!data.isHeadquarter && !data.headquarterBoxId) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "A non-headquarter Box must reference a headquarter."
@@ -22,11 +20,11 @@ export const createBox = async (data: CreateBoxData) => {
   if (data.headquarterBoxId) {
     const headquarterBox = await prisma.box.findUnique({
       where: { id: data.headquarterBoxId },
-      select: { headquarter: true } // Explicitly select the `headquarter` field
+      select: { isHeadquarter: true } // Explicitly select the `headquarter` field
     });
 
     // Check if the referenced box exists and is a headquarter
-    if (!headquarterBox || !headquarterBox.headquarter) {
+    if (!headquarterBox || !headquarterBox.isHeadquarter) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Referenced Box must be a headquarter.");
     }
   }

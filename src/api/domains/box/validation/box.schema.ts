@@ -6,22 +6,15 @@ export const boxIdSchema = z.string().uuid();
 // Base schema for Box
 export const boxSchema = z.object({
   name: z.string(),
-  nickname: z.string().optional(),
-  street: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  postalCode: z.string().optional(),
-  country: z.string().optional(),
-  phone: z.string().optional(),
-  email: z.string().email().optional(),
-  website: z.string().url().optional(), // Website must be a valid URL if provided
-  headquarter: z.boolean(),
-  headquarterBoxId: z.string().uuid().optional(), // Optional, but validated if provided
-});
+  isHeadquarter: z.boolean(),
+  headquarterBoxId: z.string().uuid().nullable(), 
+  location: z.string(),
+  
+  });
 
 // Schema for creating a Box with conditional validation on `headquarterBoxId`
 export const createBoxSchema = boxSchema.refine(
-  (data) => data.headquarter || data.headquarterBoxId,
+  (data) => data.isHeadquarter || data.headquarterBoxId,
   {
     message: "Non-headquarter boxes must reference a headquarterBoxId",
     path: ["headquarterBoxId"], // Error will appear at this field
