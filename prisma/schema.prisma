@@ -22,30 +22,41 @@ model Programs {
   hasSchedule       Boolean? @default(false)
   totalClasses      Int?
   classesId         String?
-  Box               Box?     @relation(fields: [boxId], references: [id])
   boxId             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   classes           Class[]
 }
 
+// model Box {
+//   id               String     @id @default(uuid())
+//   name             String
+//   nickname         String?
+//   street           String?
+//   city             String?
+//   state            String?
+//   postalCode       String?
+//   country          String?
+//   email            String?    @unique
+//   website          String?
+//   phone            String?
+//   headquarter      Boolean    @default(false)
+//   headquarterBoxId String? // For non-headquarter boxes to reference a headquarter
+//   branches         Box[]      @relation("HeadquarterBranches") // For headquarter referencing its branches
+//   headquarterBox   Box?       @relation("HeadquarterBranches", fields: [headquarterBoxId], references: [id])
+//   Program          Programs[]
+// }
+
 model Box {
-  id               String     @id @default(uuid())
-  name             String
-  nickname         String?
-  street           String?
-  city             String?
-  state            String?
-  postalCode       String?
-  country          String?
-  email            String?    @unique
-  website          String?
-  phone            String?
-  headquarter      Boolean    @default(false)
-  headquarterBoxId String? // For non-headquarter boxes to reference a headquarter
-  branches         Box[]      @relation("HeadquarterBranches") // For headquarter referencing its branches
-  headquarterBox   Box?       @relation("HeadquarterBranches", fields: [headquarterBoxId], references: [id])
-  Program          Programs[]
+  id        String   @id @default(uuid())
+  name      String
+  location  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  users   User[]
+  classes Class[]
 }
 
 enum Role {
@@ -53,6 +64,7 @@ enum Role {
   MEMBER
   COACH
 }
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -66,6 +78,8 @@ model User {
   stripeCustomerId String? // Linked to Stripe Customer for membership payment
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  Box              Box?     @relation(fields: [boxId], references: [id])
+  boxId            String?
 }
 
 model Athlete {
@@ -148,6 +162,8 @@ model Class {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Box       Box?     @relation(fields: [boxId], references: [id])
+  boxId     String?
 }
 
 model ClassEnrollment {
