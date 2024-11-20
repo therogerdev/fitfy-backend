@@ -5,7 +5,7 @@ import prisma from "../../../../prismaClient.js";
 import ApiError from "../../../../utils/ApiError.js";
 
 
-export const getAllBoxes = catchAsync(async (req, res) => {
+export const listBoxes = catchAsync(async (req, res) => {
     const boxes = await prisma.box.findMany();
 
     if (!boxes) {
