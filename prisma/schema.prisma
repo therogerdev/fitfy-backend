@@ -48,11 +48,12 @@ model Programs {
 // }
 
 model Box {
-  id        String   @id @default(uuid())
-  name      String
-  location  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(uuid())
+  name          String
+  location      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  isHeadquarter Boolean
 
   // Relationships
   users   User[]
