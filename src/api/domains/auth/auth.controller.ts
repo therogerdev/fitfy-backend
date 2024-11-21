@@ -76,7 +76,9 @@ export const getProfile = async (req: Request, res: Response) => {
         role: true,
         username: true,
         athlete: true,
-        athleteId: true
+        athleteId: true,
+        boxId: true,
+        Box: true,
       }
     });
 
