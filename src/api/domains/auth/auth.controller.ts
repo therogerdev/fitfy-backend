@@ -13,15 +13,16 @@ export const registerUser = async (req: Request, res: Response) => {
 
   try {
     const newUser = await userService.registerUser({
-      username, email, password, role, boxId
-
+      username,
+      email,
+      password,
+      role,
+      boxId
     });
 
     if (!email || !password) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Something went wrong!");
     }
-
-
 
     res.status(201).json({ message: "User registered successfully", user: newUser });
   } catch (error: any) {
@@ -75,10 +76,22 @@ export const getProfile = async (req: Request, res: Response) => {
         isActive: true,
         role: true,
         username: true,
-        athlete: true,
+        athlete: {
+          include: {
+            memberships: {
+              select: {
+                id: true,
+                stripeSubscriptionId: true,
+                name: true,
+                startDate: true,
+                endDate: true,
+              }
+            }
+          }
+        },
         athleteId: true,
         boxId: true,
-        Box: true,
+        Box: true
       }
     });
 
