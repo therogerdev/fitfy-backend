@@ -143,10 +143,11 @@ model Class {
   recurrenceType    RecurrenceType?
   recurrenceEnd     DateTime?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Box       Box?     @relation(fields: [boxId], references: [id])
-  boxId     String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Box          Box?           @relation(fields: [boxId], references: [id])
+  boxId        String?
+  ClassWorkout ClassWorkout[]
 }
 
 model ClassEnrollment {
@@ -196,14 +197,28 @@ model Performance {
 }
 
 model Workout {
-  id          String       @id @default(uuid())
+  id          String           @id @default(uuid())
   type        WorkoutType?
   title       String
   description String?
-  createdAt   DateTime
   duration    Int
-  intensity   String?
+  intensity   WorkoutIntensity
   movements   Movement[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Optional Relationship
+  ClassWorkout ClassWorkout[]
+
+}
+
+model ClassWorkout {
+  id        String @id @default(uuid())
+  classId   String
+  workoutId String
+
+  class   Class   @relation(fields: [classId], references: [id])
+  workout Workout @relation(fields: [workoutId], references: [id])
 }
 
 model Movement {
@@ -215,6 +230,12 @@ model Movement {
   category  String
   workoutId String?
   Workout   Workout? @relation(fields: [workoutId], references: [id])
+}
+
+enum WorkoutIntensity {
+  Low
+  Moderate
+  High
 }
 
 enum WorkoutType {
