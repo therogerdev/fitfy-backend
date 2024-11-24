@@ -202,7 +202,7 @@ model Workout {
   title       String
   description String?
   duration    Int
-  intensity   WorkoutIntensity
+  intensity   WorkoutIntensity?
   movements   Movement[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt

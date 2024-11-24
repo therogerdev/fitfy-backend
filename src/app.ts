@@ -17,7 +17,7 @@ import { enrollmentRouter } from "./routes/enrollmentRouter.js";
 import { membershipRouter, webhookRouter } from "./routes/membershipRouter.js";
 import { movementRouter, movementsRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
-import { workoutRouter, workoutsRouter } from "./routes/workoutRouter.js";
+import { workoutRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
 
 const app: Express = express();
@@ -49,7 +49,6 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/athlete", athleteRouter);
 app.use("/api/box", boxRouter);
-app.use("/api/workouts", workoutsRouter);
 app.use("/api/workout", workoutRouter);
 app.use("/api/programs", programsRouter);
 app.use("/api/program", programRouter);
