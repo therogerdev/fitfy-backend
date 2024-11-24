@@ -1,6 +1,6 @@
 // prisma/seed.ts
-import { MovementType, PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
+import { PrismaClient } from "@prisma/client";
 // TODO: create file for each helper function
 
 // Helper function to generate random gym-like names
