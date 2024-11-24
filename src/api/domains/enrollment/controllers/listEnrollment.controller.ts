@@ -36,12 +36,10 @@ export const listEnrollmentService = async (
         select: {
           firstName: true,
           lastName: true,
-          email: true
+          email: true,
+          profileImageUrl: true
         }
       }
     }
   });
 };
-
-
-

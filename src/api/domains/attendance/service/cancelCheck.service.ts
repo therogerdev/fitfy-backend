@@ -9,7 +9,8 @@ export const cancelCheckService = async (id: string) => {
     },
     data: {
       checkInAt: null,
-      isCheckedIn: false
+      isCheckedIn: false,
+      attendanceStatus: null
     }
   });
 };
