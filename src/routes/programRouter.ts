@@ -9,7 +9,7 @@ import {
 } from "../api/domains/Program/program.controller.js";
 
 const programsRouter = Router();
-programsRouter.get("/", authenticateJWT, getAllPrograms);
+programsRouter.get("/", getAllPrograms);
 
 const programRouter = Router();
 

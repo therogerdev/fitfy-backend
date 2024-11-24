@@ -197,19 +197,20 @@ model Performance {
 }
 
 model Workout {
-  id          String           @id @default(uuid())
+  id          String            @id @default(uuid())
   type        WorkoutType?
   title       String
   description String?
   duration    Int
   intensity   WorkoutIntensity?
-  movements   Movement[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   // Optional Relationship
   ClassWorkout ClassWorkout[]
+  // Relation to Movements
 
+  movements Movement[]
 }
 
 model ClassWorkout {
@@ -222,14 +223,27 @@ model ClassWorkout {
 }
 
 model Movement {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  id        String       @id @default(uuid())
   name      String
-  weight    String?
-  reps      String[]
-  category  String
+  category  MovementType
   workoutId String?
-  Workout   Workout? @relation(fields: [workoutId], references: [id])
+  Workout   Workout?     @relation(fields: [workoutId], references: [id])
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+enum MovementType {
+  CARDIO // Cardio movements like Running, Rowing
+  STRENGTH // Strength movements like Deadlift, Squat
+  FLEXIBILITY // Flexibility movements like Yoga, Stretching
+  GYMNASTICS // Gymnastics movements like Pull-Ups, Handstands
+  OLYMPIC_LIFTING // Olympic lifts like Snatch, Clean and Jerk
+  ACCESSORY // Accessory movements like Dumbbell Rows, Tricep Dips
+  CORE // Core movements like Planks, Sit-Ups
+  BALANCE // Balance exercises like Single-Leg Deadlift
+  ENDURANCE // Endurance movements like Long Runs
+  POWER // Power movements like Box Jumps, Sprints
+  BODYWEIGHT // Bodyweight movements like Push-Ups, Air Squats
 }
 
 enum WorkoutIntensity {
