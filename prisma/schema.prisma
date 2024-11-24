@@ -168,6 +168,7 @@ model ClassEnrollment {
 enum AttendanceStatus {
   ATTENDED
   MISSED
+  BOOKED
 }
 
 enum ClassEnrollmentStatus {
@@ -221,7 +222,6 @@ enum WorkoutType {
   AMRAP
   EMOM
   RFT
-  Tabata
   Chipper
   Ladder
   Strength

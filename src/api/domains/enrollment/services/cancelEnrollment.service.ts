@@ -27,7 +27,7 @@ export const cancelEnrollment = async (id: string, classId: string) => {
     // Cancel the enrollment
     const canceledEnrollment = await prisma.classEnrollment.update({
       where: { id },
-      data: { status: ClassEnrollmentStatus.CANCELED, isCheckedIn: null, checkInAt: null }
+      data: { status: ClassEnrollmentStatus.CANCELED, isCheckedIn: null, checkInAt: null, attendanceStatus: null }
     });
 
     // Verify that the class exists before attempting to decrement activeEnrollments

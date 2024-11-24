@@ -11,19 +11,21 @@ export const searchAthleteService = async (params: {
   const { name, skip, take, orderBy } = params;
 
   const athletes = await prisma.athlete.findMany({
-    where: {
-      AND: [
-        name
-          ? {
-              OR: [
-                { firstName: { contains: name, mode: "insensitive" } },
-                { lastName: { contains: name, mode: "insensitive" } },
-                { phone: { contains: name, mode: "insensitive" } }
-              ]
-            }
-          : {}
-      ]
-    },
+    where: name?.toLowerCase() === "all"
+      ? {} // No filters, return all athletes
+      : {
+          AND: [
+            name
+              ? {
+                  OR: [
+                    { firstName: { contains: name, mode: "insensitive" } },
+                    { lastName: { contains: name, mode: "insensitive" } },
+                    { phone: { contains: name, mode: "insensitive" } }
+                  ]
+                }
+              : {}
+          ]
+        },
     skip: skip || 0,
     take: take || 10,
     orderBy: orderBy || { createdAt: "desc" }
