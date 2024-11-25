@@ -5,7 +5,7 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'MEMBER', 'COACH');
 CREATE TYPE "ClassType" AS ENUM ('CROSSFIT', 'YOGA', 'HIIT', 'WEIGHTLIFTING', 'MUAYTHAI');
 
 -- CreateEnum
-CREATE TYPE "AttendanceStatus" AS ENUM ('ATTENDED', 'MISSED');
+CREATE TYPE "AttendanceStatus" AS ENUM ('ATTENDED', 'MISSED', 'BOOKED');
 
 -- CreateEnum
 CREATE TYPE "ClassEnrollmentStatus" AS ENUM ('ENROLLED', 'CANCELED', 'WAITLISTED');
@@ -14,7 +14,13 @@ CREATE TYPE "ClassEnrollmentStatus" AS ENUM ('ENROLLED', 'CANCELED', 'WAITLISTED
 CREATE TYPE "RecurrenceType" AS ENUM ('DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'CUSTOM');
 
 -- CreateEnum
-CREATE TYPE "WorkoutType" AS ENUM ('ForTime', 'AMRAP', 'EMOM', 'RFT', 'Tabata', 'Chipper', 'Ladder', 'Strength', 'Skill');
+CREATE TYPE "MovementType" AS ENUM ('CARDIO', 'STRENGTH', 'FLEXIBILITY', 'GYMNASTICS', 'OLYMPIC_LIFTING', 'ACCESSORY', 'CORE', 'BALANCE', 'ENDURANCE', 'POWER', 'BODYWEIGHT');
+
+-- CreateEnum
+CREATE TYPE "WorkoutIntensity" AS ENUM ('Low', 'Moderate', 'High');
+
+-- CreateEnum
+CREATE TYPE "WorkoutType" AS ENUM ('ForTime', 'AMRAP', 'EMOM', 'RFT', 'Chipper', 'Ladder', 'Strength', 'Skill');
 
 -- CreateEnum
 CREATE TYPE "MembershipType" AS ENUM ('DAY', 'MONTH', 'UNIT_PACKAGE', 'TRIMESTER', 'SEMESTER', 'SUBSCRIPTION');
@@ -49,6 +55,8 @@ CREATE TABLE "Box" (
     "location" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "isHeadquarter" BOOLEAN NOT NULL,
+    "headquarterBoxId" TEXT,
 
     CONSTRAINT "Box_pkey" PRIMARY KEY ("id")
 );
@@ -160,9 +168,16 @@ CREATE TABLE "ClassEnrollment" (
 CREATE TABLE "Performance" (
     "id" TEXT NOT NULL,
     "athleteId" TEXT NOT NULL,
-    "workout" TEXT NOT NULL,
-    "result" TEXT NOT NULL,
+    "movementId" TEXT NOT NULL,
+    "workoutId" TEXT,
     "date" TIMESTAMP(3) NOT NULL,
+    "sets" INTEGER,
+    "reps" INTEGER,
+    "weight" DOUBLE PRECISION,
+    "weightUnit" TEXT,
+    "notes" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Performance_pkey" PRIMARY KEY ("id")
 );
@@ -172,25 +187,48 @@ CREATE TABLE "Workout" (
     "id" TEXT NOT NULL,
     "type" "WorkoutType",
     "title" TEXT NOT NULL,
+    "version" INTEGER NOT NULL DEFAULT 1,
+    "originalWorkoutId" TEXT,
     "description" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL,
     "duration" INTEGER NOT NULL,
-    "intensity" TEXT,
+    "intensity" "WorkoutIntensity",
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Workout_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
+CREATE TABLE "WorkoutInstruction" (
+    "id" TEXT NOT NULL,
+    "workoutId" TEXT NOT NULL,
+    "movementId" TEXT NOT NULL,
+    "reps" INTEGER,
+    "sets" INTEGER,
+    "weight" DOUBLE PRECISION,
+    "weightUnit" TEXT,
+    "instructions" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "WorkoutInstruction_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Movement" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
-    "weight" TEXT,
-    "reps" TEXT[],
-    "category" TEXT NOT NULL,
-    "workoutId" TEXT,
+    "category" "MovementType" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Movement_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_ClassWorkouts" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -210,6 +248,12 @@ CREATE UNIQUE INDEX "Athlete_userId_key" ON "Athlete"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Athlete_email_key" ON "Athlete"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_ClassWorkouts_AB_unique" ON "_ClassWorkouts"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_ClassWorkouts_B_index" ON "_ClassWorkouts"("B");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_athleteId_fkey" FOREIGN KEY ("athleteId") REFERENCES "Athlete"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -239,4 +283,13 @@ ALTER TABLE "ClassEnrollment" ADD CONSTRAINT "ClassEnrollment_classId_fkey" FORE
 ALTER TABLE "Performance" ADD CONSTRAINT "Performance_athleteId_fkey" FOREIGN KEY ("athleteId") REFERENCES "Athlete"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Movement" ADD CONSTRAINT "Movement_workoutId_fkey" FOREIGN KEY ("workoutId") REFERENCES "Workout"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Performance" ADD CONSTRAINT "Performance_movementId_fkey" FOREIGN KEY ("movementId") REFERENCES "Movement"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WorkoutInstruction" ADD CONSTRAINT "WorkoutInstruction_movementId_fkey" FOREIGN KEY ("movementId") REFERENCES "Movement"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ClassWorkouts" ADD CONSTRAINT "_ClassWorkouts_A_fkey" FOREIGN KEY ("A") REFERENCES "Class"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_ClassWorkouts" ADD CONSTRAINT "_ClassWorkouts_B_fkey" FOREIGN KEY ("B") REFERENCES "Workout"("id") ON DELETE CASCADE ON UPDATE CASCADE;

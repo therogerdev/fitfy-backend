@@ -17,12 +17,7 @@ export const listWorkoutService = async (
     take: validatedLimit,
     orderBy: { createdAt: "desc" }, // Order by creation date
     include: {
-      movements: {
-        select: {
-          id: true,
-          name: true,
-        }
-      }
+      movements: true,
     }
   });
 

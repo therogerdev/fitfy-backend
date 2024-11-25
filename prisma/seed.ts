@@ -1,6 +1,6 @@
 // prisma/seed.ts
 import { faker } from "@faker-js/faker";
-import { PrismaClient } from "@prisma/client";
+import { MovementType, PrismaClient } from "@prisma/client";
 // TODO: create file for each helper function
 
 // Helper function to generate random gym-like names
@@ -21,165 +21,139 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  // await prisma.movement.createMany({
-  //   data: [
-  //     { name: "Snatch", category: MovementType.OLYMPIC_LIFTING },
-  //     { name: "Clean and Jerk", category: MovementType.OLYMPIC_LIFTING },
-  //     { name: "Deadlift", category: MovementType.STRENGTH },
-  //     { name: "Back Squat", category: MovementType.STRENGTH },
-  //     { name: "Front Squat", category: MovementType.STRENGTH },
-  //     { name: "Overhead Squat", category: MovementType.OLYMPIC_LIFTING },
-  //     { name: "Thruster", category: MovementType.STRENGTH },
-  //     { name: "Power Clean", category: MovementType.OLYMPIC_LIFTING },
-  //     { name: "Hang Snatch", category: MovementType.OLYMPIC_LIFTING },
-  //     { name: "Sumo Deadlift High Pull", category: MovementType.STRENGTH },
-  //     { name: "Pull-ups", category: MovementType.GYMNASTICS },
-  //     { name: "Chest to Bar Pull-ups", category: MovementType.GYMNASTICS },
-  //     { name: "Muscle-ups (Ring and Bar)", category: MovementType.GYMNASTICS },
-  //     { name: "Handstand Push-ups", category: MovementType.GYMNASTICS },
-  //     { name: "Toes to Bar", category: MovementType.CORE },
-  //     { name: "Ring Dips", category: MovementType.GYMNASTICS },
-  //     { name: "Pistols (Single-leg Squats)", category: MovementType.BALANCE },
-  //     { name: "Handstand Walks", category: MovementType.BALANCE },
-  //     { name: "Rope Climbs", category: MovementType.GYMNASTICS },
-  //     { name: "L-Sits", category: MovementType.CORE },
-  //     { name: "Running", category: MovementType.CARDIO },
-  //     { name: "Rowing", category: MovementType.CARDIO },
-  //     { name: "Biking (Assault Bike)", category: MovementType.ENDURANCE },
-  //     { name: "Ski Erg", category: MovementType.CARDIO },
-  //     { name: "Double Unders", category: MovementType.CARDIO },
-  //     { name: "Box Jumps", category: MovementType.POWER },
-  //     { name: "Burpees", category: MovementType.BODYWEIGHT },
-  //     { name: "Wall Balls", category: MovementType.STRENGTH },
-  //     { name: "Shuttle Runs", category: MovementType.CARDIO },
-  //     { name: "Jump Rope", category: MovementType.CARDIO },
-  //     { name: "Plank", category: MovementType.CORE },
-  //     { name: "Sit-Ups", category: MovementType.CORE },
-  //     { name: "Dumbbell Rows", category: MovementType.ACCESSORY },
-  //     { name: "Tricep Dips", category: MovementType.ACCESSORY },
-  //     { name: "Yoga", category: MovementType.FLEXIBILITY },
-  //     { name: "Stretching", category: MovementType.FLEXIBILITY }
-  //   ]
-  // });
+  await prisma.movement.createMany({
+    data: [
+      { name: "Empty Barbell", category: MovementType.STRENGTH },
+      { name: "Hang Power Snatch", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Snatch Grip Push Press", category: MovementType.STRENGTH },
+      { name: "Hang Power Clean", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Hang Squat Cleans", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Push Press", category: MovementType.STRENGTH },
+      { name: "Thrusters", category: MovementType.STRENGTH },
+      { name: "Split Jerk", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Power Snatch", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Power Clean", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Snatch", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Clean and Jerk", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Deadlift", category: MovementType.STRENGTH },
+      { name: "Back Squat", category: MovementType.STRENGTH },
+      { name: "Front Squat", category: MovementType.STRENGTH },
+      { name: "Overhead Squat", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Thruster", category: MovementType.STRENGTH },
+      { name: "Hang Snatch", category: MovementType.OLYMPIC_LIFTING },
+      { name: "Sumo Deadlift High Pull", category: MovementType.STRENGTH },
+      { name: "Pull-ups", category: MovementType.GYMNASTICS },
+      { name: "Chest to Bar Pull-ups", category: MovementType.GYMNASTICS },
+      { name: "Muscle-ups (Ring and Bar)", category: MovementType.GYMNASTICS },
+      { name: "Handstand Push-ups", category: MovementType.GYMNASTICS },
+      { name: "Toes to Bar", category: MovementType.CORE },
+      { name: "Ring Dips", category: MovementType.GYMNASTICS },
+      { name: "Pistols (Single-leg Squats)", category: MovementType.BALANCE },
+      { name: "Handstand Walks", category: MovementType.BALANCE },
+      { name: "Rope Climbs", category: MovementType.GYMNASTICS },
+      { name: "L-Sits", category: MovementType.CORE },
+      { name: "Running", category: MovementType.CARDIO },
+      { name: "Rowing", category: MovementType.CARDIO },
+      { name: "Biking (Assault Bike)", category: MovementType.ENDURANCE },
+      { name: "Ski Erg", category: MovementType.CARDIO },
+      { name: "Double Under", category: MovementType.CARDIO },
+      { name: "Box Jumps", category: MovementType.POWER },
+      { name: "Burpees", category: MovementType.BODYWEIGHT },
+      { name: "Wall Balls", category: MovementType.STRENGTH },
+      { name: "Shuttle Runs", category: MovementType.CARDIO },
+      { name: "Jump Rope", category: MovementType.CARDIO },
+      { name: "Plank", category: MovementType.CORE },
+      { name: "Sit-Ups", category: MovementType.CORE },
+      { name: "Dumbbell Rows", category: MovementType.ACCESSORY },
+      { name: "Tricep Dips", category: MovementType.ACCESSORY },
+      { name: "Yoga", category: MovementType.FLEXIBILITY },
+      { name: "Stretching", category: MovementType.FLEXIBILITY }
+    ]
+  });
 
-  // await prisma.workout.createMany({
-  //   data: [
-  //     {
-  //       title: "Fran",
-  //       description: "21-15-9 reps, for time of: Thrusters (95 lbs), Pull-ups",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     },
-  //     {
-  //       title: "Grace",
-  //       description: "For time: 30 Clean & Jerks (135 lbs)",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     },
-  //     {
-  //       title: "Cindy",
-  //       description: "20 minute AMRAP of: 5 Pull-ups, 10 Push-ups, 15 Air Squats",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "AMRAP"
-  //     },
-  //     {
-  //       title: "Murph",
-  //       description: "For time: 1 mile Run, 100 Pull-ups, 200 Push-ups, 300 Air Squats, 1 mile Run",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10
-  //     },
-  //     {
-  //       title: "Helen",
-  //       description:
-  //         "3 rounds for time of: Run 400 meters, 21 Kettlebell Swings (53 lbs), 12 Pull-ups",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     },
-  //     {
-  //       title: "Annie",
-  //       description: "50-40-30-20-10 reps, for time of: Double Unders, Sit-ups",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     },
-  //     {
-  //       title: "Diane",
-  //       description: "21-15-9 reps, for time of: Deadlifts (225 lbs), Handstand Push-ups",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     },
-  //     {
-  //       title: "Nancy",
-  //       description: "5 rounds for time of: Run 400 meters, 15 Overhead Squats (95 lbs)",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     },
-  //     {
-  //       title: "Karen",
-  //       description: "For time: 150 Wall Balls (20 lbs)",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     },
-  //     {
-  //       title: "Isabel",
-  //       description: "For time: 30 Snatches (135 lbs)",
-  //       createdAt: new Date("2021-01-01T00:00:00Z"),
-  //       duration: 10,
-  //       type: "ForTime"
-  //     }
-  //   ]
-  // });
+  await prisma.box.createMany({
+    data: [
+      { name: faker.company.name(), isHeadquarter: true, location: faker.location.streetAddress() }
+    ]
+  });
 
-  // await prisma.box.createMany({
-  //   data: [
-  //     {
-  //       name: generateGymName(),
-  //       nickname: faker.company.catchPhrase(),
-  //       street: faker.location.secondaryAddress(),
-  //       city: faker.location.city(),
-  //       state: faker.location.state(),
-  //       postalCode: faker.location.zipCode(),
-  //       country: faker.location.country(),
-  //       email: faker.internet.email(),
-  //       website: faker.internet.url(),
-  //       phone: faker.phone.number()
-  //     },
-  //     {
-  //       name: generateGymName(),
-  //       nickname: faker.company.catchPhrase(),
-  //       street: faker.location.secondaryAddress(),
-  //       city: faker.location.city(),
-  //       state: faker.location.state(),
-  //       postalCode: faker.location.zipCode(),
-  //       country: faker.location.country(),
-  //       email: faker.internet.email(),
-  //       website: faker.internet.url(),
-  //       phone: faker.phone.number()
-  //     },
-  //     {
-  //       name: generateGymName(),
-  //       nickname: faker.company.catchPhrase(),
-  //       street: faker.location.secondaryAddress(),
-  //       city: faker.location.city(),
-  //       state: faker.location.state(),
-  //       postalCode: faker.location.zipCode(),
-  //       country: faker.location.country(),
-  //       email: faker.internet.email(),
-  //       website: faker.internet.url(),
-  //       phone: faker.phone.number()
-  //     }
-  //   ]
-  // });
+  await prisma.workout.createMany({
+    data: [
+      {
+        title: "Rogerio",
+        description: "rhis is the descriton",
+        duration: 45,
+        type: "ForTime",
+        intensity: "Moderate",
+        version: 1
+      },
+      {
+        title: "Fran",
+        description: "21-15-9 reps, for time of: Thrusters (95 lbs), Pull-ups",
+        duration: 10,
+        type: "ForTime",
+        intensity: "High",
+        version: 1
+      },
+      {
+        title: "Grace",
+        description: "For time: 30 Clean & Jerks (135 lbs)",
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Cindy",
+        description: "20 minute AMRAP of: 5 Pull-ups, 10 Push-ups, 15 Air Squats",
+        duration: 10,
+        type: "AMRAP"
+      },
+      {
+        title: "Murph",
+        description: "For time: 1 mile Run, 100 Pull-ups, 200 Push-ups, 300 Air Squats, 1 mile Run",
+        duration: 10
+      },
+      {
+        title: "Helen",
+        description:
+          "3 rounds for time of: Run 400 meters, 21 Kettlebell Swings (53 lbs), 12 Pull-ups",
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Annie",
+        description: "50-40-30-20-10 reps, for time of: Double Unders, Sit-ups",
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Diane",
+        description: "21-15-9 reps, for time of: Deadlifts (225 lbs), Handstand Push-ups",
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Nancy",
+        description: "5 rounds for time of: Run 400 meters, 15 Overhead Squats (95 lbs)",
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Karen",
+        description: "For time: 150 Wall Balls (20 lbs)",
+        duration: 10,
+        type: "ForTime"
+      },
+      {
+        title: "Isabel",
+        description: "For time: 30 Snatches (135 lbs)",
+        duration: 10,
+        type: "ForTime"
+      }
+    ]
+  });
 
   await prisma.athlete.createMany({
-    data: Array.from({ length: 40 }, () => ({
+    data: Array.from({ length: 200 }, () => ({
       firstName: faker.person.firstName(),
       lastName: faker.person.lastName(),
       profileImageUrl: faker.image.avatar(),
@@ -188,6 +162,57 @@ async function main() {
       isCoach: false
     }))
   });
+
+  //   data: [
+  //     {
+  //       name: generateGymName(),
+  //       nickname: faker.company.catchPhrase(),
+  //       street: faker.location.secondaryAddress(),
+  //       city: faker.location.city(),
+  //       state: faker.location.state(),
+  //       postalCode: faker.location.zipCode(),
+  //       country: faker.location.country(),
+  //       email: faker.internet.email(),
+  //       website: faker.internet.url(),
+  //       phone: faker.phone.number()
+  //     },
+  //     {
+  //       name: generateGymName(),
+  //       nickname: faker.company.catchPhrase(),
+  //       street: faker.location.secondaryAddress(),
+  //       city: faker.location.city(),
+  //       state: faker.location.state(),
+  //       postalCode: faker.location.zipCode(),
+  //       country: faker.location.country(),
+  //       email: faker.internet.email(),
+  //       website: faker.internet.url(),
+  //       phone: faker.phone.number()
+  //     },
+  //     {
+  //       name: generateGymName(),
+  //       nickname: faker.company.catchPhrase(),
+  //       street: faker.location.secondaryAddress(),
+  //       city: faker.location.city(),
+  //       state: faker.location.state(),
+  //       postalCode: faker.location.zipCode(),
+  //       country: faker.location.country(),
+  //       email: faker.internet.email(),
+  //       website: faker.internet.url(),
+  //       phone: faker.phone.number()
+  //     }
+  //   ]
+  // });
+
+  // await prisma.athlete.createMany({
+  //   data: Array.from({ length: 100 }, () => ({
+  //     firstName: faker.person.firstName(),
+  //     lastName: faker.person.lastName(),
+  //     profileImageUrl: faker.image.avatar(),
+  //     email: faker.internet.email(),
+  //     gender: faker.person.sex(),
+  //     isCoach: false
+  //   }))
+  // });
 
   // await prisma.programs.createMany({
   //   data: [

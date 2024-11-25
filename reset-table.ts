@@ -1,13 +1,10 @@
 import prisma from "./src/prismaClient";
 
 const cleanTable = async () => {
-  await prisma.classEnrollment.deleteMany({
-    where: {
-      classId: "ac17f9af-82e2-4158-8377-ecc8dc9e6b1c"
-    }
-  });
+  const clean = await prisma.movement.deleteMany();
 
-  console.log("Table cleaned successfully");
+
+  console.log(clean);
 };
 
 cleanTable()
