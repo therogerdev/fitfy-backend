@@ -4,11 +4,12 @@ import * as movementService from "./movement.service.js";
 import ApiError from "../../../utils/ApiError.js";
 import httpStatus from "http-status";
 import { movementIdSchema } from "./movement.schema.js";
+import { MovementType } from "@prisma/client";
 
 export const getAllMovements = catchAsync(async (req: Request, res: Response) => {
   const { category } = req.query;
 
-  const movements = await movementService.getAllMovements(category as string);
+  const movements = await movementService.getAllMovements(category as MovementType );
 
   if (!movements) {
     throw new ApiError(httpStatus.NOT_FOUND, "Movements not found");

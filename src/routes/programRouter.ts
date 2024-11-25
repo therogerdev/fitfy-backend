@@ -14,7 +14,7 @@ programsRouter.get("/", getAllPrograms);
 const programRouter = Router();
 
 programRouter.get("/:slug", authenticateJWT, getProgramBySlug);
-programRouter.post("/create", authenticateJWT, createProgram);
+programRouter.post("/create", createProgram);
 programRouter.patch("/:id", authenticateJWT, updateProgram);
 programRouter.delete("/:id", authenticateJWT, deleteProgram);
 
