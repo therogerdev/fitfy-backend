@@ -4,7 +4,7 @@ import prisma from "../../../../prismaClient.js";
 export const listWorkoutService = async (
   page = 1,
   limit = 10,
-  filters?: Prisma.WorkoutWhereInput 
+  filters?: Prisma.WorkoutWhereInput
 ) => {
   // Ensure page and limit are valid
   const validatedPage = Math.max(page, 1);
@@ -16,10 +16,18 @@ export const listWorkoutService = async (
     skip: (validatedPage - 1) * validatedLimit,
     take: validatedLimit,
     orderBy: { createdAt: "desc" }, // Order by creation date
+    include: {
+      movements: {
+        select: {
+          id: true,
+          name: true,
+        }
+      }
+    }
   });
 
   const totalCount = await prisma.workout.count({
-    where: filters, // Apply the same filters to count the total
+    where: filters 
   });
 
   return {
@@ -27,6 +35,6 @@ export const listWorkoutService = async (
     totalCount,
     rowsPerPage: validatedLimit,
     currentPage: validatedPage,
-    totalPages: Math.ceil(totalCount / validatedLimit),
+    totalPages: Math.ceil(totalCount / validatedLimit)
   };
 };

@@ -143,13 +143,14 @@ model Class {
   recurrenceType    RecurrenceType?
   recurrenceEnd     DateTime?
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Box          Box?           @relation(fields: [boxId], references: [id])
-  boxId        String?
-  ClassWorkout ClassWorkout[]
-}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Box       Box?     @relation(fields: [boxId], references: [id])
+  boxId     String?
 
+  workoutId String?   // Foreign key to Workout
+  workout   Workout?  @relation("WorkoutClasses", fields: [workoutId], references: [id])
+}
 model ClassEnrollment {
   id               String                 @id @default(uuid())
   athleteId        String
@@ -197,39 +198,45 @@ model Performance {
 }
 
 model Workout {
-  id          String           @id @default(uuid())
-  type        WorkoutType?
-  title       String
-  description String?
-  duration    Int
-  intensity   WorkoutIntensity?
-  movements   Movement[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  id                String            @id @default(uuid())
+  type              WorkoutType?
+  title             String
+  version           Int               @default(1) // Indicates the version of the workout
+  originalWorkoutId String?           // Reference to the original workout if it's a clone
+  description       String?
+  duration          Int
+  intensity         WorkoutIntensity?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 
-  // Optional Relationship
-  ClassWorkout ClassWorkout[]
-
-}
-
-model ClassWorkout {
-  id        String @id @default(uuid())
-  classId   String
-  workoutId String
-
-  class   Class   @relation(fields: [classId], references: [id])
-  workout Workout @relation(fields: [workoutId], references: [id])
+  movements Movement[] @relation("WorkoutMovements") // One-to-many relation with Movements
+  classes   Class[]     @relation("WorkoutClasses")  // One-to-many relation with Classes
 }
 
 model Movement {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  name      String
-  weight    String?
-  reps      String[]
-  category  String
+  id           String       @id @default(uuid())
+  name         String
+  category     MovementType
+  instructions String? // Optional detailed instructions for the movement
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
   workoutId String?
-  Workout   Workout? @relation(fields: [workoutId], references: [id])
+  workout   Workout? @relation("WorkoutMovements", fields: [workoutId], references: [id])
+}
+
+enum MovementType {
+  CARDIO // Cardio movements like Running, Rowing
+  STRENGTH // Strength movements like Deadlift, Squat
+  FLEXIBILITY // Flexibility movements like Yoga, Stretching
+  GYMNASTICS // Gymnastics movements like Pull-Ups, Handstands
+  OLYMPIC_LIFTING // Olympic lifts like Snatch, Clean and Jerk
+  ACCESSORY // Accessory movements like Dumbbell Rows, Tricep Dips
+  CORE // Core movements like Planks, Sit-Ups
+  BALANCE // Balance exercises like Single-Leg Deadlift
+  ENDURANCE // Endurance movements like Long Runs
+  POWER // Power movements like Box Jumps, Sprints
+  BODYWEIGHT // Bodyweight movements like Push-Ups, Air Squats
 }
 
 enum WorkoutIntensity {
