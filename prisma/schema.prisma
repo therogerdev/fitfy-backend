@@ -149,6 +149,7 @@ model Class {
   boxId     String?
 
   // Many-to-Many Relation with Workout
+  Performance Performance[]
 }
 
 model ClassEnrollment {
@@ -192,6 +193,7 @@ model Performance {
   athleteId  String // Reference to the Athlete logging the performance
   movementId String // Reference to the Movement
   workoutId  String? // Reference to the associated Workout (optional)
+  classId    String? // Optional reference to the Class
   date       DateTime
   sets       Int?
   reps       Int?
@@ -204,6 +206,7 @@ model Performance {
   athlete  Athlete  @relation(fields: [athleteId], references: [id])
   movement Movement @relation(fields: [movementId], references: [id])
   workout  Workout? @relation(fields: [workoutId], references: [id])
+  class    Class?   @relation(fields: [classId], references: [id])
 }
 
 model Workout {
