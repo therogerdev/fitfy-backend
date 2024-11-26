@@ -4,11 +4,7 @@ import prisma from "../../../../prismaClient.js";
 import ApiError from "../../../../utils/ApiError.js";
 import { updateAthleteSchema } from "../validation/athlete.schema.js";
 
-
-
 type CreateAthleteData = z.infer<typeof updateAthleteSchema>;
-
-
 
 export const createAthlete = async (data: CreateAthleteData) => {
   const existingAthlete = await prisma.athlete.findUnique({
