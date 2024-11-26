@@ -1,35 +1,44 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../../../../prismaClient.js";
 
-export const searchAthleteService = async (params: {
+export const searchAthleteService = async ({
+  name,
+  page = 1,
+  limit = 10,
+}: {
   name?: string;
-  phone?: string;
-  skip?: number;
-  take?: number;
-  orderBy?: Prisma.AthleteOrderByWithRelationInput;
+  page?: number;
+  limit?: number;
 }) => {
-  const { name, skip, take, orderBy } = params;
+  const validatedPage = Math.max(page, 1);
+  const validatedLimit = Math.max(limit, 1);
+
+  const where:Prisma.AthleteWhereInput =
+    name?.toLowerCase() === "all"
+      ? {}
+      : {
+          OR: [
+            { firstName: { contains: name, mode: "insensitive" } },
+            { lastName: { contains: name, mode: "insensitive" } },
+            { email: { contains: name, mode: "insensitive" } },
+            { phone: { contains: name, mode: "insensitive" } },
+          ],
+        };
 
   const athletes = await prisma.athlete.findMany({
-    where: name?.toLowerCase() === "all"
-      ? {} // No filters, return all athletes
-      : {
-          AND: [
-            name
-              ? {
-                  OR: [
-                    { firstName: { contains: name, mode: "insensitive" } },
-                    { lastName: { contains: name, mode: "insensitive" } },
-                    { phone: { contains: name, mode: "insensitive" } }
-                  ]
-                }
-              : {}
-          ]
-        },
-    skip: skip || 0,
-    take: take || 10,
-    orderBy: orderBy || { createdAt: "desc" }
+    where,
+    skip: (validatedPage - 1) * validatedLimit,
+    take: validatedLimit,
+    orderBy: { createdAt: "desc" },
   });
 
-  return athletes;
+  const totalCount = await prisma.athlete.count({ where });
+
+  return {
+    athletes,
+    totalCount,
+    rowsPerPage: validatedLimit,
+    currentPage: validatedPage,
+    totalPages: Math.ceil(totalCount / validatedLimit),
+  };
 };
