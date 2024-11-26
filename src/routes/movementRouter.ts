@@ -1,10 +1,13 @@
 import { Router } from "express";
-import { getAllMovements, getMovementById } from "../api/domains/Movement/movement.controller.js";
-
-const movementsRouter = Router();
-movementsRouter.get("/", getAllMovements);
+import {
+  createManyMovements,
+  getAllMovements,
+  getMovementById
+} from "../api/domains/Movement/controllers/movement.controller.js";
 
 const movementRouter = Router();
+movementRouter.get("/list", getAllMovements);
 movementRouter.get("/:id", getMovementById);
+movementRouter.post("/create", createManyMovements);
 
-export { movementRouter, movementsRouter };
+export { movementRouter };

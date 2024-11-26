@@ -6,12 +6,13 @@ export const getClassByIdService = async (id: string) => {
     include: {
       workouts: {
         include: {
-          movements: { // Assuming WorkoutInstruction is the correct intermediary
+          movements: {
             include: {
-              movement: true // Fetch Movement details from WorkoutInstruction
-            }
-          }
-        }
+              movement: true,
+            },
+            orderBy: { order: "asc" }, // Ensure movements are returned in the correct order
+          },
+        },
       },
       program: { select: { name: true } },
       enrollments: {
@@ -20,11 +21,11 @@ export const getClassByIdService = async (id: string) => {
             select: {
               id: true,
               firstName: true,
-              lastName: true
-            }
-          }
-        }
-      }
-    }
+              lastName: true,
+            },
+          },
+        },
+      },
+    },
   });
 };

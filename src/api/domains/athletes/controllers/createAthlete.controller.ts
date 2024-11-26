@@ -12,39 +12,45 @@ export const createAthlete = catchAsync(async (req: Request, res: Response) => {
   // Validate incoming athlete data
   const validatedAthlete = createAthleteSchema.parse(athleteData);
 
-  // Create athlete in your database
-  const athlete = await athleteService.createAthlete(validatedAthlete);
+  const { firstName, lastName, email } = validatedAthlete;
 
-  // Check if customer already exists on Stripe by email
-  const existingCustomerList = await stripe.customers.list({
-    email: athlete.email,
-    limit: 1
-  });
+  const transactionResult = await prisma.$transaction(async (prisma) => {
+    // Create the athlete in the database
+    const athlete = await athleteService.createAthlete(validatedAthlete);
 
-  // Initialize stripeCustomer with either existing or new customer
-  let stripeCustomer = existingCustomerList.data.length > 0 ? existingCustomerList.data[0] : null;
-
-  // If customer does not exist, create a new one
-  if (!stripeCustomer) {
-    stripeCustomer = await stripe.customers.create({
-      name: `${athlete.firstName} ${athlete.lastName}`,
-      email: athlete.email
+    // Check if a Stripe customer already exists for this email
+    const existingCustomerList = await stripe.customers.list({
+      email,
+      limit: 1,
     });
-  }
 
-  // Update the athlete with the Stripe customer ID
-  const updatedAthlete = await prisma.athlete.update({
-    where: { id: athlete.id },
-    data: {
-      stripeCustomerId: stripeCustomer.id
+    let stripeCustomer = existingCustomerList.data.length > 0 ? existingCustomerList.data[0] : null;
+
+    // If no existing Stripe customer, create one
+    if (!stripeCustomer) {
+      stripeCustomer = await stripe.customers.create({
+        name: `${firstName} ${lastName}`,
+        email,
+      });
     }
+
+    // Update the athlete record with the Stripe customer ID
+    const updatedAthlete = await prisma.athlete.update({
+      where: { id: athlete.id },
+      data: {
+        stripeCustomerId: stripeCustomer.id,
+      },
+    });
+
+    return updatedAthlete; // Return the updated athlete
   });
 
-  const athleteCreateResponse = formatSuccessResponse(updatedAthlete, "athlete");
+  // Format the response
+  const athleteCreateResponse = formatSuccessResponse(transactionResult, "athlete");
 
-  // Send the response with the updated athlete and Stripe customer ID
+  // Send the response
   res.status(201).json({
     message: "Athlete created successfully",
-    athlete: athleteCreateResponse
+    athlete: athleteCreateResponse,
   });
 });

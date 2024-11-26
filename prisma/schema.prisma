@@ -127,6 +127,9 @@ enum ClassType {
 model Class {
   id                String            @id @default(uuid())
   name              String
+  workouts          Workout[]         @relation("ClassWorkouts")
+  enrollments       ClassEnrollment[] // List of enrollments for the class
+  Box               Box?              @relation(fields: [boxId], references: [id])
   description       String?
   classType         ClassType?
   date              DateTime?
@@ -135,7 +138,6 @@ model Class {
   coach             Athlete?          @relation("CoachClasses", fields: [coachId], references: [id])
   program           Programs?         @relation(fields: [programsId], references: [id])
   programsId        String?
-  enrollments       ClassEnrollment[] // List of enrollments for the class
   activeEnrollments Int               @default(0)
   // Recurrence Fields
   isRecurring       Boolean           @default(false)
@@ -144,11 +146,10 @@ model Class {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Box       Box?     @relation(fields: [boxId], references: [id])
   boxId     String?
 
   // Many-to-Many Relation with Workout
-  workouts Workout[] @relation("ClassWorkouts")
+  Performance Performance[]
 }
 
 model ClassEnrollment {
@@ -192,6 +193,7 @@ model Performance {
   athleteId  String // Reference to the Athlete logging the performance
   movementId String // Reference to the Movement
   workoutId  String? // Reference to the associated Workout (optional)
+  classId    String? // Optional reference to the Class
   date       DateTime
   sets       Int?
   reps       Int?
@@ -204,6 +206,7 @@ model Performance {
   athlete  Athlete  @relation(fields: [athleteId], references: [id])
   movement Movement @relation(fields: [movementId], references: [id])
   workout  Workout? @relation(fields: [workoutId], references: [id])
+  class    Class?   @relation(fields: [classId], references: [id])
 }
 
 model Workout {
@@ -211,6 +214,8 @@ model Workout {
   type              WorkoutType?
   title             String
   movements         WorkoutMovements[] // Relation to movements
+  classes           Class[]            @relation("ClassWorkouts")
+  Performance       Performance[]
   version           Int                @default(1)
   originalWorkoutId String?
   description       String?
@@ -218,25 +223,23 @@ model Workout {
   intensity         WorkoutIntensity?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-
-  classes     Class[]       @relation("ClassWorkouts")
-  Performance Performance[]
 }
 
 model WorkoutMovements {
-  id         String   @id @default(uuid())
-  workoutId  String
-  movementId String
-  reps       Int?
-  sets       Int?
-  weight     Float?
-  weightUnit String?
-  movement   Movement @relation(fields: [movementId], references: [id])
+  id           String   @id @default(uuid())
+  workoutId    String
+  movementId   String
+  workout      Workout  @relation(fields: [workoutId], references: [id])
+  movement     Movement @relation(fields: [movementId], references: [id])
+  instructions String?
+  order        Int
+  reps         Int?
+  sets         Int?
+  weight       Float?
+  weightUnit   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  workout Workout @relation(fields: [workoutId], references: [id])
 }
 
 model Movement {
