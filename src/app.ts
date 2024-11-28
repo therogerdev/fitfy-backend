@@ -19,6 +19,7 @@ import { movementRouter } from "./routes/movementRouter.js";
 import { programRouter, programsRouter } from "./routes/programRouter.js";
 import { workoutRouter } from "./routes/workoutRouter.js";
 import ApiError from "./utils/ApiError.js";
+import { performanceRouter } from "./routes/performanceRouter.js";
 
 const app: Express = express();
 
@@ -58,6 +59,7 @@ app.use("/api/enroll", enrollmentRouter);
 app.use("/api/attendance", attendanceRouter);
 app.use("/api/stripe", membershipRouter);
 app.use("/api", authRouter);
+app.use("/api/performance", performanceRouter);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
