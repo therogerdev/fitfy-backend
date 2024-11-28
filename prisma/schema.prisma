@@ -129,6 +129,7 @@ model Class {
   name              String
   workouts          Workout[]         @relation("ClassWorkouts")
   enrollments       ClassEnrollment[] // List of enrollments for the class
+  Performance       Performance[]
   Box               Box?              @relation(fields: [boxId], references: [id])
   description       String?
   classType         ClassType?
@@ -149,7 +150,6 @@ model Class {
   boxId     String?
 
   // Many-to-Many Relation with Workout
-  Performance Performance[]
 }
 
 model ClassEnrollment {
@@ -189,24 +189,24 @@ enum RecurrenceType {
 }
 
 model Performance {
-  id         String   @id @default(uuid())
+  id String @id @default(uuid())
+
+  athlete    Athlete  @relation(fields: [athleteId], references: [id])
+  movement   Movement @relation(fields: [movementId], references: [id])
+  workout    Workout? @relation(fields: [workoutId], references: [id])
+  class      Class?   @relation(fields: [classId], references: [id])
   athleteId  String // Reference to the Athlete logging the performance
   movementId String // Reference to the Movement
   workoutId  String? // Reference to the associated Workout (optional)
   classId    String? // Optional reference to the Class
   date       DateTime
-  sets       Int?
-  reps       Int?
-  weight     Float?
+  sets       String?
+  reps       String?
+  weight     String?
   weightUnit String?
   notes      String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  athlete  Athlete  @relation(fields: [athleteId], references: [id])
-  movement Movement @relation(fields: [movementId], references: [id])
-  workout  Workout? @relation(fields: [workoutId], references: [id])
-  class    Class?   @relation(fields: [classId], references: [id])
 }
 
 model Workout {
@@ -233,9 +233,9 @@ model WorkoutMovements {
   movement     Movement @relation(fields: [movementId], references: [id])
   instructions String?
   order        Int
-  reps         Int?
-  sets         Int?
-  weight       Float?
+  reps         String?
+  sets         String?
+  weight       String?
   weightUnit   String?
 
   createdAt DateTime @default(now())
@@ -282,6 +282,7 @@ enum WorkoutType {
   Ladder
   Strength
   Skill
+  Cycling
 }
 
 enum MembershipType {
